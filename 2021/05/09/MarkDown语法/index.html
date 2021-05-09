@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="theme-color" content=#58b77a>
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Doug-Silson">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <script id="hexo-configurations">
+  var CONFIG = {
+    root: '/',
+    theme: 'lx',
+    version: '0.3.9',
+    localsearch:{
+      "enable": true,
+      "trigger": "auto",
+      "top_n_per_article": 1,
+      "unescape": false,
+      "preload": false
+      },
+    path: 'search.xml'
+  };
+</script>
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/css/main.min.css">
+  <style type="text/css">
+    pre,
+    code {
+      font-family: 'Fira Code', monospace;
+    }
+    html {
+      font-family: sans-serif;
+    }
+    body {
+      font-family: sans-serif;
+    }
+    h1, h2, h3, h4, h5, figure {
+      font-family: sans-serif;
+    }
+    .menu-container{
+      font-family: sans-serif;
+    }
+  </style>
+
+  <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.jside.menu.js"></script>
+	<script>
+	$(document).ready(function(){
+	$(".menu-container").jSideMenu({
+	    jSidePosition: "position-right",
+	    jSideSticky: true,
+	    jSideSkin: "greenish",
+	     });
+	}); 
+	</script>
+  <!--Google_Analytics-->
+<script async src="https://www.googletagmanager.com/gtag/js?id=..."></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '...');
+</script>
+<!--baidu_analytics-->
+<script>
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?...";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Fira Code:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+<div class="single">
+<a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i></a>
+<div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Search..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+<div id="page">
+<div id="lx-aside" style="background-image: url(//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/images/post_cover.jpeg)" data-stellar-background-ratio="0.5">
+  <div class="overlay">
+  <div class="page-title">
+    <div class="avatar"><a href="/"><img src="/images/avatar.jpeg"></a></div>
+    <span>2021-05-09</span>
+    <h2></h2>
+    
+    </div>
+</div>
+</div>
+
+<div id="lx-main-content">
+  <div class="lx-post">
+    <div class="lx-entry padding">
+      <div>
+        <h1 id="Markdown语法"><a href="#Markdown语法" class="headerlink" title="Markdown语法"></a>Markdown语法</h1><h2 id="Markdown标题，使用-创建标题"><a href="#Markdown标题，使用-创建标题" class="headerlink" title="Markdown标题，使用 # 创建标题"></a>Markdown标题，使用 # 创建标题</h2><h1 id="一级标题-一级标题名称"><a href="#一级标题-一级标题名称" class="headerlink" title="一级标题  # 一级标题名称"></a>一级标题  # 一级标题名称</h1><h2 id="二级标题-二级标题名称"><a href="#二级标题-二级标题名称" class="headerlink" title="二级标题 ## 二级标题名称"></a>二级标题 ## 二级标题名称</h2><h3 id="三级标题-三级标题名称"><a href="#三级标题-三级标题名称" class="headerlink" title="三级标题 ### 三级标题名称"></a>三级标题 ### 三级标题名称</h3><h4 id="四级标题-四级标题名称"><a href="#四级标题-四级标题名称" class="headerlink" title="四级标题 #### 四级标题名称"></a>四级标题 #### 四级标题名称</h4><h5 id="五级标题-五级标题名称"><a href="#五级标题-五级标题名称" class="headerlink" title="五级标题 ##### 五级标题名称"></a>五级标题 ##### 五级标题名称</h5><h6 id="六级标题-六级标题名称"><a href="#六级标题-六级标题名称" class="headerlink" title="六级标题 ###### 六级标题名称"></a>六级标题 ###### 六级标题名称</h6><h2 id="Markdown段落格式"><a href="#Markdown段落格式" class="headerlink" title="Markdown段落格式"></a>Markdown段落格式</h2><p>段落的换行：两个空格+回车</p>
+<p>字体：</p>
+<p>​        <em>斜体</em>     *斜体文本*</p>
+<p>​        <em>斜体</em>      _斜体文本_</p>
+<p>​        <strong>粗体</strong>      **粗体文本**</p>
+<p>​        <strong>粗体</strong>      __粗体文本__ </p>
+<p>​        <em><strong>斜粗体</strong></em>   ***斜粗体文本***</p>
+<p>​        <em><strong>斜粗体</strong></em>    ___斜粗体文本___</p>
+<p>分隔线：在一行中用三个以上的 星号 * 或者 减号 -  或者 下划线 _</p>
+<p>​      来建立一个分隔线。注意，行内不能有其他东西，但你可以在每        个符号间插入空格。比如：</p>
+<p>***    或者   *  *  *  或者 ---  或者 -  -  -   或者 ___    或者 _  _  _  都是允许的</p>
+<p>效果如下：</p>
+<hr>
+<p>删除线：</p>
+<p>​            <del>Doug Wilson</del>     ~~Doug Wilson~~</p>
+<p>下划线：</p>
+<p>​            <u>Doug Wilson</u>       &lt;u&gt;Doug Wilson&lt;/u&gt;</p>
+<p>脚注：</p>
+<p>​            脚注格式：<a href="%E7%A7%BB%E5%8A%A8%E5%88%B0%E8%84%9A%E6%B3%A8%E4%B8%8A%E6%98%BE%E7%A4%BA%E5%86%85%E5%AE%B9">^我是脚注</a></p>
+<p>​            脚注格式：[^我是脚注]</p>
+<p>​            [^我是脚注]:移动到脚注上显示内容</p>
+<h2 id="Markdown列表"><a href="#Markdown列表" class="headerlink" title="Markdown列表"></a>Markdown列表</h2><p>无序列表：</p>
+<ul>
+<li><p>第一项</p>
+</li>
+<li><p>第二项</p>
+</li>
+<li><p>第三项</p>
+<p>​    * 第一项</p>
+<p>​    * 第二项</p>
+<p>​    * 第三项</p>
+<p>或者 用 + 或者 - 代替 * 也可以实现无序列表</p>
+</li>
+</ul>
+<p>有序列表：</p>
+<ol>
+<li><p>第一项</p>
+</li>
+<li><p>第二项</p>
+</li>
+<li><p>第三项</p>
+<ol>
+<li><p>第一项</p>
+</li>
+<li><p>第二项</p>
+</li>
+<li><p>第三项</p>
+<p>即采用  数字.空格 列名称</p>
+</li>
+</ol>
+</li>
+</ol>
+<p>列表嵌套：</p>
+<ol>
+<li><p>第一项</p>
+<pre><code>* 子第一项
+* 子第二项
+</code></pre>
+</li>
+<li><p>第二项</p>
+<ul>
+<li>子第一项</li>
+<li>子第二项</li>
+</ul>
+<p>在子列表的选项前面添加4个空格即可</p>
+</li>
+</ol>
+<h2 id="Markdown区块"><a href="#Markdown区块" class="headerlink" title="Markdown区块"></a>Markdown区块</h2><p>区块：</p>
+<blockquote>
+<p>区块第一行</p>
+<p>区块第二行</p>
+<p>区块第三行</p>
+</blockquote>
+<p>​            &gt; 区块第一行</p>
+<p>​            &gt; 区块第二行</p>
+<p>​            &gt; 区块第三行</p>
+<p>区块嵌套：</p>
+<blockquote>
+<p>区块最外层</p>
+<blockquote>
+<p>区块第二层</p>
+<blockquote>
+<p>区块第三层</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>​            &gt;区块最外层</p>
+<p>​            &gt;&gt;区块第二层</p>
+<p>​            &gt;&gt;&gt;区块第三层</p>
+<p>区块中要使用别的内容，只需要在对应的符号 &gt; 后面加上需要的内容即可，比如我想加一个粗体：</p>
+<blockquote>
+<p><strong>粗体</strong> </p>
+</blockquote>
+<p>​        &gt;**粗体**</p>
+<h2 id="Markdown代码"><a href="#Markdown代码" class="headerlink" title="Markdown代码"></a>Markdown代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(<span class="string">&quot;Java代码块&quot;</span>);</span><br><span class="line"><span class="comment">//使用Ctrl+Shift+K</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Markdown链接"><a href="#Markdown链接" class="headerlink" title="Markdown链接"></a>Markdown链接</h2><p><a target="_blank" rel="noopener" href="https://gitee.com/doug-wilson">我的作品地址：</a></p>
+<p>​        [我的作品地址：](链接地址)</p>
+<p>这可以和脚注配合使用，具体用法自己尝试</p>
+<h2 id="Markdown图片"><a href="#Markdown图片" class="headerlink" title="Markdown图片"></a>Markdown图片</h2><img src="C:\Users\HMY-computer\Pictures\timg76C2063E.jpg" alt="图片介绍" style="zoom:50%;" />
+
+<p>语法格式：</p>
+<p>​            ![alt 图片文本](图片地址)</p>
+<h2 id="Markdown表格"><a href="#Markdown表格" class="headerlink" title="Markdown表格"></a>Markdown表格</h2><table>
+<thead>
+<tr>
+<th>表头1</th>
+<th>表头2</th>
+<th>表头3</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单元1</td>
+<td>单元2</td>
+<td>单元3</td>
+</tr>
+</tbody></table>
+<p>语法格式：</p>
+<p>​            |表头1|表头2|表头3|</p>
+<p>​            |----|----|----|</p>
+<p>​            |单元1|单元2|单元3|</p>
+<p>设置对齐：</p>
+<table>
+<thead>
+<tr>
+<th align="left">左对齐</th>
+<th align="center">居中对齐</th>
+<th align="right">右对齐</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">单元1</td>
+<td align="center">单元2</td>
+<td align="right">单元3</td>
+</tr>
+</tbody></table>
+<p>​        语法格式：</p>
+<p>​            |左对齐|居中对齐|右对齐|</p>
+<p>​            | :—- | :—-: | —-: |</p>
+<p>​            |单元1|单元2|单元3|</p>
+<h2 id="Markdown转义字符"><a href="#Markdown转义字符" class="headerlink" title="Markdown转义字符"></a>Markdown转义字符</h2><p>反斜线  \   </p>
+<p>反引号  ‘</p>
+<p>星号      *</p>
+<p>下划线  _</p>
+<p>花括号  {}</p>
+<p>方括号  []</p>
+<p>小括号  ()</p>
+<p>井号      #</p>
+<p>加号      +</p>
+<p>减号      -</p>
+<p>英文句点  .</p>
+<p>感叹号   !</p>
+<p>通过在转义字符前加反斜杠\来获取字符，取消其特殊含义</p>
+<h2 id="Markdown支持的HTML元素"><a href="#Markdown支持的HTML元素" class="headerlink" title="Markdown支持的HTML元素"></a>Markdown支持的HTML元素</h2><p>&lt;kbd&gt; &lt;b&gt;  &lt;i&gt;  &lt;em&gt;  &lt;sup&gt;  &lt;sub&gt;  &lt;br&gt;</p>
+<p>如：使用<kbd>Ctrl</kbd>+<kbd>Shift</kbd>回到行首</p>
+<p>​    语法格式：使用&lt;kbd&gt;Ctrl&lt;/kbd&gt;+&lt;kbd&gt;Shift&lt;/kbd&gt;回到行首</p>
+<h2 id="Markdown数学公式"><a href="#Markdown数学公式" class="headerlink" title="Markdown数学公式"></a>Markdown数学公式</h2><p>$$<br>\mathbf{V}_1 \times \mathbf{V}_2 = \begin{vmatrix}<br>\mathbf{i} &amp; \mathbf{j} &amp; \mathbf{k} \<br>\frac{\partial X}{\partial u} &amp; \frac{\partial Y}{\partial u} &amp; 0 \<br>\frac{\partial X}{\partial v} &amp; \frac{\partial Y}{\partial v} &amp; 0 \<br>\end{vmatrix}<br>${$tep1}{\style{visibility:hidden}{(x+1)(x+1)}}<br>$$</p>
+<p>语法格式：</p>
+<p>$$</p>
+<p>\mathbf{V}_1 \times \mathbf{V}_2 = \begin{vmatrix}<br>\mathbf{i} &amp; \mathbf{j} &amp; \mathbf{k} \<br>\frac{\partial X}{\partial u} &amp; \frac{\partial Y}{\partial u} &amp; 0 \<br>\frac{\partial X}{\partial v} &amp; \frac{\partial Y}{\partial v} &amp; 0 \<br>\end{vmatrix}<br>${$tep1}{\style{visibility:hidden}{(x+1)(x+1)}}</p>
+<p>$$</p>
+<p>通过两个美元符号$$包裹由TeX或LaTeX格式的数学公式进行实现</p>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="lx-navigation">
+	<div class="lx-cover prev lx-cover-sm" style="background-image: url(//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/images/footer-l.jpeg)">
+		<div class="overlay"></div>
+		<a class="copy" href="#">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Next</span>
+						<h3>No newer post</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+        <div class="lx-cover next lx-cover-sm" style="background-image: url(//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/images/footer-r.jpeg)">
+		<div class="overlay"></div>
+		<a class="copy" href="/2021/05/09/%E5%A6%82%E4%BD%95%E7%94%A8Hexo%E5%86%99%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/">
+			<div class="display-t">
+				<div class="display-tc">
+					<div>
+						<span>Prev</span>
+						<h3>如何用Hexo...</h3>
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>
+
+</div>
+<div class="comment"><div id="comments"></div></div>
+<footer>
+  <div>
+  Copyright &copy; 2019.<a href="/">Hexo</a><br>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme <a href="https://lx.js.org" target="_blank">Lx</a><br>
+  </div>
+</footer>
+
+</div>
+
+<button class="hamburger hamburger--arrow-r" type="button">
+    <div class="hamburger-box">
+      <div class="hamburger-inner"></div>
+    </div>
+</button> 
+<div class="menu visibility">
+  <div class="menu-head">
+    <span class="layer">
+      <div class="col">
+        <div class="row for-pic">
+          <div class="profile-pic">
+            <a href="/"><img src="/images/avatar.jpeg" alt="Doug-Silson"/></a>
+          </div>
+        </div>
+        <div class="row for-name">
+          <p>Doug-Silson</p>
+          <span class="tagline">Hello, World!</span>
+        </div>
+      </div>
+    </span>
+  </div>
+  <nav class="menu-container">
+  <ul class="menu-items">
+    <li><a href="/"><i class="fa fa-home fa-fw"></i>Home</a></li>
+    <li><a href="/archives/"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+    
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-bookmark fa-fw"></i>Pages</span>
+        <ul>
+          <li><a href="/guestbook/">Guestbook</a></li>
+        <li><a href="/about/">About</a></li>
+        </ul>
+    </li>
+    <li class="has-sub"><span class="dropdown-heading">
+      <i class="fa fa-link fa-fw"></i>Friends</span>
+        <ul>
+          <li> <a href="https://lx.js.org" target="_blank">Theme-Lx</a></li>
+        </ul>
+    </li>
+  </ul>
+  </nav>
+</div>
+
+<div class="gototop js-top">
+  <a href="#" class="js-gotop"><i class="fa fa-arrow-up"></i></a>
+</div>
+<script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/jquery.easing.min.js"></script>
+<script>
+(function () {
+	"use strict";
+	var goToTop = function() {
+		$(".js-gotop").on("click", function(event){
+			event.preventDefault();
+			$("html, body").animate({
+				scrollTop: $("html").offset().top
+			}, 500, "easeInOutExpo");
+			return false;
+		});
+		$(window).scroll(function(){
+			var $win = $(window);
+			if ($win.scrollTop() > 200) {
+				$(".js-top").addClass("active");
+			} else {
+				$(".js-top").removeClass("active");
+			}
+		});
+	};
+	$(function(){
+		goToTop();
+	});
+}());
+</script>
+<script src="//cdn.jsdelivr.net/npm/theme-lx@0.3.9/source/js/local.search.js"></script>
+
+
+</body>
+</html>
