@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="计算机, 程序," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="计算机程序基本知识这两天空闲时间比较多一些，打算把计算机一些基本知识再看一看，写一些总结，也当作复习。以下内容参考自书籍 ：  《程序是怎样跑起来的》">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机程序运行基本知识">
+<meta property="og:url" content="http://example.com/2020/01/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="Doug-Wilson&#39;s blogs">
+<meta property="og:description" content="计算机程序基本知识这两天空闲时间比较多一些，打算把计算机一些基本知识再看一看，写一些总结，也当作复习。以下内容参考自书籍 ：  《程序是怎样跑起来的》">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="f:/HexoBlog/blog/source/images/CPU构成.png">
+<meta property="og:image" content="f:/HexoBlog/blog/source/images/寄存器.png">
+<meta property="og:image" content="f:/HexoBlog/blog/source/images/标志寄存器状态.png">
+<meta property="og:image" content="f:/HexoBlog/blog/source/images/IC集成电路.png">
+<meta property="og:image" content="f:/HexoBlog/blog/source/images/浮点数.png">
+<meta property="og:image" content="f:/HexoBlog/blog/source/images/浮点数表示.png">
+<meta property="og:image" content="f:/HexoBlog/blog/source/images/CALL和RET指令.png">
+<meta property="og:image" content="f:/HexoBlog/blog/source/images/内存IC.png">
+<meta property="og:image" content="f:/HexoBlog/blog/source/images/磁盘划分.png">
+<meta property="og:image" content="f:/HexoBlog/blog/source/images/哈夫曼压缩算法过程.png">
+<meta property="article:published_time" content="2020-01-11T00:37:11.000Z">
+<meta property="article:modified_time" content="2021-05-12T03:02:53.814Z">
+<meta property="article:author" content="Doug-Wilson">
+<meta property="article:tag" content="计算机, 程序">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="f:/HexoBlog/blog/source/images/CPU构成.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2020/01/11/计算机程序运行基本知识/"/>
+
+
+
+
+
+  <title>计算机程序运行基本知识 | Doug-Wilson's blogs</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+		<a target="_blank" rel="noopener" href="https://your-url" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Doug-Wilson's blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">学无止境，积累技术</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-主页">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            主页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-关于">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-标签">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-目录">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归类">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-时间表">
+          <a href="/schedule/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            时间表
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/01/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Doug-Wilson's blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">计算机程序运行基本知识</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-11T08:37:11+08:00">
+                2020-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="计算机程序基本知识"><a href="#计算机程序基本知识" class="headerlink" title="计算机程序基本知识"></a>计算机程序基本知识</h1><p>这两天空闲时间比较多一些，打算把计算机一些基本知识再看一看，写一些总结，也当作复习。以下内容参考自书籍 ：</p>
+<blockquote>
+<p>《程序是怎样跑起来的》</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="程序"><a href="#程序" class="headerlink" title="程序"></a>程序</h2><p>什么是程序？<strong>程序是指示计算机运行的一组指令</strong>。程序由什么组成？<strong>指令和数据</strong>？CPU能直接执行指令吗？不能，<strong>必须将指令解释成机器语言，CPU才能解释和执行</strong>。正在运行的程序存储在什么位置？<strong>内存，但是不绝对，需要运行的部分是在内存中，这一点确定</strong>。什么是内存地址？<strong>指令和数据在内存中存储位置的数值。</strong>程序执行的流程？<strong>高级语言编写的程序——&gt;编译后转换成机器语言文件——&gt;程序运行在内存中生成的机器语言文件副本——&gt;CPU解释和运行转换成机器语言的程序内容。一般而言，程序启动后，控制器就会根据时钟信号从内存中读取指令和数据，通过对这些指令加以解释和运行，运算器就会对数据进行运算，控制器根据运算结果来控制计算机</strong></p>
+<h2 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h2><blockquote>
+<p><strong>CPU作用：负责解释和运行转换成机器语言的程序内容</strong></p>
+<p><strong>CPU硬件组成：CPU和内存都是由若干晶体管组成的电子部件，通常称为IC (Integrated Circuit)集成电路</strong></p>
+<p><strong>CPU构成：寄存器、控制器、运算器、时钟。各部分间由电信号相互连通</strong></p>
+</blockquote>
+<h4 id="CPU构成"><a href="#CPU构成" class="headerlink" title="CPU构成"></a>CPU构成</h4><p><img src="F:\HexoBlog\blog\source\images\CPU构成.png"></p>
+<blockquote>
+<p>控制器：将内存中的指令，数据读入寄存器，并根据指令的执行结果控制整个计算机</p>
+</blockquote>
+<blockquote>
+<p>运算器：运算寄存器中的数据</p>
+</blockquote>
+<blockquote>
+<p>时钟：负责CPU开始计时的时钟信号，一般CPU的时钟单位为GHz，比如2GHz表示时钟信号的频率为2GHz(1GHz=10亿次/秒)，也就是说时钟的频率越高，CPU运行速度越快</p>
+</blockquote>
+<blockquote>
+<p>寄存器：暂存指令，数据等处理对象。因此，程序常常将寄存器当作对象进行描述，比如汇编语言：mov eax, dword ptr[ebp-8];  含义就是把寄存器ebp地址8的内容复制到eax寄存器中。而寄存器根据其保存的对象不同，将寄存器分成了以下几类：</p>
+<p><img src="F:\HexoBlog\blog\source\images\寄存器.png"></p>
+<p><strong>其中，基址寄存器、变址寄存器、通用寄存器可以有多个，其它寄存器只有一个</strong></p>
+<p>标志寄存器：这是一个比较有意思的寄存器。条件分支和循环中的跳转指令都会参照当前标志寄存器中的数值来判断是否进行跳转。而标志寄存器中的数值由3个位表示，负位，零位，正位。如下图：</p>
+<p><img src="F:\HexoBlog\blog\source\images\标志寄存器状态.png"></p>
+<p>当运算结果为负值，负位就会置为1；当运算结果为0，零位就会置为1；当运算结果为正值，正位就会置为1.</p>
+<p>运算结果的计算过程：比如要比较累加寄存器中XXX值和通用寄存器中YYY值，执行比较指令后，CPU的运算会在内部进行XXX-YYY减法运算。而无论剑法运算的结果为正数，负数，还是零，都会保存到标志寄存器中。结果为正，表示XXX比YYY大，标志寄存器的正位置为1；结果为0，表示XXX和YYY相等，标志寄存器的零位置为1；结果为负值，表示XXX比YYY小，标志寄存器的负位置为1.</p>
+<blockquote>
+<p>基址寄存器和变址寄存器则定义程序指令在内存中的地址，其中，基址寄存器保存程序的起始地址，变址寄存器保存程序的指令地址。也正因这两类的寄存器的存在，程序的才能得到正确地执行。</p>
+</blockquote>
+</blockquote>
+<h3 id="计算机的二进制"><a href="#计算机的二进制" class="headerlink" title="计算机的二进制"></a>计算机的二进制</h3><blockquote>
+<p>前面说过，CPU是由IC集成电路组成的，而IC通常如下：</p>
+<p><img src="F:\HexoBlog\blog\source\images\IC集成电路.png"></p>
+<p>所有引脚只有直流电压0V或5V两个状态，也就说一个引脚只能表示两个状态。IC的这个特性，决定了计算机的信息，只能通过二进制数来处理。</p>
+<h4 id="二进制表示的数和运算"><a href="#二进制表示的数和运算" class="headerlink" title="二进制表示的数和运算"></a>二进制表示的数和运算</h4><p>正数用原码表示；负数用补码表示。这样做的原因是将计算机中的减法运算，转化成加法运算。比如1-1实际上为1+(-1) ：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">的二进制数：</span> <span class="number">0000 </span><span class="number">0001</span></span><br><span class="line"><span class="number">-1</span><span class="string">的二进制数：1111</span> <span class="number">1111   </span><span class="number">1000 </span><span class="number">0001</span><span class="string">取反加1</span></span><br><span class="line"><span class="number">1</span><span class="number">-1</span> <span class="string">变为</span> <span class="number">1</span><span class="string">+(-1):</span>   <span class="number">0000 </span><span class="number">0001</span></span><br><span class="line">                 <span class="string">+1111</span> <span class="number">1111</span></span><br><span class="line">                  <span class="number">0000 </span><span class="number">0000</span> <span class="string">等于0</span></span><br><span class="line"><span class="string">例2：2的二进制数</span>  <span class="number">0000 </span><span class="number">0010</span></span><br><span class="line">    <span class="number">-3</span><span class="string">的二进制数</span> <span class="number">1111 </span><span class="number">1101   </span><span class="number">1000 </span><span class="number">0011</span><span class="string">取反加1</span></span><br><span class="line"><span class="number">2</span><span class="number">-3</span> <span class="string">变为</span> <span class="number">2</span><span class="string">+(-3)：</span> <span class="number">0000 </span><span class="number">0010</span></span><br><span class="line">				<span class="string">+1111</span> <span class="number">1101</span></span><br><span class="line">				 <span class="number">1111 </span><span class="number">1111</span> <span class="string">等于-1</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="浮点数表示"><a href="#浮点数表示" class="headerlink" title="浮点数表示"></a>浮点数表示</h4><p>有些浮点数在计算机中是无法表示的，只能近似表示：比如十进制0.1无法用二进制表示，只能近似表示。如何规避浮点数错误？<strong>无视错误，或将小数转换成整数后计算</strong></p>
+<p>那如何用二进制表示浮点数？</p>
+<p><img src="F:\HexoBlog\blog\source\images\浮点数.png"></p>
+<img src="F:\HexoBlog\blog\source\images\浮点数表示.png" style="zoom:75%;" />
+$$
+
+<p>$$<br><strong>其中正负号为符号位，m为尾数，2为基数，e为指数</strong></p>
+<p>举个例子进行求解，以单精度的浮点数为例，11.1875</p>
+<blockquote>
+<p>符号位求法：正数为0，负数为1 。因此11.1875 符号位为 0</p>
+</blockquote>
+<blockquote>
+<p>尾数求法：11.1875用二进制数表示为 1011.0011 我们需要<strong>让其整数部分只有1</strong>，因此需要将其无符号位右移3位，变成1.011 0011，并确保小数点后长度为23位，变成 1.011 0011 0000 0000 0000 0000</p>
+<p>那么尾数就确定了：011 0011 0000 0000 0000 0000</p>
+</blockquote>
+<blockquote>
+<p>基数求法：不需要求，为2</p>
+</blockquote>
+<blockquote>
+<p>指数求法：采用EXCESS系统进行求解。因为指数部分有正有负，因此采用中间基准来规避符号位。比如单精度的指数位数为8位，无符号数最大表示为1111 1111 = 255  因此采用中间基准 255 / 2 = 127  </p>
+<p>0111 1111 作为中间基准。如果指数部分为 1111 1111 那么需要减去 0111 1111 表示为128 ，如果指数部分为0000 0000 那么需要减去0111 1111 表示为-127</p>
+<p>比如上面的11.1875为了得到整数部分只有1，无符号向右移动了3位，那么其指数部分为 3 + 127 =</p>
+<p>​       0000 0011</p>
+<p>+     0111 1111 </p>
+<p>​       1000 0010</p>
+</blockquote>
+<blockquote>
+<p>综上，11.1875用二进制数表示为 <u>0</u> <u>1000 0010</u> <u>011 0011 0000 0000 0000 0000</u></p>
+</blockquote>
+</blockquote>
+<h2 id="常用机器语言指令"><a href="#常用机器语言指令" class="headerlink" title="常用机器语言指令"></a>常用机器语言指令</h2><blockquote>
+<table>
+<thead>
+<tr>
+<th>MOV 复制</th>
+<th>ADD 加法</th>
+<th>ANL 与</th>
+<th>JMP 跳转指令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PUSH 压入</td>
+<td>SUBB 减法</td>
+<td>ORL 或</td>
+<td>ACALL 短调用</td>
+</tr>
+<tr>
+<td>POP 弹出</td>
+<td>MUL 乘法</td>
+<td>XRL 异或</td>
+<td>LCALL 长调用</td>
+</tr>
+<tr>
+<td>XCH 交换</td>
+<td>DIV 除法</td>
+<td></td>
+<td>RET 返回</td>
+</tr>
+<tr>
+<td>INC 加1</td>
+<td></td>
+<td></td>
+<td>CALL 调用</td>
+</tr>
+<tr>
+<td>DEC 减1</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>指令的跳转调用的是jump指令，一旦跳转后就不需要返回了，而函数的跳转调用的是CALL指令和RET指令的组合。当函数被调用时，调用CALL指令跳转到函数执行的起始地址，当函数执行完毕，需要调用RET指令返回到原来的调用点，执行调用点的下一条指令。</p>
+<p><img src="F:\HexoBlog\blog\source\images\CALL和RET指令.png"></p>
+</blockquote>
+<h2 id="求余"><a href="#求余" class="headerlink" title="求余"></a>求余</h2><blockquote>
+<p>这部分经常遇到，也经常忘记。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">对于同号的的，没有什么好说的： <span class="number">10</span> % <span class="number">3</span> = <span class="number">1</span>   -<span class="number">10</span> % (-<span class="number">3</span>) = -<span class="number">1</span></span><br><span class="line">而对于异号的，如 -<span class="number">10</span> % <span class="number">3</span>   <span class="number">10</span> % -<span class="number">3</span>  求余过程为：</span><br><span class="line">    两个操作取绝对值进行求余计算，如果能整除，则结果为<span class="number">0</span></span><br><span class="line">    如果不能整除，则要进行如下计算：a % b = (|a|/|b| + <span class="number">1</span>) × b + a 计算得到结果</span><br><span class="line">    比如 -<span class="number">10</span> % <span class="number">3</span> = (<span class="number">10</span> / <span class="number">3</span> + <span class="number">1</span>) × <span class="number">3</span> + (-<span class="number">10</span>) = <span class="number">2</span></span><br><span class="line">    <span class="number">10</span> % -<span class="number">3</span> = (<span class="number">10</span> / <span class="number">3</span> + <span class="number">1</span>)×(-<span class="number">3</span>) + <span class="number">10</span> = -<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+
+</blockquote>
+<h2 id="内存，或者称为主存"><a href="#内存，或者称为主存" class="headerlink" title="内存，或者称为主存"></a>内存，或者称为主存</h2><blockquote>
+<p>主存通过控制芯片等与CPU相连，主要负责存储指令和数据。在主存中，每个字节都有一个地址编号，CPU可以通过该地址读取主存中的指令和数据，或者写入数据。</p>
+<p>前面说过，CPU和主存都是通过IC构成的，通常主存的IC引脚可以分为如下几部分：电源、地址引脚、数据引脚、控制引脚。</p>
+<p><img src="F:\HexoBlog\blog\source\images\内存IC.png"></p>
+<p>VCC和GND为电源引脚：为内存IC提供电源</p>
+<p>A0~A9为地址引脚(Address)：指定数据存储的场所</p>
+<p>D0~D7为数据引脚：写入数据或读取数据</p>
+<p>RD和WR为控制引脚：WR为写入信号，WR=1时有效；RD为读取信号，RD=1时有效；WR=0且RD=0时，读取和写入无法进行；WR=1且RD=1时，意味着可读可写。</p>
+<p>内存存储的数据量计算：（数据信号引脚数量 / 8）× (地址信号引脚表示的地址数量)</p>
+<p>例如上图的内存能存储的数据量：(8 / 8) × (2^10) = 1024B = 1KB </p>
+<p>​                                                          (D0<del>D7)  (A0</del>A9)</p>
+<p>因此要增大内存可存储数据量，可以增多引脚或者使用多个内存IC。</p>
+<p><strong>通常而言，我们从内存中读取的为数据类型。比如byte, short, int, long, float, double等。数据类型是一个抽象的概念，其实内存并不知道数据类型，它只知道读取字节。而数据类型出现的原因是，程序中我们需要不同范围大小和不同类型的数据，因此，需要数据类型来满足需求。但也只是每次读取的字节数不同，byte每次读取1字节，int每次读取4字节，double每次读8字节。</strong></p>
+<p><strong>指针也是一种变量，为4字节，保存内存的地址，我们可以通过内存地址读取出内存中该地址中的数据。为了区分数据类型和指针，需要再指针加一个*，变成这样：*pointer  然后还需要指定读取的数据类型，你是要取出内存地址中4个字节的数据还是1个字节的数据，你得指明，因此指针的最终写法为 ：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">数据类型 *p</span><br></pre></td></tr></table></figure>
+
+<h4 id="内存与数组"><a href="#内存与数组" class="headerlink" title="内存与数组"></a>内存与数组</h4><p>如果数组为1字节的数据类型，它的构造和内存的物理构造完全一致。但为了方便读写内存，只能逐个读取字节，程序会变得比较繁琐。因此可以指定任意数据类型定义数组。</p>
+</blockquote>
+<h2 id="磁盘存储"><a href="#磁盘存储" class="headerlink" title="磁盘存储"></a>磁盘存储</h2><blockquote>
+<p>磁盘的物理结构：磁盘是通过其物理表明划分成多个空间来使用。划分的方式有扇区方式和可变长方式两种。扇区方式将磁盘划分成固定长度的空间，而可变长方式则将磁盘划分成长度可变的空间。</p>
+<p>大部分磁盘采用的是扇区的方式划分磁盘。扇区划分方式中，把磁盘表面分成若干个同心圆的空间就是磁道，而把磁道按照固定大小长度划分成的空间就是扇区。</p>
+<p><img src="F:\HexoBlog\blog\source\images\磁盘划分.png"></p>
+<p>一般而言，一个扇区大小为512字节，也就是说无论文件多小，只要文件有内容，且不超过512字节，那么它就会占据512字节的磁盘空间。</p>
+<p>而且通过图我们可以很容易看出，外圈磁道拥有更多的扇区。</p>
+</blockquote>
+<h2 id="哈夫曼压缩算法"><a href="#哈夫曼压缩算法" class="headerlink" title="哈夫曼压缩算法"></a>哈夫曼压缩算法</h2><blockquote>
+<p>压缩：压缩后的数据能复原的是可逆压缩，无法复原的是非可逆压缩</p>
+<p>RLE(Run Length Encoding行程长度编码)压缩算法：数据 × 重复次数 。比如：</p>
+<p>AAAAAA BB C DD EEEEE F 17个字符，经过RLE压缩后为：A6B2C1D2E5F1 12字符</p>
+<p>压缩比为：12 / 17 × 100% = 70%</p>
+<p>RLE压缩算法常用于压缩传真的图像，缺点是：当文件连续的重复字符较少时，压缩率不高，甚至可能增大文件大小，达成负的压缩率。</p>
+<blockquote>
+<p>哈夫曼压缩算法为：先将文件中字符出现的频率由高到低进行排序，然后从低频率的字符开始拼接成二叉树，位于左枝的边为0，位于右枝的边为1。</p>
+<p>比如：AAAAAA BB C DD EEEEE F</p>
+<p>统计后：A(6) E(5) B(2) D(2) C(1) F(1)，然后有如下过程：</p>
+<p><img src="F:\HexoBlog\blog\source\images\哈夫曼压缩算法过程.png"></p>
+<p>从而得到字符的编码：</p>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>0</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>E</td>
+<td>01</td>
+</tr>
+<tr>
+<td>B</td>
+<td>100</td>
+</tr>
+<tr>
+<td>D</td>
+<td>101</td>
+</tr>
+<tr>
+<td>C</td>
+<td>110</td>
+</tr>
+<tr>
+<td>F</td>
+<td>111</td>
+</tr>
+</tbody></table>
+<p>从而 AAAAAA BB C DD EEEEE F变为 000000 100100 110 101101 0101010101 111  34bit 5字节</p>
+<p>假设一个字符为1字节，那么压缩率为：5 / 17 = 29.41% 贼小</p>
+</blockquote>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA-%E7%A8%8B%E5%BA%8F/" rel="tag"># 计算机, 程序</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/09/Java%E6%B3%9B%E5%9E%8B%E6%95%B0%E7%BB%84%E7%9A%84%E5%88%9B%E5%BB%BA%E5%8F%8A%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/" rel="next" title="Java泛型数组的创建及底层原理">
+                <i class="fa fa-chevron-left"></i> Java泛型数组的创建及底层原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/12/Quarz%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6/" rel="prev" title="Quarz定时任务框架">
+                Quarz定时任务框架 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">计算机程序基本知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.1.</span> <span class="nav-text">程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU"><span class="nav-number">1.2.</span> <span class="nav-text">CPU</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CPU%E6%9E%84%E6%88%90"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">CPU构成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6"><span class="nav-number">1.2.1.</span> <span class="nav-text">计算机的二进制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E8%A1%A8%E7%A4%BA%E7%9A%84%E6%95%B0%E5%92%8C%E8%BF%90%E7%AE%97"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">二进制表示的数和运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E6%95%B0%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">浮点数表示</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%9C%BA%E5%99%A8%E8%AF%AD%E8%A8%80%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.</span> <span class="nav-text">常用机器语言指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%82%E4%BD%99"><span class="nav-number">1.4.</span> <span class="nav-text">求余</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%EF%BC%8C%E6%88%96%E8%80%85%E7%A7%B0%E4%B8%BA%E4%B8%BB%E5%AD%98"><span class="nav-number">1.5.</span> <span class="nav-text">内存，或者称为主存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E4%B8%8E%E6%95%B0%E7%BB%84"><span class="nav-number">1.5.0.1.</span> <span class="nav-text">内存与数组</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E5%AD%98%E5%82%A8"><span class="nav-number">1.6.</span> <span class="nav-text">磁盘存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%88%E5%A4%AB%E6%9B%BC%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95"><span class="nav-number">1.7.</span> <span class="nav-text">哈夫曼压缩算法</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Doug-Wilson</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/Gantzert_Felixander.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

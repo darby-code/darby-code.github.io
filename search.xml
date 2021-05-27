@@ -1,112 +1,371 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title></title>
-    <url>/2021/05/09/MarkDown%E8%AF%AD%E6%B3%95/</url>
-    <content><![CDATA[<h1 id="Markdown语法"><a href="#Markdown语法" class="headerlink" title="Markdown语法"></a>Markdown语法</h1><h2 id="Markdown标题，使用-创建标题"><a href="#Markdown标题，使用-创建标题" class="headerlink" title="Markdown标题，使用 # 创建标题"></a>Markdown标题，使用 # 创建标题</h2><h1 id="一级标题-一级标题名称"><a href="#一级标题-一级标题名称" class="headerlink" title="一级标题  # 一级标题名称"></a>一级标题  # 一级标题名称</h1><h2 id="二级标题-二级标题名称"><a href="#二级标题-二级标题名称" class="headerlink" title="二级标题 ## 二级标题名称"></a>二级标题 ## 二级标题名称</h2><h3 id="三级标题-三级标题名称"><a href="#三级标题-三级标题名称" class="headerlink" title="三级标题 ### 三级标题名称"></a>三级标题 ### 三级标题名称</h3><h4 id="四级标题-四级标题名称"><a href="#四级标题-四级标题名称" class="headerlink" title="四级标题 #### 四级标题名称"></a>四级标题 #### 四级标题名称</h4><h5 id="五级标题-五级标题名称"><a href="#五级标题-五级标题名称" class="headerlink" title="五级标题 ##### 五级标题名称"></a>五级标题 ##### 五级标题名称</h5><h6 id="六级标题-六级标题名称"><a href="#六级标题-六级标题名称" class="headerlink" title="六级标题 ###### 六级标题名称"></a>六级标题 ###### 六级标题名称</h6><h2 id="Markdown段落格式"><a href="#Markdown段落格式" class="headerlink" title="Markdown段落格式"></a>Markdown段落格式</h2><p>段落的换行：两个空格+回车</p>
-<p>字体：</p>
-<p>​        <em>斜体</em>     *斜体文本*</p>
-<p>​        <em>斜体</em>      _斜体文本_</p>
-<p>​        <strong>粗体</strong>      **粗体文本**</p>
-<p>​        <strong>粗体</strong>      __粗体文本__ </p>
-<p>​        <em><strong>斜粗体</strong></em>   ***斜粗体文本***</p>
-<p>​        <em><strong>斜粗体</strong></em>    ___斜粗体文本___</p>
-<p>分隔线：在一行中用三个以上的 星号 * 或者 减号 -  或者 下划线 _</p>
-<p>​      来建立一个分隔线。注意，行内不能有其他东西，但你可以在每        个符号间插入空格。比如：</p>
-<p>***    或者   *  *  *  或者 ---  或者 -  -  -   或者 ___    或者 _  _  _  都是允许的</p>
-<p>效果如下：</p>
+    <title>JSP常用语法</title>
+    <url>/2020/01/16/JSP%E5%B8%B8%E7%94%A8%E8%AF%AD%E6%B3%95/</url>
+    <content><![CDATA[<h1 id="JSP常用语法"><a href="#JSP常用语法" class="headerlink" title="JSP常用语法"></a>JSP常用语法</h1><p>JSP页面本质上为一个Servlet程序，当我们第一次访问JSP页面时，服务器会将JSP页面翻译成一个Servlet类。比如，一个JSP文件为 user.jsp  那么就会被翻译成 public final class user_jsp extends HttpJspBase implements…</p>
+<p>而HttpJspBase extends HttpServlet implements HttpJspPage</p>
+<p>具体做的事情给个简单例子：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;%@ page contentType=<span class="string">&quot;text/html;charset=utf-8&quot;</span> language=<span class="string">&quot;java&quot;</span>%&gt;</span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></span></span><br><span class="line"><span class="xml">    	......</span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="xml">    	......</span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>编译后，会将该jsp文件内容转化成servlet文件，内容大体如下</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">public <span class="keyword">void</span> <span class="function"><span class="title">_jspService</span>(<span class="params">HttpServletRequest request, HttpServletResponse response</span>)</span> &#123;</span><br><span class="line">    <span class="comment">//省略其它内容</span></span><br><span class="line">    out = pageContext.getOut();</span><br><span class="line">    _jspx_out = out;</span><br><span class="line">    out.write(<span class="string">&quot;rn&quot;</span>);</span><br><span class="line">    out.write(<span class="string">&quot;&lt;!DOCTYPE HTML PUBLIC &#x27;-//W3C//DTD HTML 4.0 Transitional//EN&#x27;&gt;rn&quot;</span>);</span><br><span class="line">    out.write(<span class="string">&quot;&lt;html&gt;rn&quot;</span>);</span><br><span class="line">    out.write(<span class="string">&quot;&lt;head&gt;rn&quot;</span>);</span><br><span class="line">    out.write(<span class="string">&quot;...rn&quot;</span>);</span><br><span class="line">    out.write(<span class="string">&quot;&lt;/head&gt;rn&quot;</span>)</span><br><span class="line">    out.write(<span class="string">&quot;&lt;body&gt;rn&quot;</span>);</span><br><span class="line">    out.write(<span class="string">&quot;...rn&quot;</span>);</span><br><span class="line">    out.write(<span class="string">&quot;&lt;/body&gt;rn&quot;</span>);</span><br><span class="line">    out.write(<span class="string">&quot;&lt;/html&gt;rn&quot;</span>);</span><br><span class="line">    <span class="comment">//省略其它内容</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h2 id="基本指令"><a href="#基本指令" class="headerlink" title="基本指令"></a>基本指令</h2><blockquote>
+<p><strong>头部page指令：设置页面的一些参数</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">&gt;&lt;%@ page  language=<span class="string">&quot;java&quot;</span> contentType=<span class="string">&quot;text/html;charset=utf-8&quot;</span> pageEncoding=<span class="string">&quot;utf-8&quot;</span> %&gt;</span><br></pre></td></tr></table></figure>
+
+<p>常用属性：</p>
+<p>contentType——设置响应数据字符集</p>
+<p>pageEncoding——设置页面的字符集</p>
+<p>import——导入java包，用于编写JSP页面中的java代码</p>
+<p>errorPage——页面出错时的跳转地址</p>
+</blockquote>
+<blockquote>
+<p><strong>声明脚本：属性声明，静态代码块使用，方法，内部类，注释，都遵守Java语法。相当于在编译后的Servlet类中定义这些java代码</strong></p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">&lt;%! </span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">String</span> name;</span><br><span class="line">	<span class="keyword">static</span> &#123;</span><br><span class="line">		<span class="comment">//静态块代码</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodOne</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//方法</span></span><br><span class="line">	&#125;</span><br><span class="line">%&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">//等同于</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">user_jsp</span> <span class="title">extends</span> <span class="title">HttpJspBase</span> <span class="title">implements</span>... &#123;</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">String</span> name;</span><br><span class="line">	<span class="keyword">static</span> &#123;</span><br><span class="line">		<span class="comment">//静态块代码</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodOne</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//方法</span></span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> _jspService(HttpServletRequest request, HttpServletResponse response&#123;</span><br><span class="line">		...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p><strong>表达式脚本：在页面中显示的值</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;%=在页面中展示的值%&gt;</span><br><span class="line">如：</span><br><span class="line">&lt;%=<span class="string">&quot;12 * 12 = &quot;</span> + <span class="number">12</span> * <span class="number">12</span>%&gt;</span><br><span class="line">&lt;%=request.getParameter(<span class="string">&quot;username&quot;</span>)%&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">//等同于</span></span><br><span class="line">public <span class="keyword">void</span> _jspService(HttpServletRequest request, HttpServletResponse response&#123;</span><br><span class="line">	<span class="comment">//省略其它内容</span></span><br><span class="line">    out.write(<span class="string">&quot;12 * 12 = &quot;</span> + <span class="number">12</span> * <span class="number">12</span> + <span class="string">&quot;rn&quot;</span>);</span><br><span class="line">	out.write(request.getParameter(<span class="string">&quot;username&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p><strong>JSP注释：代码说明</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;%-- 注释 --%&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p><strong>Java代码脚本：相当于在编译后的Servlet类的_jspService方法中定义代码内容</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">12</span>;</span><br><span class="line">	System.out.println(<span class="string">&quot;i的值：&quot;</span> + i);</span><br><span class="line">%&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">//等同于</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">_jspService</span><span class="params">(HttpServletRequest request, HttpServletResponse response&#123;</span></span></span><br><span class="line"><span class="params"><span class="function">	//省略其它内容</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">int</span> i = <span class="number">12</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    System.out.println(<span class="string">&quot;i的值：&quot;</span> + i)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="JSP内置对象"><a href="#JSP内置对象" class="headerlink" title="JSP内置对象"></a>JSP内置对象</h2><blockquote>
+<h4 id="request-response-session-application-out-pageContext-config-page-exception"><a href="#request-response-session-application-out-pageContext-config-page-exception" class="headerlink" title="request/response/session/application/out/pageContext/config/page/exception"></a>request/response/session/application/out/pageContext/config/page/exception</h4></blockquote>
 <hr>
+<blockquote>
+<p><strong>request对象：</strong> HttpServletRequest，封装客户端的请求信息，主要包括HTTP头信息、系统信息、请求方式、请求参数等。常用方法如下</p>
+<table>
+<thead>
+<tr>
+<th>String getParameter(String name)</th>
+<th>根据name属性的值获取请求数据</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>String[] getParameterValues(String name)</td>
+<td>根据name属性的值获取多个请求数据</td>
+</tr>
+<tr>
+<td>void setCharacterEncoding(String enc)</td>
+<td>设定解析请求数据的编码格式，防止读取的数据的编码格式和请求数据编码格式的不一致出现乱码问题</td>
+</tr>
+<tr>
+<td>request getRequestDispatcher(String path)</td>
+<td>请求转发</td>
+</tr>
+<tr>
+<td>void setAttribute(String name, Object)</td>
+<td>将数据保存到request范围的变量中</td>
+</tr>
+<tr>
+<td>Object getAttribute(String name)</td>
+<td>获取request范围的变量中的数据</td>
+</tr>
+<tr>
+<td>void removeAttribute(String name)</td>
+<td>删除request范围的变量中的数据</td>
+</tr>
+<tr>
+<td>Cookie[] getCookies()</td>
+<td>获取所有Cookie对象</td>
+</tr>
+</tbody></table>
+<p><strong>request作用域：一次请求过程</strong></p>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>response对象：</strong> HttpServletResponse，对客户端的响应，想客户端输出信息。常用方法如下：</p>
+<table>
+<thead>
+<tr>
+<th>sendRedirect(String path)</th>
+<th>网页重定向</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>setHeader(String name, String value)</td>
+<td>设置HTTP响应报头信息</td>
+</tr>
+</tbody></table>
+<p><strong>response作用域：在JSP页面内有效</strong></p>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>session对象：</strong>HttpSession，由于HTTP协议为无状态协议，当一个客户端向服务器发出请求，服务器接收到请求并返回响应后，该连接就结束了，而服务器并不保存相关的信息。为了弥补这一缺点，HTTP协议提供的session，通过session可以在应用程序的web页面间进行跳转时，保存用户的状态，使整个用户会话一直存在下去，直到浏览器关闭。</p>
+<p><strong>session作用域：</strong>一次会话内有效(浏览器关闭前)</p>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>application对象：</strong>ServletContext，保存所有应用中共有数据，在服务器启动时自动创建，在服务器停止时销毁，所有用户均可访问，类似于全局变量</p>
+<p><strong>application作用域：</strong>整个应用中都有效，保存的信息为全局变量</p>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>out对象：</strong>JspWriter，用于在浏览器内输出信息，并管理应用服务器上的输出缓冲区</p>
+<p><strong>out作用域：</strong>当前页面内有效</p>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>pageContext对象：</strong>PageContext，由容器进行初始化和创建，可以获取当前页面的request/response/session/out/exception等对象</p>
+<p><strong>pageContext作用域：</strong>当前页面内有效</p>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>config对象：</strong>ServletConfig，读取web.xml配置信息。当一个Servlet初始化时，容器会把某些信息通过config对象传递给这个Servlet。开发者可以在web.xml文件中为应用程序环境中的Servlet程序和JSP页面提供初始化参数。</p>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>page对象：</strong>JspPage，代表JSP页面本身</p>
+<p><strong>page作用域：</strong>当前页面内有效</p>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>exception：</strong>JspException，处理JSP文件执行时发生的所有错误和一次，只要在page指令中设置isErrorPage属性值为true的页面中才可使用</p>
+</blockquote>
+<hr>
+<h2 id="EL表达式"><a href="#EL表达式" class="headerlink" title="EL表达式"></a>EL表达式</h2><blockquote>
+<p><strong>EL表达式主要用于代替JSP页面中的表达式脚本&lt;%=…%&gt;</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;%=request.getAttribute(<span class="string">&quot;username&quot;</span>)%&gt;</span><br><span class="line">用EL表达式代替：$&#123;username&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为一个页面内存在多个域对象，而域对象间是会存在相同key名称的键值对。因此，EL在进行数据搜索时，会按照如下的顺序搜索：pageContext域（当前页面）——&gt;request域（当前请求）——&gt;session域（会话）——&gt;application域（ServletContext）</p>
+<p>当4个域对象都有同名键值对时，EL表达式只会搜索到pageContext域对象中的键值对。</p>
+<p>此外，因为四个域对象的setAttribute(String key, Object value)方法签名相同，所有EL表达式的写法固定，均为${key}，而因为获取到的value是Object类型的，这意味着${key}得到的可以是对象，数组，链表，基本数据类型，Map等任何数据。比如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    String name;</span><br><span class="line">    String[] school;</span><br><span class="line">    List&lt;String&gt; city;</span><br><span class="line">    Map&lt;String, String&gt; family;</span><br><span class="line">    <span class="comment">//对应的getter和setter方法省略</span></span><br><span class="line">&#125;</span><br><span class="line">Person person = <span class="keyword">new</span> Person(省略);</span><br><span class="line">request.setAttribute(<span class="string">&quot;doug&quot;</span>, person);</span><br><span class="line">通过EL表达式，我们就可以对属性(必须要有getter和setter方法)进行如下操作:</span><br><span class="line">$&#123;darby&#125;  获取person对象</span><br><span class="line">$&#123;darby.name&#125;  获取person对象的name属性(通过getName方法)</span><br><span class="line">$&#123;darby.school&#125;  获取person对象的school属性(通过getSchool方法)</span><br><span class="line">$&#123;darby.school[<span class="number">0</span>]&#125; 获取shool属性中的值</span><br><span class="line">$&#123;darby.city&#125;</span><br><span class="line">$&#123;darby.city[<span class="number">0</span>]&#125;</span><br><span class="line">$&#123;darby.family&#125;  获取family属性(通过getFamily方法)</span><br><span class="line">$&#123;darby.family.mother&#125;  获取family属性某个特定键值对中的value</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="JSTL"><a href="#JSTL" class="headerlink" title="JSTL"></a>JSTL</h2><blockquote>
+<p>全称：Jsp Standard Tag Library Jsp标准标签库</p>
+<p><strong>主要用于替换JSP在的java代码脚本 &lt;%    %&gt;</strong></p>
+<p>主要标签库：</p>
+<p><strong>核心标签库：</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&lt;%@ taglib prefix=<span class="string">&quot;c&quot;</span> uri=<span class="string">&quot;http://java.sun.com/jsp/jstl/core&quot;</span>%&gt;</span><br></pre></td></tr></table></figure>
+
+<p>格式化标签库：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&lt;%@ taglib prefix=<span class="string">&quot;fmt&quot;</span> uri=<span class="string">&quot;http://java.sum.com/jsp/jstl/fmt&quot;</span>%&gt;</span><br></pre></td></tr></table></figure>
+
+<p>函数标签库：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&lt;%@ taglib prefix=<span class="string">&quot;fmt&quot;</span> uri=<span class="string">&quot;http://java.sum.com/jsp/jstl/functions&quot;</span>%&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>JSP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java泛型数组的创建及底层原理</title>
+    <url>/2020/01/09/Java%E6%B3%9B%E5%9E%8B%E6%95%B0%E7%BB%84%E7%9A%84%E5%88%9B%E5%BB%BA%E5%8F%8A%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<h1 id="Java泛型数组的创建及底层原理"><a href="#Java泛型数组的创建及底层原理" class="headerlink" title="Java泛型数组的创建及底层原理"></a>Java泛型数组的创建及底层原理</h1><p>今天在写数据结构的时候，碰到了泛型数组的创建。因为在Java中，泛型在编译过程会被擦除到边界(比如<strong>List&lt;T extends Number&gt; 泛型参数T在编译时会被擦除成Number</strong>)，你无法通过反射获取到泛型参数的有关信息，你唯一知道的就是你在使用一个对象。因此，对于</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">T array = <span class="keyword">new</span> T[size];</span><br></pre></td></tr></table></figure>
+
+<p>是无法创建成功的。</p>
+<span id="more"></span>
+
+<h2 id="泛型的概述"><a href="#泛型的概述" class="headerlink" title="泛型的概述"></a>泛型的概述</h2><blockquote>
+<p>一般的类和方法，只能使用具体的类型：要么是基本的类型，要么是自定义类，如果要编写可以应用于多种类型的代码，这种刻板的限制就会对代码的束缚很大——Java编程思想</p>
+</blockquote>
+<p>在Java中，解除这种限制的一个思想为多态，具体手段为面向接口编程。但是这种束缚依然存在，依然需要通过继承接口创建一个新的类来做到这一点。是否有一个手段“不受限于某种具体类型”，这便是泛型的概念。</p>
+<p>泛型的概念普遍存在于容器的实现过程，这也是泛型的主要目的之一，通过泛型的使用，使得容器能够使用于不同类型对象中，达成代码的复用。而通常，指定容器持有什么类型对象由编译器保证类型的正确性，这么做的意义在于，我们经常只将容器存储于某一种类型的对象。</p>
+<p>泛型的两个局限性：一是基本类型无法作为泛型的类型参数，类型参数必须为对象，而这可以通过自动拆装箱弥补。二是，在泛型代码内部，无法获取关于具体类型参数的任何信息，具体类型参数在通过检查并被编译后都将被擦除为边界类型，比如List&lt;T extends Person&gt; T将擦除到边界Person，而如果没有具体定义边界，则将被擦除到Object，例如List&lt;String&gt;和List&lt;Integer&gt; ，在编译后都将被擦除为原生List，即List&lt;Integer&gt;和List&lt;String&gt;在运行时事实上是相同的类型。</p>
+<p>理解Java泛型的擦除应该从其历史的发展来进行。因为在一开始Java并没有出现泛型，而是在发展过程中将泛型作为一种技术加入到Java类库中，因此Java开发团队必须采用一种折中的处理方式，向前兼容之前的类库，不破坏原来类库中的代码，使泛型与非泛型代码共存。</p>
+<p><strong>在编写泛型代码时，你要时刻告诉自己——这是一个Object!</strong></p>
+<h2 id="Java泛型数组创建方法及实现原理"><a href="#Java泛型数组创建方法及实现原理" class="headerlink" title="Java泛型数组创建方法及实现原理"></a>Java泛型数组创建方法及实现原理</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">T[] array = <span class="keyword">new</span> T[size];</span><br></pre></td></tr></table></figure>
+
+<p>此时上面这个代码也便好理解。我们想通过创建一个泛型数组来满足T在不同类型参数下的实现，但是Java泛型擦除告诉我们，上面这段代码等同于</p>
+<figure class="highlight smali"><table><tr><td class="code"><pre><span class="line">Object[]<span class="built_in"> array </span>=<span class="built_in"> new </span>Object[size];</span><br></pre></td></tr></table></figure>
+
+<p>我们无法在编译后获取到任何关于具体类型T的任何有关信息，也就无法创建一个具体类型T的数组。因此，要创建泛型数组，就必须在创建数组时，显示地指定类型T的具体参数信息。</p>
+<figure class="highlight smali"><table><tr><td class="code"><pre><span class="line">T[]<span class="built_in"> array </span>= (T[])new Object[size];</span><br></pre></td></tr></table></figure>
+
+<p>这是一种创建数组的办法，你要问了？泛型不是会被擦除到边界吗，那上面这行代码的意义在于何处？从最终结果来看，</p>
+<figure class="highlight smali"><table><tr><td class="code"><pre><span class="line">T[]<span class="built_in"> array </span>= (T[])new Object[size];  //等同于Object[]<span class="built_in"> array </span>= (T[])new Object[size];</span><br></pre></td></tr></table></figure>
+
+<p>但是，不要忘了，在编译期间T还是一个有信息的类型参数，可以用于检查具体T参数是否符合期望。比如当你希望T是一个<code>Integer</code>时，<code>T[] array = (T[])new Object[size];</code>显然能在编译器进行检查，当检查到T的具体参数不是Integer类型时，编译不通过。</p>
+<p>因此 <code>T[] array = (T[])new Object[size];</code>是一种创建泛型数组的手段。</p>
+<p>另一种创建泛型数组的手段也是推荐的方式，通过<code>Array.newInstance</code>来创建一个泛型数组：</p>
+<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line"> JDK中<span class="module-access"><span class="module"><span class="identifier">Array</span>.</span></span>newInstance源码</span><br><span class="line"> public static Object <span class="keyword">new</span><span class="constructor">Instance(Class&lt;?&gt; <span class="params">componentType</span>, <span class="params">int</span> <span class="params">length</span>)</span></span><br><span class="line">        throws NegativeArraySizeException &#123;</span><br><span class="line">        return <span class="keyword">new</span><span class="constructor">Array(<span class="params">componentType</span>, <span class="params">length</span>)</span>;</span><br><span class="line"> &#125;</span><br><span class="line"><span class="comment">// ComponentType为具体参数类型的class对象，length为希望创建的数组大小</span></span><br><span class="line"><span class="comment">//我们需要对其进行二次封装</span></span><br><span class="line">public static &lt;T&gt; T<span class="literal">[]</span> get<span class="constructor">Array(Class&lt;T&gt; <span class="params">componentType</span>, <span class="params">int</span> <span class="params">length</span>)</span> &#123;</span><br><span class="line">	return (T<span class="literal">[]</span>) <span class="module-access"><span class="module"><span class="identifier">Array</span>.</span></span><span class="keyword">new</span><span class="constructor">Instance(<span class="params">componentType</span>, <span class="params">length</span>)</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//这道理和T[] array = (T[])new Object[size];相同，但是更加规范</span></span><br></pre></td></tr></table></figure>
+
+<p>这里补充一个泛型使用技巧：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MergeSortWithTopDown</span>&lt;<span class="title">E</span> <span class="keyword">extends</span> <span class="title">Comparable</span>&lt;<span class="title">E</span>&gt;&gt; <span class="keyword">extends</span> <span class="title">Sort</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> E[] aux; <span class="comment">//辅助数组</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(E[] array)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = array.length;</span><br><span class="line">        aux = (E[]) <span class="keyword">new</span> Object[n];</span><br><span class="line">        sort(array, <span class="number">0</span>, n - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面这段代码在编译的时候，会报错：<code>java.lang.Object cannot be cast to Comparable...</code>，我想了很久，也没有找到解决办法，但是回过头来看资料“泛型可以定义多个边界，只会被擦除到第一个边界”，就想说通过定义第一个边界来消除这个错误，于是上面的代码变成了下面这样，将Object作为第一个边界，这确实可行：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MergeSortWithTopDown</span>&lt;<span class="title">E</span> <span class="keyword">extends</span> <span class="title">Object</span> &amp; <span class="title">Comparable</span>&lt;<span class="title">E</span>&gt;&gt; <span class="keyword">extends</span> <span class="title">Sort</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> E[] aux; <span class="comment">//辅助数组</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(E[] array)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = array.length;</span><br><span class="line">        aux = (E[]) <span class="keyword">new</span> Object[n]; </span><br><span class="line">        sort(array, <span class="number">0</span>, n - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>Java泛型数组, Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Markdown语法</title>
+    <url>/2020/01/09/MarkDown%E8%AF%AD%E6%B3%95/</url>
+    <content><![CDATA[<h1 id="Markdown语法"><a href="#Markdown语法" class="headerlink" title="Markdown语法"></a>Markdown语法</h1><p>主要为平时更好地写博客，省去网上查找资料的麻烦，自己对Markdown常用语法做了一个总结，并做了一些排版，便于查看。</p>
+<span id="more"></span>
+
+<h1 id="Markdown标题，使用-创建标题"><a href="#Markdown标题，使用-创建标题" class="headerlink" title="Markdown标题，使用 # 创建标题"></a>Markdown标题，使用 # 创建标题</h1><blockquote>
+<h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><p><code># 一级标题</code></p>
+<blockquote>
+<h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><p><code>## 二级标题</code></p>
+</blockquote>
+<blockquote>
+<blockquote>
+<h3 id="三级标题"><a href="#三级标题" class="headerlink" title="三级标题"></a>三级标题</h3><p><code>### 三级标题</code></p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<h4 id="四级标题"><a href="#四级标题" class="headerlink" title="四级标题"></a>四级标题</h4><p><code>#### 四级标题</code></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<h5 id="五级标题"><a href="#五级标题" class="headerlink" title="五级标题"></a>五级标题</h5><p><code>##### 五级标题</code></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<h6 id="六级标题"><a href="#六级标题" class="headerlink" title="六级标题"></a>六级标题</h6><p><code>###### 六级标题</code></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<h1 id="Markdown段落格式"><a href="#Markdown段落格式" class="headerlink" title="Markdown段落格式"></a>Markdown段落格式</h1><blockquote>
+<blockquote>
+<p>段落的换行：两个空格+回车</p>
+</blockquote>
+<blockquote>
+<p>字体：</p>
+</blockquote>
+<blockquote>
+<p>​            <em>斜体</em>        <code>*斜体文本*</code></p>
+</blockquote>
+<blockquote>
+<p>​            <em>斜体</em>         <code>_斜体文本_</code></p>
+</blockquote>
+<blockquote>
+<p>​            <strong>粗体</strong>         <code>**粗体文本**</code></p>
+</blockquote>
+<blockquote>
+<p>​            <strong>粗体</strong>         <code>__粗体文本__</code> </p>
+</blockquote>
+<blockquote>
+<p>​            <em><strong>斜粗体</strong></em>      <code>***斜粗体文本***</code></p>
+</blockquote>
+<blockquote>
+<p>​            <em><strong>斜粗体</strong></em>      <code>___斜粗体文本___</code></p>
+</blockquote>
+<blockquote>
+<p>分隔线：在一行中用三个以上的 星号 * 或者 减号 -  或者 下划线 _ 来建立一个分隔线。注意，行内不能有其他东西，但你可以在每个符号间插入空格。比如：***    或者   *  *  *  或者 ---  或者 -  -  -   或者 ___    或者 _  _  _  都是允许的，效果如下：</p>
+</blockquote>
+<blockquote>
+<hr>
+</blockquote>
+<blockquote>
 <p>删除线：</p>
-<p>​            <del>Doug Wilson</del>     ~~Doug Wilson~~</p>
+<p>​            <del>Doug Wilson</del>     <code>~~Doug Wilson~~</code></p>
+</blockquote>
+<blockquote>
 <p>下划线：</p>
-<p>​            <u>Doug Wilson</u>       &lt;u&gt;Doug Wilson&lt;/u&gt;</p>
+<p>​            <u>Doug Wilson</u>       <code>&lt;u&gt;Doug Wilson&lt;/u&gt;</code></p>
+</blockquote>
+<blockquote>
 <p>脚注：</p>
-<p>​            脚注格式：<a href="%E7%A7%BB%E5%8A%A8%E5%88%B0%E8%84%9A%E6%B3%A8%E4%B8%8A%E6%98%BE%E7%A4%BA%E5%86%85%E5%AE%B9">^我是脚注</a></p>
-<p>​            脚注格式：[^我是脚注]</p>
-<p>​            [^我是脚注]:移动到脚注上显示内容</p>
-<h2 id="Markdown列表"><a href="#Markdown列表" class="headerlink" title="Markdown列表"></a>Markdown列表</h2><p>无序列表：</p>
+<p>​        脚注格式：<a href="%E9%BC%A0%E6%A0%87%E7%A7%BB%E5%8A%A8%E5%88%B0%E8%84%9A%E6%B3%A8%E4%B8%8A%E5%B0%B1%E4%BC%9A%E6%98%BE%E7%A4%BA%E5%86%85%E5%AE%B9">^我是脚注</a></p>
+</blockquote>
+<blockquote>
+<p>​        <code>脚注格式：[^我是脚注]</code></p>
+<p>​    <code>[^我是脚注]:鼠标移动到脚注上就会显示内容</code></p>
+</blockquote>
+</blockquote>
+<h1 id="Markdown列表"><a href="#Markdown列表" class="headerlink" title="Markdown列表"></a>Markdown列表</h1><blockquote>
+<p>无序列表：</p>
+</blockquote>
 <ul>
-<li><p>第一项</p>
+<li><p>第一项               <code>* 第一项</code></p>
 </li>
-<li><p>第二项</p>
+<li><p>第二项               <code>* 第二项</code></p>
 </li>
-<li><p>第三项</p>
-<p>​    * 第一项</p>
-<p>​    * 第二项</p>
-<p>​    * 第三项</p>
+<li><p>第三项               <code>* 第三项</code></p>
 <p>或者 用 + 或者 - 代替 * 也可以实现无序列表</p>
 </li>
 </ul>
+<blockquote>
 <p>有序列表：</p>
+</blockquote>
 <ol>
-<li><p>第一项</p>
+<li><p>第一项               <code>1. 第一项</code></p>
 </li>
-<li><p>第二项</p>
+<li><p>第二项               <code>2. 第二项</code></p>
 </li>
-<li><p>第三项</p>
-<ol>
-<li><p>第一项</p>
-</li>
-<li><p>第二项</p>
-</li>
-<li><p>第三项</p>
-<p>即采用  数字.空格 列名称</p>
+<li><p>第三项               <code>3. 第三项</code></p>
+<p> 即采用  数字.空格 列名称</p>
 </li>
 </ol>
-</li>
-</ol>
-<p>列表嵌套：</p>
+<blockquote>
+<p>列表嵌套：在子列表的选项前面添加4个空格即可</p>
+</blockquote>
 <ol>
-<li><p>第一项</p>
-<pre><code>* 子第一项
-* 子第二项
-</code></pre>
-</li>
-<li><p>第二项</p>
-<ul>
+<li>第一项<ul>
 <li>子第一项</li>
 <li>子第二项</li>
 </ul>
-<p>在子列表的选项前面添加4个空格即可</p>
+</li>
+<li>第二项<ul>
+<li>子第一项</li>
+<li>子第二项</li>
+</ul>
 </li>
 </ol>
-<h2 id="Markdown区块"><a href="#Markdown区块" class="headerlink" title="Markdown区块"></a>Markdown区块</h2><p>区块：</p>
+<h1 id="Markdown区块"><a href="#Markdown区块" class="headerlink" title="Markdown区块"></a>Markdown区块</h1><p>区块：</p>
 <blockquote>
-<p>区块第一行</p>
-<p>区块第二行</p>
-<p>区块第三行</p>
+<p>区块第一行           <code>&gt; 区块第一行</code></p>
+<p>区块第二行           <code>&gt; 区块第二行</code></p>
+<p>区块第三行           <code>&gt; 区块第三行</code></p>
 </blockquote>
-<p>​            &gt; 区块第一行</p>
-<p>​            &gt; 区块第二行</p>
-<p>​            &gt; 区块第三行</p>
 <p>区块嵌套：</p>
 <blockquote>
-<p>区块最外层</p>
+<p>区块最外层                                 <code>&gt;区块最外层</code></p>
 <blockquote>
-<p>区块第二层</p>
+<p>区块第二层                            <code>&gt;&gt;区块第二层</code></p>
 <blockquote>
-<p>区块第三层</p>
+<p>区块第三层                       <code>&gt;&gt;&gt;区块第三层</code></p>
 </blockquote>
 </blockquote>
 </blockquote>
-<p>​            &gt;区块最外层</p>
-<p>​            &gt;&gt;区块第二层</p>
-<p>​            &gt;&gt;&gt;区块第三层</p>
 <p>区块中要使用别的内容，只需要在对应的符号 &gt; 后面加上需要的内容即可，比如我想加一个粗体：</p>
 <blockquote>
 <p><strong>粗体</strong> </p>
+<p><code>&gt;**粗体**</code></p>
 </blockquote>
-<p>​        &gt;**粗体**</p>
-<h2 id="Markdown代码"><a href="#Markdown代码" class="headerlink" title="Markdown代码"></a>Markdown代码</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(<span class="string">&quot;Java代码块&quot;</span>);</span><br><span class="line"><span class="comment">//使用Ctrl+Shift+K</span></span><br></pre></td></tr></table></figure>
+<h1 id="Markdown代码"><a href="#Markdown代码" class="headerlink" title="Markdown代码"></a>Markdown代码</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(<span class="string">&quot;Java代码块&quot;</span>);</span><br><span class="line"><span class="comment">//使用Ctrl+Shift+K</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="Markdown链接"><a href="#Markdown链接" class="headerlink" title="Markdown链接"></a>Markdown链接</h2><p><a href="https://gitee.com/doug-wilson">我的作品地址：</a></p>
-<p>​        [我的作品地址：](链接地址)</p>
+<h1 id="Markdown链接"><a href="#Markdown链接" class="headerlink" title="Markdown链接"></a>Markdown链接</h1><p><a href="https://gitee.com/doug-wilson">我的作品地址：</a></p>
+<p>​        <code>[我的作品地址：](链接地址)</code></p>
 <p>这可以和脚注配合使用，具体用法自己尝试</p>
-<h2 id="Markdown图片"><a href="#Markdown图片" class="headerlink" title="Markdown图片"></a>Markdown图片</h2><img src="C:\Users\HMY-computer\Pictures\timg76C2063E.jpg" alt="图片介绍" style="zoom:50%;" />
+<h1 id="Markdown图片"><a href="#Markdown图片" class="headerlink" title="Markdown图片"></a>Markdown图片</h1><img src="C:\Users\HMY-computer\Pictures\timg76C2063E.jpg" alt="图片介绍" style="zoom:50%;" />
 
 <p>语法格式：</p>
-<p>​            ![alt 图片文本](图片地址)</p>
-<h2 id="Markdown表格"><a href="#Markdown表格" class="headerlink" title="Markdown表格"></a>Markdown表格</h2><table>
+<p>​            <code>![alt 图片文本](图片地址)</code></p>
+<h1 id="Markdown表格"><a href="#Markdown表格" class="headerlink" title="Markdown表格"></a>Markdown表格</h1><table>
 <thead>
 <tr>
 <th>表头1</th>
@@ -143,51 +402,428 @@
 <p>​            |左对齐|居中对齐|右对齐|</p>
 <p>​            | :—- | :—-: | —-: |</p>
 <p>​            |单元1|单元2|单元3|</p>
-<h2 id="Markdown转义字符"><a href="#Markdown转义字符" class="headerlink" title="Markdown转义字符"></a>Markdown转义字符</h2><p>反斜线  \   </p>
-<p>反引号  ‘</p>
-<p>星号      *</p>
-<p>下划线  _</p>
-<p>花括号  {}</p>
-<p>方括号  []</p>
-<p>小括号  ()</p>
-<p>井号      #</p>
-<p>加号      +</p>
-<p>减号      -</p>
-<p>英文句点  .</p>
-<p>感叹号   !</p>
+<h1 id="Markdown转义字符"><a href="#Markdown转义字符" class="headerlink" title="Markdown转义字符"></a>Markdown转义字符</h1><p>反斜线  <br>反引号  `<br>星号    *<br>下划线  _<br>花括号  {}<br>方括号  []<br>小括号  ()<br>井号    #<br>加号    +<br>减号      -<br>英文句点  .<br>感叹号   !</p>
 <p>通过在转义字符前加反斜杠\来获取字符，取消其特殊含义</p>
-<h2 id="Markdown支持的HTML元素"><a href="#Markdown支持的HTML元素" class="headerlink" title="Markdown支持的HTML元素"></a>Markdown支持的HTML元素</h2><p>&lt;kbd&gt; &lt;b&gt;  &lt;i&gt;  &lt;em&gt;  &lt;sup&gt;  &lt;sub&gt;  &lt;br&gt;</p>
+<h1 id="Markdown支持的HTML元素"><a href="#Markdown支持的HTML元素" class="headerlink" title="Markdown支持的HTML元素"></a>Markdown支持的HTML元素</h1><p>&lt;kbd&gt; &lt;b&gt;  &lt;i&gt;  &lt;em&gt;  &lt;sup&gt;  &lt;sub&gt;  &lt;br&gt;</p>
 <p>如：使用<kbd>Ctrl</kbd>+<kbd>Shift</kbd>回到行首</p>
 <p>​    语法格式：使用&lt;kbd&gt;Ctrl&lt;/kbd&gt;+&lt;kbd&gt;Shift&lt;/kbd&gt;回到行首</p>
-<h2 id="Markdown数学公式"><a href="#Markdown数学公式" class="headerlink" title="Markdown数学公式"></a>Markdown数学公式</h2><p>$$<br>\mathbf{V}_1 \times \mathbf{V}_2 = \begin{vmatrix}<br>\mathbf{i} &amp; \mathbf{j} &amp; \mathbf{k} \<br>\frac{\partial X}{\partial u} &amp; \frac{\partial Y}{\partial u} &amp; 0 \<br>\frac{\partial X}{\partial v} &amp; \frac{\partial Y}{\partial v} &amp; 0 \<br>\end{vmatrix}<br>${$tep1}{\style{visibility:hidden}{(x+1)(x+1)}}<br>$$</p>
+<h1 id="Markdown数学公式"><a href="#Markdown数学公式" class="headerlink" title="Markdown数学公式"></a>Markdown数学公式</h1><p>$$<br>\mathbf{V}_1 \times \mathbf{V}_2 = \begin{vmatrix}<br>\mathbf{i} &amp; \mathbf{j} &amp; \mathbf{k} \<br>\frac{\partial X}{\partial u} &amp; \frac{\partial Y}{\partial u} &amp; 0 \<br>\frac{\partial X}{\partial v} &amp; \frac{\partial Y}{\partial v} &amp; 0 \<br>\end{vmatrix}<br>${$tep1}{\style{visibility:hidden}{(x+1)(x+1)}}<br>$$</p>
 <p>语法格式：</p>
 <p>$$</p>
 <p>\mathbf{V}_1 \times \mathbf{V}_2 = \begin{vmatrix}<br>\mathbf{i} &amp; \mathbf{j} &amp; \mathbf{k} \<br>\frac{\partial X}{\partial u} &amp; \frac{\partial Y}{\partial u} &amp; 0 \<br>\frac{\partial X}{\partial v} &amp; \frac{\partial Y}{\partial v} &amp; 0 \<br>\end{vmatrix}<br>${$tep1}{\style{visibility:hidden}{(x+1)(x+1)}}</p>
 <p>$$</p>
 <p>通过两个美元符号$$包裹由TeX或LaTeX格式的数学公式进行实现</p>
 ]]></content>
+      <tags>
+        <tag>markdown</tag>
+      </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2021/05/08/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+    <title>Quarz定时任务框架</title>
+    <url>/2020/01/12/Quarz%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6/</url>
+    <content><![CDATA[<h1 id="Quarz定时任务框架"><a href="#Quarz定时任务框架" class="headerlink" title="Quarz定时任务框架"></a>Quarz定时任务框架</h1><p>Quarz为一个开源项目，可以用于执行定时任务。因为今天后台需要用到一个周期性线程来处理任务，就去网上看了看，觉得Quarz还不错，试试用用看。</p>
+<span id="more"></span>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<blockquote>
+<p>Quarz主要由以下部分组成：</p>
+<p><strong>Job：执行任务。JobDetail</strong></p>
+<p><strong>Trigger：触发条件。SimpleTrigger或CronTrigger</strong></p>
+<p><strong>Schedule：调度器，用于协调Job和Trigger。Scheduler</strong></p>
+</blockquote>
+<h3 id="常用Cron表达式"><a href="#常用Cron表达式" class="headerlink" title="常用Cron表达式"></a>常用Cron表达式</h3><blockquote>
+<p>10 * * * * ?  每分钟的10秒执行一次任务。比如   10:08:10  10:09:10   10:10:10</p>
+<p>30 10 * * * ? 每小时的10分30秒执行一次任务。比如 10:10:30  11:10:30 12:10:30</p>
+<p>30 10 1 * * ? 每天的1点10分30秒执行任务</p>
+<p>30 10 1 20 * ? 每月20号的1点10分30秒执行任务</p>
+<p>30 10 1 20 10? * 每年的10月20号1点10分30秒触发任务</p>
+</blockquote>
 ]]></content>
+      <tags>
+        <tag>Quarz, 定时任务</tag>
+      </tags>
   </entry>
   <entry>
-    <title>如何用Hexo写自己的博客</title>
-    <url>/2021/05/09/%E5%A6%82%E4%BD%95%E7%94%A8Hexo%E5%86%99%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<h2 id="如何"><a href="#如何" class="headerlink" title="如何"></a>如何</h2>]]></content>
+    <title>Tomcat服务器简析</title>
+    <url>/2020/01/23/Tomcat%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AE%80%E6%9E%90/</url>
+    <content><![CDATA[<h1 id="Tomcat服务器简析"><a href="#Tomcat服务器简析" class="headerlink" title="Tomcat服务器简析"></a>Tomcat服务器简析</h1><blockquote>
+<p>Tomcat服务器目录：</p>
+<ul>
+<li>bin   存放服务器可执行程序</li>
+<li>conf  存放服务器配置文件</li>
+<li>lib  存放服务器的jar包</li>
+<li>logs  存放服务器的运行日志</li>
+<li>temp  存放服务器运行时产生的临时数据</li>
+<li>webapps  存放部署在服务器上的web工程</li>
+<li>work  服务器工作时的目录</li>
+</ul>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="文件的上传与下载"><a href="#文件的上传与下载" class="headerlink" title="文件的上传与下载"></a>文件的上传与下载</h2><h3 id="文件的上传"><a href="#文件的上传" class="headerlink" title="文件的上传"></a>文件的上传</h3><blockquote>
+<ol>
+<li>form标签的设置</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;url&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span> <span class="attr">encType</span>=<span class="string">&quot;multipart/form-data&quot;</span>&gt;</span>...<span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>定义file标签</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">name</span>=<span class="string">&quot;上传文件名&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>通常，请求正文如下：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">----AbDAcb134</span><br><span class="line">Content-Disposition:form-data;</span><br><span class="line">name=&quot;username&quot;</span><br><span class="line"></span><br><span class="line">doug</span><br><span class="line">----AbDacb134</span><br><span class="line">Content-Disposition:form-data;</span><br><span class="line">name=&quot;password&quot;</span><br><span class="line"></span><br><span class="line">090900</span><br><span class="line">----AbDacb134</span><br><span class="line">Content-Disposition:form-data;</span><br><span class="line">name=&quot;photo&quot;;filename=&quot;a.jpg&quot;</span><br><span class="line">Content-Type:image/jpeg</span><br><span class="line"></span><br><span class="line">文件数据</span><br><span class="line">----AbDacb134--</span><br><span class="line"></span><br><span class="line">需要说明的就是AbDacb134是浏览器随机生成的分隔字符串，用于分隔请求数据，生成后会放在请求头中。当服务器收到请求后，就会从请求头中查找该分隔字符串，对请求数据进行解析。更重要的是最后一个分隔字符串还多了两个--，表示结束。</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>编写服务器代码接收数据，这里需要用到第三方jar包</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//第三方jar包：commons-fileupload.jar  和  commons-io.jar</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (ServletFileUpload.isMultipartContent(request)) &#123;</span><br><span class="line">        <span class="comment">//检查请求是否包含上传文件</span></span><br><span class="line">        <span class="comment">//是则创建FileItemFactory工厂实现类</span></span><br><span class="line">        FileItemFactory fileItemFactory = <span class="keyword">new</span> DiskFileItemFactory();</span><br><span class="line">        <span class="comment">//创建解析上传数据的工具类</span></span><br><span class="line">        ServletFileUpload servletFileUpload = <span class="keyword">new</span> ServletFileUpload(fileItemFactory);</span><br><span class="line">        <span class="comment">//解析请求中的上传文件</span></span><br><span class="line">        List&lt;FileItem&gt; files = servletFileUpload.parseRequest(request);</span><br><span class="line">        <span class="comment">//解析的FileItem中包含普通表单项，需要对其进行剔除</span></span><br><span class="line">        <span class="keyword">for</span> (FileItem item : files) &#123;</span><br><span class="line">            <span class="keyword">if</span> (item.isFormField) &#123;</span><br><span class="line">                <span class="comment">//处理普通表单项</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">//处理上传的文件</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="文件的下载"><a href="#文件的下载" class="headerlink" title="文件的下载"></a>文件的下载</h3><blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//1. 获取用户要下载的文件名</span></span><br><span class="line">    String fileName = <span class="string">&quot;2.jpg&quot;</span>;  <span class="comment">//假设是这样的</span></span><br><span class="line">    <span class="comment">//2. 创建读取文件的输入流</span></span><br><span class="line">    ServletContex application = <span class="keyword">this</span>.getServletContext();</span><br><span class="line">    InputStream inStream = application.getResourceAsStream(<span class="string">&quot;/url/&quot;</span> + fileName);</span><br><span class="line">    <span class="comment">//3. 文件类型设置</span></span><br><span class="line">    String fileType = application.getMimeType(<span class="string">&quot;/url/&quot;</span> + fileName);</span><br><span class="line">    response.setContentType(fileType);</span><br><span class="line">    <span class="comment">//4. 创建响应的输出流</span></span><br><span class="line">    OutputStream outStream = response.getOutputStream();</span><br><span class="line">    IOUtils.copy(inStream, outStream);</span><br><span class="line">    <span class="comment">//5. 告知浏览器如何处理文件，下载还是显示在页面中</span></span><br><span class="line">    <span class="comment">//如果是显示在页面中，这是默认行为，第5步可以省略</span></span><br><span class="line">    <span class="comment">//如果是下载，则进行如下设置</span></span><br><span class="line">    response.setHeader(<span class="string">&quot;Content-Disposition&quot;</span>, <span class="string">&quot;attachment;filename=&quot;</span> + <span class="string">&quot;文件下载后的名字&quot;</span>);</span><br><span class="line">    <span class="comment">//如果文件名只有英文，以下情况忽略</span></span><br><span class="line">    <span class="comment">//如果文件名包含中文，则还要根据不同浏览器进行处理</span></span><br><span class="line">    <span class="comment">//谷歌浏览器和IE浏览器：</span></span><br><span class="line">    <span class="comment">//response.setHeader(&quot;Content-Disposition&quot;, &quot;attachment;filename=&quot; + URLEncoder.encode(&quot;包含中文的文件名.jpg&quot;, &quot;UTF-8&quot;));</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//火狐浏览器：</span></span><br><span class="line">    <span class="comment">//response.setHeader(&quot;Content-Disposition&quot;, &quot;attachment;filename==?UTF-8?B?&quot; + </span></span><br><span class="line">    <span class="keyword">new</span> BASE64Encoder().encode(<span class="string">&quot;包含中文的文件名.jpg&quot;</span>.getBytes(<span class="string">&quot;UTF-8&quot;</span>)) + <span class="string">&quot;?=&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="网页请求流程"><a href="#网页请求流程" class="headerlink" title="网页请求流程"></a>网页请求流程</h2><blockquote>
+<p><img src="F:\HexoBlog\blog\source\images\网页请求流程.png"></p>
+<p>从图中，可知，服务器和客户端的基本交互流程如下：</p>
+<ol>
+<li>用户端通过浏览器发起请求和附带请求数据</li>
+<li>服务器接收并解析请求，交给相应的Servlet类处理</li>
+<li>Servlet处理完毕后，将相应的响应数据和响应页面返回给客户端</li>
+<li>客户端浏览器解析响应数据和响应页面，并显示给用户</li>
+</ol>
+</blockquote>
+<h2 id="GET和POST请求格式及响应数据格式"><a href="#GET和POST请求格式及响应数据格式" class="headerlink" title="GET和POST请求格式及响应数据格式"></a>GET和POST请求格式及响应数据格式</h2><blockquote>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">&gt;POST请求：</span><br><span class="line">&gt;请求行  POST url HTTP协议版本</span><br><span class="line">&gt;请求头  key1=value1</span><br><span class="line">   key2=value2</span><br><span class="line">&gt;空行</span><br><span class="line">&gt;请求正文 name1=value1&amp;name2=value2</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">&gt;GET请求：</span><br><span class="line">&gt;请求行  <span class="builtin-name">GET</span> url&amp;<span class="attribute">name1</span>=value1&amp;name2=value2 HTTP协议版本</span><br><span class="line">&gt;请求头  <span class="attribute">key1</span>=value1</span><br><span class="line">   <span class="attribute">key2</span>=value2</span><br><span class="line">&gt;空行</span><br><span class="line">&gt;请求正文 空</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">响应数据格式：</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">响应行   HTTP协议版本 状态码 状态字符</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">响应头   key1=value1</span></span><br><span class="line">	key2=value2</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">空行</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">响应正文 响应数据+响应页面</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="服务器如何解析请求"><a href="#服务器如何解析请求" class="headerlink" title="服务器如何解析请求"></a>服务器如何解析请求</h2><blockquote>
+<p>服务器接收到用户请求后，先会知道该次请求是GET请求还是POST请求，然后以对应请求的方式解析请求数据。比如对于url为<code>http://主机地址:端口号/工程名/映射路径或文件</code>如果为文件，则服务器会直接将文件以响应数据格式传回给用户，通常文件为.html或.jsp。而如果为映射路径的话，yin那么服务器就会解析web.xml文件，根据映射路径找到对应的Servlet类。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--web.xml--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span>&gt;</span></span><br><span class="line">	...</span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    	<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>myServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>com.doug.wilson.servlet.MyServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    	<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>myServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/my<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">web-app</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>服务器在解析用户请求时，会将请求数据以键值对的方式读取和保存，并将数据封装成HttpServletRequest对象供程序使用，并提供方法获取该对象中的数据。同时也会提供HttpServletResponse对象，用于设置相应数据和响应内容。</p>
+</blockquote>
+<h2 id="请求转发和重定向"><a href="#请求转发和重定向" class="headerlink" title="请求转发和重定向"></a>请求转发和重定向</h2><blockquote>
+<p><strong>请求转发：由服务器内部多个servlet进行请求处理，共有同一个请求对象，并可以通过请求对象中的setAttribute添加信息，方便下一个servlet处理。</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//方式1</span></span><br><span class="line">request.getRequestDispatcher(<span class="string">&quot;url&quot;</span>).forward(request, response);</span><br><span class="line"><span class="comment">//方式2</span></span><br><span class="line">&lt;jsp:forward:<span class="string">&quot;url&quot;</span>&gt;&lt;/jsp:forward&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>重定向：接收请求的servlet处理不了用户请求，但知道哪一个资源可以处理请求，通过设置请求头，并将该资源url返回给客户端，让客户端重新发一次新的请求到资源地址，完成请求处理。</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//方式1</span></span><br><span class="line">response.setStatus(<span class="string">&quot;302&quot;</span>);</span><br><span class="line">response.setHeader(<span class="string">&quot;Location&quot;</span>, <span class="string">&quot;url&quot;</span>);</span><br><span class="line"><span class="comment">//方式2</span></span><br><span class="line">response.sendRedirect(<span class="string">&quot;url&quot;</span>); <span class="comment">//等同于方式1，只不过进行了封装，简便使用</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="F:\HexoBlog\blog\source\images\请求转发及重定向.png"></p>
+</blockquote>
+<h2 id="Session和Cookie"><a href="#Session和Cookie" class="headerlink" title="Session和Cookie"></a>Session和Cookie</h2><h3 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h3><blockquote>
+<p>Cookie为服务器通知客户端浏览器保存键值对的一种技术，主要是由于HTTP为无状态协议，每次请求不能够主动携带数据，影响用户某些功能的体验，比如购物车。</p>
+<ol>
+<li><p>Cookie的创建和回传给浏览器保存</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Cookie cookie = <span class="keyword">new</span> Cookie(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;value&quot;</span>);</span><br><span class="line">response.addCookie(c);</span><br></pre></td></tr></table></figure></li>
+<li><p>服务器端Cookie的获取</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Cookie[] cookies = request.getCookies();</span><br><span class="line"><span class="comment">//如果要获取某个特定的Cookie，只能通过遍历进行获取</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Cookie常用方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//比如获取到了一个Cookie  cookie</span></span><br><span class="line">cookie.getDomain();  <span class="comment">//获取域名</span></span><br><span class="line">cookie.getMaxAge();  <span class="comment">//获取cookie的存活时间</span></span><br><span class="line">cookie.getName();    <span class="comment">//cookie的key</span></span><br><span class="line">cookie.getValue();   <span class="comment">//cookie的value</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Cookie的有效路径path。通过path可以过滤Cookie，哪些需要发送给浏览器，哪些不发</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">现假设有两个Cookie，path设置成</span><br><span class="line">Cookie cookieA  path=/工程路径</span><br><span class="line">Cookie cookieB  path=/工程路径/abc</span><br><span class="line">当请求地址为：</span><br><span class="line">http://localhost:8888/工程路径 cookieA发送，cookieB不发送</span><br><span class="line">http://localhost:8888/工程路径/abc  cookieA和cookieB都发送</span><br></pre></td></tr></table></figure></li>
+</ol>
+</blockquote>
+<h3 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h3><blockquote>
+<p>客户端和服务器间的会话，一次会话的结束为客户端关闭浏览器。服务器会为每个客户端创建一个会话，并分配一个唯一的id，用于标识存储的用户信息。</p>
+<ol>
+<li><p>创建或获取HttpSession </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">HttpSession session = request.getSession(); <span class="comment">//没有则创建，有则获取</span></span><br><span class="line"><span class="comment">//可以通过下面的方法判断session是否是刚创建的</span></span><br><span class="line">session.isNew(); <span class="comment">//为true说明是刚创建的</span></span><br></pre></td></tr></table></figure></li>
+<li><p>获取session唯一标识符</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">session.getId();</span><br></pre></td></tr></table></figure></li>
+<li><p>往session中存储数据或者从session中读取数据</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">session.setAttribute(String key, Object value);</span><br><span class="line">session.getAttribute(<span class="string">&quot;key&quot;</span>);  <span class="comment">//得到Object</span></span><br></pre></td></tr></table></figure></li>
+<li><p>session的生命周期设置</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">session.setMaxInactiveInterval(<span class="keyword">int</span>);  <span class="comment">//单位为秒，超过时长，session自动销毁</span></span><br><span class="line"><span class="comment">//默认时长为1800秒——30分钟</span></span><br><span class="line"><span class="comment">//如果设置为负数，则session永远不会被销毁</span></span><br><span class="line"><span class="comment">//没有0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//强制销毁</span></span><br><span class="line">session.invalidate();</span><br></pre></td></tr></table></figure></li>
+</ol>
+</blockquote>
+<h3 id="Cookie和Session的关联"><a href="#Cookie和Session的关联" class="headerlink" title="Cookie和Session的关联"></a>Cookie和Session的关联</h3><p><img src="F:\HexoBlog\blog\source\images\session和cookie.png"></p>
+<h2 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h2><blockquote>
+<p>Filter常用于：<strong>拦截请求，过滤响应，权限检查</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyFilter</span> <span class="keyword">implements</span> <span class="title">Filter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(HttpServletRequest request, HttpServletResponse response, FilterChain chain)</span> </span>&#123;</span><br><span class="line">     	<span class="comment">//逻辑代码，进行拦截请求或过滤响应、或权限检查</span></span><br><span class="line">        <span class="comment">//符合权限时，执行</span></span><br><span class="line">        chain.doFilter(request, response);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="F:\HexoBlog\blog\source\images\filter过滤器.png"></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--过滤器配置--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>myFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>com.doug.wilson.MyFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>myFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>拦截请求的方式<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="拦截请求的方式"><a href="#拦截请求的方式" class="headerlink" title="拦截请求的方式"></a>拦截请求的方式</h4><blockquote>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">&gt;精确匹配：<span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/admin/a.jpg<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span> 具体到文件</span><br><span class="line">&gt;目录匹配：<span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/admin/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span> 匹配某个目录下的所有内容</span><br><span class="line">&gt;后缀名匹配：<span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>*.html<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span> 拦截以.html结尾的请求</span><br></pre></td></tr></table></figure>
+</blockquote>
+</blockquote>
+<h2 id="AJAX"><a href="#AJAX" class="headerlink" title="AJAX"></a>AJAX</h2><blockquote>
+<p><strong>异步请求：Asynchronous Javascript and XML 通过js异步发起请求，局部更新页面或者获取数据的技术</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//1. 创建XMLHttpRequest对象</span></span><br><span class="line"><span class="keyword">var</span> ajaxObj;</span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">window</span>.XMLHttpRequest) &#123;</span><br><span class="line">    <span class="comment">//通用浏览器</span></span><br><span class="line">    ajaxObj = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    ajaxObj = <span class="keyword">new</span> ActiveXObject(<span class="string">&quot;Microsoft.XMLHTTP&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//2. 调用open方法设置请求参数</span></span><br><span class="line">ajaxObj.open(<span class="string">&quot;method&quot;</span>, <span class="string">&quot;url&quot;</span>, <span class="literal">true</span>); <span class="comment">//true为异步，false为同步</span></span><br><span class="line"><span class="comment">//3. 在send方法前绑定onreadystatechange事件</span></span><br><span class="line">ajaxObj.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (ajaxObj.readyState == <span class="number">4</span> &amp;&amp; ajaxObj.status == <span class="number">200</span>) &#123;</span><br><span class="line">        <span class="comment">//成功响应</span></span><br><span class="line">        ajaxObj.responseText(); <span class="comment">//获取响应数据</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//如果请求为POST请求，还需要加上下面这行代码</span></span><br><span class="line"><span class="comment">//ajaxObj.setRequestHeader(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded&quot;);</span></span><br><span class="line"><span class="comment">//4. 调用send发送请求</span></span><br><span class="line">ajaxObj.send();</span><br><span class="line"></span><br><span class="line"><span class="comment">//上面是底层代码，jQuery封装了该部分，简化了使用</span></span><br><span class="line">$.ajax(&#123;</span><br><span class="line">    <span class="attr">url</span>: <span class="string">&quot;请求地址&quot;</span>,</span><br><span class="line">    <span class="attr">data</span>: <span class="string">&quot;请求数据&quot;</span>,</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&quot;GET OR POST&quot;</span>,</span><br><span class="line">    <span class="attr">success</span>: <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//data为响应数据</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="attr">dataType</span>:<span class="string">&quot;text XML JSON 根据响应内容进行设置&quot;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="常用参数"><a href="#常用参数" class="headerlink" title="常用参数"></a>常用参数</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line">readyState:</span><br><span class="line">0: 请求未初始化——还没有调用open()</span><br><span class="line">1: 请求已经建立，但是还没有发送——还没有调用send()</span><br><span class="line">2: 请求已经发送，正在处理中，可以获取响应头</span><br><span class="line">3: 请求正在处理中，响应已经有部分数据可用，但是服务器还没有完成响应的生成</span><br><span class="line">4: 响应已经完成，可以获取并使用服务器响应</span><br><span class="line">status:</span><br><span class="line">即HTTP响应码</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+</blockquote>
+]]></content>
+      <tags>
+        <tag>tomcat</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Typora快捷键</title>
+    <url>/2020/01/09/Typora%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
+    <content><![CDATA[<h1 id="Typora常用快捷键"><a href="#Typora常用快捷键" class="headerlink" title="Typora常用快捷键"></a>Typora常用快捷键</h1><h6 id="保存：Ctrl-S"><a href="#保存：Ctrl-S" class="headerlink" title="保存：Ctrl+S"></a>保存：<kbd>Ctrl</kbd>+<kbd>S</kbd></h6><h6 id="关闭：Ctrl-W"><a href="#关闭：Ctrl-W" class="headerlink" title="关闭：Ctrl+W"></a>关闭：<kbd>Ctrl</kbd>+<kbd>W</kbd></h6><h6 id="撤销：Ctrl-Z"><a href="#撤销：Ctrl-Z" class="headerlink" title="撤销：Ctrl+Z"></a>撤销：<kbd>Ctrl</kbd>+<kbd>Z</kbd></h6><h6 id="复制：Ctrl-C"><a href="#复制：Ctrl-C" class="headerlink" title="复制：Ctrl+C"></a>复制：<kbd>Ctrl</kbd>+<kbd>C</kbd></h6><span id="more"></span>
+
+<h6 id="粘贴：Ctrl-V"><a href="#粘贴：Ctrl-V" class="headerlink" title="粘贴：Ctrl+V"></a>粘贴：<kbd>Ctrl</kbd>+<kbd>V</kbd></h6><h6 id="剪切：Ctrl-X"><a href="#剪切：Ctrl-X" class="headerlink" title="剪切：Ctrl+X"></a>剪切：<kbd>Ctrl</kbd>+<kbd>X</kbd></h6><h6 id="全选：Ctrl-A"><a href="#全选：Ctrl-A" class="headerlink" title="全选：Ctrl+A"></a>全选：<kbd>Ctrl</kbd>+<kbd>A</kbd></h6><h6 id="选中当前行：Ctrl-L"><a href="#选中当前行：Ctrl-L" class="headerlink" title="选中当前行：Ctrl+L"></a>选中当前行：<kbd>Ctrl</kbd>+<kbd>L</kbd></h6><h6 id="选中当前格式文本：Ctrl-E"><a href="#选中当前格式文本：Ctrl-E" class="headerlink" title="选中当前格式文本：Ctrl+E"></a>选中当前格式文本：<kbd>Ctrl</kbd>+<kbd>E</kbd></h6><h6 id="选中当前词：Ctrl-D"><a href="#选中当前词：Ctrl-D" class="headerlink" title="选中当前词：Ctrl+D"></a>选中当前词：<kbd>Ctrl</kbd>+<kbd>D</kbd></h6><h6 id="提升标题级别：Ctrl"><a href="#提升标题级别：Ctrl" class="headerlink" title="提升标题级别：Ctrl++="></a>提升标题级别：<kbd>Ctrl</kbd>+<kbd>+=</kbd></h6><h6 id="降低标题级别：Ctrl"><a href="#降低标题级别：Ctrl" class="headerlink" title="降低标题级别：Ctrl+_-"></a>降低标题级别：<kbd>Ctrl</kbd>+<kbd>_-</kbd></h6><h6 id="表格：Ctrl-T"><a href="#表格：Ctrl-T" class="headerlink" title="表格：Ctrl+T"></a>表格：<kbd>Ctrl</kbd>+<kbd>T</kbd></h6><h6 id="代码块：Ctrl-Shift-K"><a href="#代码块：Ctrl-Shift-K" class="headerlink" title="代码块：Ctrl+Shift+K"></a>代码块：<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd></h6><p>数学公式：<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd></p>
+<p>引用：<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Q</kbd></p>
+<p>有序列表：<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>[</kbd></p>
+<p>无序列表：<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>]</kbd></p>
+<p>代码：<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>`</kbd></p>
+<p>删除线：<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>5</kbd></p>
+<p>大纲视图：<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>1</kbd></p>
+<p>搜索：<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd></p>
+]]></content>
+      <tags>
+        <tag>typora</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>动态规划探究及例题分析</title>
+    <url>/2020/01/17/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E6%8E%A2%E7%A9%B6%E5%8F%8A%E4%BE%8B%E9%A2%98%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<h1 id="动态规划探究及例题分析"><a href="#动态规划探究及例题分析" class="headerlink" title="动态规划探究及例题分析"></a>动态规划探究及例题分析</h1><p>分治算法是将问题划分成一些独立的子问题，递归求解各子问题，然后合并子问题的解而得到原问题的解。这种情况很多，如自顶向下的归并排序，图的深度遍历等等。</p>
+<p>动态规划与此不同，适用于子问题不是独立的情况，即子问题包含公共子问题。如果在这种情况下采用分治算法，则分治算法会做许多不必要的工作——重复求解公共子问题。而动态规划算法只对每个子子问题求解一次，将其结果存放到一张表中，避免每次遇到各个子问题时重新计算答案。</p>
+<span id="more"></span>
+
+<h2 id="动态规划算法的设计步骤总结"><a href="#动态规划算法的设计步骤总结" class="headerlink" title="动态规划算法的设计步骤总结"></a>动态规划算法的设计步骤总结</h2><blockquote>
+<ol>
+<li>描述最优解的结构</li>
+<li>递归定义最优解的值</li>
+<li>按自底向上的方式计算最优解的值(非递归，通常为循环)</li>
+<li>由计算出的结果构造一个最优解</li>
+</ol>
+</blockquote>
+<h4 id="参考例题：算法导论——装配最短时间计算"><a href="#参考例题：算法导论——装配最短时间计算" class="headerlink" title="参考例题：算法导论——装配最短时间计算"></a>参考例题：算法导论——装配最短时间计算</h4><blockquote>
+<p>问题描述：</p>
+<p>某工厂内有两条装配产品的流水线：</p>
+<p><img src="F:\HexoBlog\blog\source\images\动态规划流水线问题.png"></p>
+<p>如果产品只在一条流水线上工作，则装配时间为：<br>$$<br>\sum_{i=1}^{n}a_{1i}+e_{1}+x_{1} 或 \sum_{i=1}^{n}a_{2i}+e_{2}+x_{2}<br>$$<br>如果从一条装配线的一个装配站<strong>i</strong>移动到另一个装配线<strong>i+1</strong>则需要加上额外的移动时间：<br>$$<br>t_{1i} 或t_{2i}<br>$$<br> 求产品装配的最短时间</p>
+</blockquote>
+<h4 id="按照求解步骤求解："><a href="#按照求解步骤求解：" class="headerlink" title="按照求解步骤求解："></a>按照求解步骤求解：</h4><h5 id="1-描述最优解的结构"><a href="#1-描述最优解的结构" class="headerlink" title="1 描述最优解的结构"></a>1 描述最优解的结构</h5><blockquote>
+<p><img src="F:\HexoBlog\blog\source\images\描述流水线最优解结构.png"></p>
+<p>假设目前要通过的装配站为S1j ，那么最快的路线只能是以下情况：</p>
+<ol>
+<li>通过了S1j-1装配站，然后直接到S1j装配站</li>
+<li>通过了S2j-1装配站，然后花费t2j-1时间到S1j</li>
+</ol>
+<p>同理，如果通过的装配站为S2j，那么最快的路线只能是以下情况：</p>
+<ol>
+<li>通过了S2j-1装配站，然后直接到S2j装配站</li>
+<li>通过了S1j-1装配站，然后花费时间t1j-1时间到S2j</li>
+</ol>
+</blockquote>
+<h5 id="2-递归定义最优解的值"><a href="#2-递归定义最优解的值" class="headerlink" title="2 递归定义最优解的值"></a>2 递归定义最优解的值</h5><blockquote>
+<p>由第一步可知，最优解可以由如下公式代替：<br>$$<br>f_{1}(n)=min(f_{1}(n-1), {f_{2}(n-1)+t_{2}(n-1)})+a_{1n} \<br>f_{2}(n)=min(f_{2}(n-1), {f_{1}(n-1)+t_{1}(n-1)})+a_{2n} \<br>f_{min}=min(f_{1}(n)+x_{1},f_{2}(n)+x_{2})\<br>考虑条件后，可以得到：\<br>f_{1}(j)=\left{\begin{matrix}<br>e_{1}+a_{11} \quad\quad  j=1\<br>min(f_{1}(j-1)+a_{1j},\quad f_{2}(j-1)+t_{2j-1}+a_{1j}) \quad j&gt;=2<br>\end{matrix}\right.  \<br>f_{2}(j)=\left{\begin{matrix}<br>e_{2}+a_{21} \quad\quad  j=1\<br>min(f_{2}(j-1)+a_{2j},\quad f_{1}(j-1)+t_{1j-1}+a_{2j}) \quad j&gt;=2<br>\end{matrix}\right. \<br>f_{min}=min(f_{1}(n)+x_{1},\quad f_{2}(n)+x_{2}) \quad 即最优解方程组<br>$$</p>
+</blockquote>
+<h5 id="3-将递归定义转化为从自底向上计算最优解的值"><a href="#3-将递归定义转化为从自底向上计算最优解的值" class="headerlink" title="3 将递归定义转化为从自底向上计算最优解的值"></a>3 将递归定义转化为从自底向上计算最优解的值</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//计算e1+a11和e2+a21的值，将值存入fmin，并记录</span></span><br><span class="line"><span class="comment">//定义标识符flag，flag为true时表示当前装配在流水线1，flag为false表示当前装配在流水线2  </span></span><br><span class="line"><span class="comment">//循环直到最后一个装配站</span></span><br><span class="line"><span class="comment">//当前装配站为i，</span></span><br><span class="line"><span class="comment">//计算fmin+ati和fmin+tti-1+afi的大小并比较哪一个时间较少</span></span><br><span class="line"><span class="comment">//记录并将值存入fmin</span></span><br><span class="line"><span class="comment">//如此，直到循环结束</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="4-计算最优解"><a href="#4-计算最优解" class="headerlink" title="4 计算最优解"></a>4 计算最优解</h5><blockquote>
+<p>将第三步的伪代码转化成代码运行，并测试</p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>动态规划</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机程序运行基本知识</title>
+    <url>/2020/01/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/</url>
+    <content><![CDATA[<h1 id="计算机程序基本知识"><a href="#计算机程序基本知识" class="headerlink" title="计算机程序基本知识"></a>计算机程序基本知识</h1><p>这两天空闲时间比较多一些，打算把计算机一些基本知识再看一看，写一些总结，也当作复习。以下内容参考自书籍 ：</p>
+<blockquote>
+<p>《程序是怎样跑起来的》</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="程序"><a href="#程序" class="headerlink" title="程序"></a>程序</h2><p>什么是程序？<strong>程序是指示计算机运行的一组指令</strong>。程序由什么组成？<strong>指令和数据</strong>？CPU能直接执行指令吗？不能，<strong>必须将指令解释成机器语言，CPU才能解释和执行</strong>。正在运行的程序存储在什么位置？<strong>内存，但是不绝对，需要运行的部分是在内存中，这一点确定</strong>。什么是内存地址？<strong>指令和数据在内存中存储位置的数值。</strong>程序执行的流程？<strong>高级语言编写的程序——&gt;编译后转换成机器语言文件——&gt;程序运行在内存中生成的机器语言文件副本——&gt;CPU解释和运行转换成机器语言的程序内容。一般而言，程序启动后，控制器就会根据时钟信号从内存中读取指令和数据，通过对这些指令加以解释和运行，运算器就会对数据进行运算，控制器根据运算结果来控制计算机</strong></p>
+<h2 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h2><blockquote>
+<p><strong>CPU作用：负责解释和运行转换成机器语言的程序内容</strong></p>
+<p><strong>CPU硬件组成：CPU和内存都是由若干晶体管组成的电子部件，通常称为IC (Integrated Circuit)集成电路</strong></p>
+<p><strong>CPU构成：寄存器、控制器、运算器、时钟。各部分间由电信号相互连通</strong></p>
+</blockquote>
+<h4 id="CPU构成"><a href="#CPU构成" class="headerlink" title="CPU构成"></a>CPU构成</h4><p><img src="F:\HexoBlog\blog\source\images\CPU构成.png"></p>
+<blockquote>
+<p>控制器：将内存中的指令，数据读入寄存器，并根据指令的执行结果控制整个计算机</p>
+</blockquote>
+<blockquote>
+<p>运算器：运算寄存器中的数据</p>
+</blockquote>
+<blockquote>
+<p>时钟：负责CPU开始计时的时钟信号，一般CPU的时钟单位为GHz，比如2GHz表示时钟信号的频率为2GHz(1GHz=10亿次/秒)，也就是说时钟的频率越高，CPU运行速度越快</p>
+</blockquote>
+<blockquote>
+<p>寄存器：暂存指令，数据等处理对象。因此，程序常常将寄存器当作对象进行描述，比如汇编语言：mov eax, dword ptr[ebp-8];  含义就是把寄存器ebp地址8的内容复制到eax寄存器中。而寄存器根据其保存的对象不同，将寄存器分成了以下几类：</p>
+<p><img src="F:\HexoBlog\blog\source\images\寄存器.png"></p>
+<p><strong>其中，基址寄存器、变址寄存器、通用寄存器可以有多个，其它寄存器只有一个</strong></p>
+<p>标志寄存器：这是一个比较有意思的寄存器。条件分支和循环中的跳转指令都会参照当前标志寄存器中的数值来判断是否进行跳转。而标志寄存器中的数值由3个位表示，负位，零位，正位。如下图：</p>
+<p><img src="F:\HexoBlog\blog\source\images\标志寄存器状态.png"></p>
+<p>当运算结果为负值，负位就会置为1；当运算结果为0，零位就会置为1；当运算结果为正值，正位就会置为1.</p>
+<p>运算结果的计算过程：比如要比较累加寄存器中XXX值和通用寄存器中YYY值，执行比较指令后，CPU的运算会在内部进行XXX-YYY减法运算。而无论剑法运算的结果为正数，负数，还是零，都会保存到标志寄存器中。结果为正，表示XXX比YYY大，标志寄存器的正位置为1；结果为0，表示XXX和YYY相等，标志寄存器的零位置为1；结果为负值，表示XXX比YYY小，标志寄存器的负位置为1.</p>
+<blockquote>
+<p>基址寄存器和变址寄存器则定义程序指令在内存中的地址，其中，基址寄存器保存程序的起始地址，变址寄存器保存程序的指令地址。也正因这两类的寄存器的存在，程序的才能得到正确地执行。</p>
+</blockquote>
+</blockquote>
+<h3 id="计算机的二进制"><a href="#计算机的二进制" class="headerlink" title="计算机的二进制"></a>计算机的二进制</h3><blockquote>
+<p>前面说过，CPU是由IC集成电路组成的，而IC通常如下：</p>
+<p><img src="F:\HexoBlog\blog\source\images\IC集成电路.png"></p>
+<p>所有引脚只有直流电压0V或5V两个状态，也就说一个引脚只能表示两个状态。IC的这个特性，决定了计算机的信息，只能通过二进制数来处理。</p>
+<h4 id="二进制表示的数和运算"><a href="#二进制表示的数和运算" class="headerlink" title="二进制表示的数和运算"></a>二进制表示的数和运算</h4><p>正数用原码表示；负数用补码表示。这样做的原因是将计算机中的减法运算，转化成加法运算。比如1-1实际上为1+(-1) ：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">的二进制数：</span> <span class="number">0000 </span><span class="number">0001</span></span><br><span class="line"><span class="number">-1</span><span class="string">的二进制数：1111</span> <span class="number">1111   </span><span class="number">1000 </span><span class="number">0001</span><span class="string">取反加1</span></span><br><span class="line"><span class="number">1</span><span class="number">-1</span> <span class="string">变为</span> <span class="number">1</span><span class="string">+(-1):</span>   <span class="number">0000 </span><span class="number">0001</span></span><br><span class="line">                 <span class="string">+1111</span> <span class="number">1111</span></span><br><span class="line">                  <span class="number">0000 </span><span class="number">0000</span> <span class="string">等于0</span></span><br><span class="line"><span class="string">例2：2的二进制数</span>  <span class="number">0000 </span><span class="number">0010</span></span><br><span class="line">    <span class="number">-3</span><span class="string">的二进制数</span> <span class="number">1111 </span><span class="number">1101   </span><span class="number">1000 </span><span class="number">0011</span><span class="string">取反加1</span></span><br><span class="line"><span class="number">2</span><span class="number">-3</span> <span class="string">变为</span> <span class="number">2</span><span class="string">+(-3)：</span> <span class="number">0000 </span><span class="number">0010</span></span><br><span class="line">				<span class="string">+1111</span> <span class="number">1101</span></span><br><span class="line">				 <span class="number">1111 </span><span class="number">1111</span> <span class="string">等于-1</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="浮点数表示"><a href="#浮点数表示" class="headerlink" title="浮点数表示"></a>浮点数表示</h4><p>有些浮点数在计算机中是无法表示的，只能近似表示：比如十进制0.1无法用二进制表示，只能近似表示。如何规避浮点数错误？<strong>无视错误，或将小数转换成整数后计算</strong></p>
+<p>那如何用二进制表示浮点数？</p>
+<p><img src="F:\HexoBlog\blog\source\images\浮点数.png"></p>
+<img src="F:\HexoBlog\blog\source\images\浮点数表示.png" style="zoom:75%;" />
+$$
+
+<p>$$<br><strong>其中正负号为符号位，m为尾数，2为基数，e为指数</strong></p>
+<p>举个例子进行求解，以单精度的浮点数为例，11.1875</p>
+<blockquote>
+<p>符号位求法：正数为0，负数为1 。因此11.1875 符号位为 0</p>
+</blockquote>
+<blockquote>
+<p>尾数求法：11.1875用二进制数表示为 1011.0011 我们需要<strong>让其整数部分只有1</strong>，因此需要将其无符号位右移3位，变成1.011 0011，并确保小数点后长度为23位，变成 1.011 0011 0000 0000 0000 0000</p>
+<p>那么尾数就确定了：011 0011 0000 0000 0000 0000</p>
+</blockquote>
+<blockquote>
+<p>基数求法：不需要求，为2</p>
+</blockquote>
+<blockquote>
+<p>指数求法：采用EXCESS系统进行求解。因为指数部分有正有负，因此采用中间基准来规避符号位。比如单精度的指数位数为8位，无符号数最大表示为1111 1111 = 255  因此采用中间基准 255 / 2 = 127  </p>
+<p>0111 1111 作为中间基准。如果指数部分为 1111 1111 那么需要减去 0111 1111 表示为128 ，如果指数部分为0000 0000 那么需要减去0111 1111 表示为-127</p>
+<p>比如上面的11.1875为了得到整数部分只有1，无符号向右移动了3位，那么其指数部分为 3 + 127 =</p>
+<p>​       0000 0011</p>
+<p>+     0111 1111 </p>
+<p>​       1000 0010</p>
+</blockquote>
+<blockquote>
+<p>综上，11.1875用二进制数表示为 <u>0</u> <u>1000 0010</u> <u>011 0011 0000 0000 0000 0000</u></p>
+</blockquote>
+</blockquote>
+<h2 id="常用机器语言指令"><a href="#常用机器语言指令" class="headerlink" title="常用机器语言指令"></a>常用机器语言指令</h2><blockquote>
+<table>
+<thead>
+<tr>
+<th>MOV 复制</th>
+<th>ADD 加法</th>
+<th>ANL 与</th>
+<th>JMP 跳转指令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PUSH 压入</td>
+<td>SUBB 减法</td>
+<td>ORL 或</td>
+<td>ACALL 短调用</td>
+</tr>
+<tr>
+<td>POP 弹出</td>
+<td>MUL 乘法</td>
+<td>XRL 异或</td>
+<td>LCALL 长调用</td>
+</tr>
+<tr>
+<td>XCH 交换</td>
+<td>DIV 除法</td>
+<td></td>
+<td>RET 返回</td>
+</tr>
+<tr>
+<td>INC 加1</td>
+<td></td>
+<td></td>
+<td>CALL 调用</td>
+</tr>
+<tr>
+<td>DEC 减1</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>指令的跳转调用的是jump指令，一旦跳转后就不需要返回了，而函数的跳转调用的是CALL指令和RET指令的组合。当函数被调用时，调用CALL指令跳转到函数执行的起始地址，当函数执行完毕，需要调用RET指令返回到原来的调用点，执行调用点的下一条指令。</p>
+<p><img src="F:\HexoBlog\blog\source\images\CALL和RET指令.png"></p>
+</blockquote>
+<h2 id="求余"><a href="#求余" class="headerlink" title="求余"></a>求余</h2><blockquote>
+<p>这部分经常遇到，也经常忘记。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">对于同号的的，没有什么好说的： <span class="number">10</span> % <span class="number">3</span> = <span class="number">1</span>   -<span class="number">10</span> % (-<span class="number">3</span>) = -<span class="number">1</span></span><br><span class="line">而对于异号的，如 -<span class="number">10</span> % <span class="number">3</span>   <span class="number">10</span> % -<span class="number">3</span>  求余过程为：</span><br><span class="line">    两个操作取绝对值进行求余计算，如果能整除，则结果为<span class="number">0</span></span><br><span class="line">    如果不能整除，则要进行如下计算：a % b = (|a|/|b| + <span class="number">1</span>) × b + a 计算得到结果</span><br><span class="line">    比如 -<span class="number">10</span> % <span class="number">3</span> = (<span class="number">10</span> / <span class="number">3</span> + <span class="number">1</span>) × <span class="number">3</span> + (-<span class="number">10</span>) = <span class="number">2</span></span><br><span class="line">    <span class="number">10</span> % -<span class="number">3</span> = (<span class="number">10</span> / <span class="number">3</span> + <span class="number">1</span>)×(-<span class="number">3</span>) + <span class="number">10</span> = -<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+
+</blockquote>
+<h2 id="内存，或者称为主存"><a href="#内存，或者称为主存" class="headerlink" title="内存，或者称为主存"></a>内存，或者称为主存</h2><blockquote>
+<p>主存通过控制芯片等与CPU相连，主要负责存储指令和数据。在主存中，每个字节都有一个地址编号，CPU可以通过该地址读取主存中的指令和数据，或者写入数据。</p>
+<p>前面说过，CPU和主存都是通过IC构成的，通常主存的IC引脚可以分为如下几部分：电源、地址引脚、数据引脚、控制引脚。</p>
+<p><img src="F:\HexoBlog\blog\source\images\内存IC.png"></p>
+<p>VCC和GND为电源引脚：为内存IC提供电源</p>
+<p>A0~A9为地址引脚(Address)：指定数据存储的场所</p>
+<p>D0~D7为数据引脚：写入数据或读取数据</p>
+<p>RD和WR为控制引脚：WR为写入信号，WR=1时有效；RD为读取信号，RD=1时有效；WR=0且RD=0时，读取和写入无法进行；WR=1且RD=1时，意味着可读可写。</p>
+<p>内存存储的数据量计算：（数据信号引脚数量 / 8）× (地址信号引脚表示的地址数量)</p>
+<p>例如上图的内存能存储的数据量：(8 / 8) × (2^10) = 1024B = 1KB </p>
+<p>​                                                          (D0<del>D7)  (A0</del>A9)</p>
+<p>因此要增大内存可存储数据量，可以增多引脚或者使用多个内存IC。</p>
+<p><strong>通常而言，我们从内存中读取的为数据类型。比如byte, short, int, long, float, double等。数据类型是一个抽象的概念，其实内存并不知道数据类型，它只知道读取字节。而数据类型出现的原因是，程序中我们需要不同范围大小和不同类型的数据，因此，需要数据类型来满足需求。但也只是每次读取的字节数不同，byte每次读取1字节，int每次读取4字节，double每次读8字节。</strong></p>
+<p><strong>指针也是一种变量，为4字节，保存内存的地址，我们可以通过内存地址读取出内存中该地址中的数据。为了区分数据类型和指针，需要再指针加一个*，变成这样：*pointer  然后还需要指定读取的数据类型，你是要取出内存地址中4个字节的数据还是1个字节的数据，你得指明，因此指针的最终写法为 ：</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">数据类型 *p</span><br></pre></td></tr></table></figure>
+
+<h4 id="内存与数组"><a href="#内存与数组" class="headerlink" title="内存与数组"></a>内存与数组</h4><p>如果数组为1字节的数据类型，它的构造和内存的物理构造完全一致。但为了方便读写内存，只能逐个读取字节，程序会变得比较繁琐。因此可以指定任意数据类型定义数组。</p>
+</blockquote>
+<h2 id="磁盘存储"><a href="#磁盘存储" class="headerlink" title="磁盘存储"></a>磁盘存储</h2><blockquote>
+<p>磁盘的物理结构：磁盘是通过其物理表明划分成多个空间来使用。划分的方式有扇区方式和可变长方式两种。扇区方式将磁盘划分成固定长度的空间，而可变长方式则将磁盘划分成长度可变的空间。</p>
+<p>大部分磁盘采用的是扇区的方式划分磁盘。扇区划分方式中，把磁盘表面分成若干个同心圆的空间就是磁道，而把磁道按照固定大小长度划分成的空间就是扇区。</p>
+<p><img src="F:\HexoBlog\blog\source\images\磁盘划分.png"></p>
+<p>一般而言，一个扇区大小为512字节，也就是说无论文件多小，只要文件有内容，且不超过512字节，那么它就会占据512字节的磁盘空间。</p>
+<p>而且通过图我们可以很容易看出，外圈磁道拥有更多的扇区。</p>
+</blockquote>
+<h2 id="哈夫曼压缩算法"><a href="#哈夫曼压缩算法" class="headerlink" title="哈夫曼压缩算法"></a>哈夫曼压缩算法</h2><blockquote>
+<p>压缩：压缩后的数据能复原的是可逆压缩，无法复原的是非可逆压缩</p>
+<p>RLE(Run Length Encoding行程长度编码)压缩算法：数据 × 重复次数 。比如：</p>
+<p>AAAAAA BB C DD EEEEE F 17个字符，经过RLE压缩后为：A6B2C1D2E5F1 12字符</p>
+<p>压缩比为：12 / 17 × 100% = 70%</p>
+<p>RLE压缩算法常用于压缩传真的图像，缺点是：当文件连续的重复字符较少时，压缩率不高，甚至可能增大文件大小，达成负的压缩率。</p>
+<blockquote>
+<p>哈夫曼压缩算法为：先将文件中字符出现的频率由高到低进行排序，然后从低频率的字符开始拼接成二叉树，位于左枝的边为0，位于右枝的边为1。</p>
+<p>比如：AAAAAA BB C DD EEEEE F</p>
+<p>统计后：A(6) E(5) B(2) D(2) C(1) F(1)，然后有如下过程：</p>
+<p><img src="F:\HexoBlog\blog\source\images\哈夫曼压缩算法过程.png"></p>
+<p>从而得到字符的编码：</p>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>0</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>E</td>
+<td>01</td>
+</tr>
+<tr>
+<td>B</td>
+<td>100</td>
+</tr>
+<tr>
+<td>D</td>
+<td>101</td>
+</tr>
+<tr>
+<td>C</td>
+<td>110</td>
+</tr>
+<tr>
+<td>F</td>
+<td>111</td>
+</tr>
+</tbody></table>
+<p>从而 AAAAAA BB C DD EEEEE F变为 000000 100100 110 101101 0101010101 111  34bit 5字节</p>
+<p>假设一个字符为1字节，那么压缩率为：5 / 17 = 29.41% 贼小</p>
+</blockquote>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>计算机, 程序</tag>
+      </tags>
   </entry>
 </search>
