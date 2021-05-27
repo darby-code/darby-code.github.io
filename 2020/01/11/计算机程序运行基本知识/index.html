@@ -129,29 +129,29 @@
 
 
 
-<meta name="description" content="计算机程序基本知识这两天空闲时间比较多一些，打算把计算机一些基本知识再看一看，写一些总结，也当作复习。以下内容参考自书籍 ：  《程序是怎样跑起来的》">
+<meta name="description" content="这两天空闲时间比较多一些，打算把计算机一些基本知识再看一看，写一些总结，也当作复习。以下内容参考自书籍 ：  《程序是怎样跑起来的》">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机程序运行基本知识">
 <meta property="og:url" content="http://example.com/2020/01/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/index.html">
 <meta property="og:site_name" content="Doug-Wilson&#39;s blogs">
-<meta property="og:description" content="计算机程序基本知识这两天空闲时间比较多一些，打算把计算机一些基本知识再看一看，写一些总结，也当作复习。以下内容参考自书籍 ：  《程序是怎样跑起来的》">
+<meta property="og:description" content="这两天空闲时间比较多一些，打算把计算机一些基本知识再看一看，写一些总结，也当作复习。以下内容参考自书籍 ：  《程序是怎样跑起来的》">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="f:/HexoBlog/blog/source/images/CPU构成.png">
-<meta property="og:image" content="f:/HexoBlog/blog/source/images/寄存器.png">
-<meta property="og:image" content="f:/HexoBlog/blog/source/images/标志寄存器状态.png">
-<meta property="og:image" content="f:/HexoBlog/blog/source/images/IC集成电路.png">
-<meta property="og:image" content="f:/HexoBlog/blog/source/images/浮点数.png">
-<meta property="og:image" content="f:/HexoBlog/blog/source/images/浮点数表示.png">
-<meta property="og:image" content="f:/HexoBlog/blog/source/images/CALL和RET指令.png">
-<meta property="og:image" content="f:/HexoBlog/blog/source/images/内存IC.png">
-<meta property="og:image" content="f:/HexoBlog/blog/source/images/磁盘划分.png">
-<meta property="og:image" content="f:/HexoBlog/blog/source/images/哈夫曼压缩算法过程.png">
+<meta property="og:image" content="http://example.com/images/CPU%E6%9E%84%E6%88%90.png">
+<meta property="og:image" content="http://example.com/images/%E5%AF%84%E5%AD%98%E5%99%A8.png">
+<meta property="og:image" content="http://example.com/images/%E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A8%E7%8A%B6%E6%80%81.png">
+<meta property="og:image" content="http://example.com/images/IC%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF.png">
+<meta property="og:image" content="http://example.com/images/%E6%B5%AE%E7%82%B9%E6%95%B0.png">
+<meta property="og:image" content="http://example.com/F:/HexoBlog/blog/source/images/浮点数表示.png">
+<meta property="og:image" content="http://example.com/images/CALL%E5%92%8CRET%E6%8C%87%E4%BB%A4.png">
+<meta property="og:image" content="http://example.com/images/%E5%86%85%E5%AD%98IC.png">
+<meta property="og:image" content="http://example.com/images/%E7%A3%81%E7%9B%98%E5%88%92%E5%88%86.png">
+<meta property="og:image" content="http://example.com/images/%E5%93%88%E5%A4%AB%E6%9B%BC%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95%E8%BF%87%E7%A8%8B.png">
 <meta property="article:published_time" content="2020-01-11T00:37:11.000Z">
-<meta property="article:modified_time" content="2021-05-12T03:02:53.814Z">
+<meta property="article:modified_time" content="2021-05-27T01:44:19.351Z">
 <meta property="article:author" content="Doug-Wilson">
 <meta property="article:tag" content="计算机, 程序">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="f:/HexoBlog/blog/source/images/CPU构成.png">
+<meta name="twitter:image" content="http://example.com/images/CPU%E6%9E%84%E6%88%90.png">
 
 
 
@@ -403,7 +403,7 @@
       
 
       
-        <h1 id="计算机程序基本知识"><a href="#计算机程序基本知识" class="headerlink" title="计算机程序基本知识"></a>计算机程序基本知识</h1><p>这两天空闲时间比较多一些，打算把计算机一些基本知识再看一看，写一些总结，也当作复习。以下内容参考自书籍 ：</p>
+        <p>这两天空闲时间比较多一些，打算把计算机一些基本知识再看一看，写一些总结，也当作复习。以下内容参考自书籍 ：</p>
 <blockquote>
 <p>《程序是怎样跑起来的》</p>
 </blockquote>
@@ -415,7 +415,7 @@
 <p><strong>CPU硬件组成：CPU和内存都是由若干晶体管组成的电子部件，通常称为IC (Integrated Circuit)集成电路</strong></p>
 <p><strong>CPU构成：寄存器、控制器、运算器、时钟。各部分间由电信号相互连通</strong></p>
 </blockquote>
-<h4 id="CPU构成"><a href="#CPU构成" class="headerlink" title="CPU构成"></a>CPU构成</h4><p><img src="F:\HexoBlog\blog\source\images\CPU构成.png"></p>
+<h4 id="CPU构成"><a href="#CPU构成" class="headerlink" title="CPU构成"></a>CPU构成</h4><p><img src="/images/CPU%E6%9E%84%E6%88%90.png"></p>
 <blockquote>
 <p>控制器：将内存中的指令，数据读入寄存器，并根据指令的执行结果控制整个计算机</p>
 </blockquote>
@@ -427,10 +427,10 @@
 </blockquote>
 <blockquote>
 <p>寄存器：暂存指令，数据等处理对象。因此，程序常常将寄存器当作对象进行描述，比如汇编语言：mov eax, dword ptr[ebp-8];  含义就是把寄存器ebp地址8的内容复制到eax寄存器中。而寄存器根据其保存的对象不同，将寄存器分成了以下几类：</p>
-<p><img src="F:\HexoBlog\blog\source\images\寄存器.png"></p>
+<p><img src="/images/%E5%AF%84%E5%AD%98%E5%99%A8.png"></p>
 <p><strong>其中，基址寄存器、变址寄存器、通用寄存器可以有多个，其它寄存器只有一个</strong></p>
 <p>标志寄存器：这是一个比较有意思的寄存器。条件分支和循环中的跳转指令都会参照当前标志寄存器中的数值来判断是否进行跳转。而标志寄存器中的数值由3个位表示，负位，零位，正位。如下图：</p>
-<p><img src="F:\HexoBlog\blog\source\images\标志寄存器状态.png"></p>
+<p><img src="/images/%E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A8%E7%8A%B6%E6%80%81.png"></p>
 <p>当运算结果为负值，负位就会置为1；当运算结果为0，零位就会置为1；当运算结果为正值，正位就会置为1.</p>
 <p>运算结果的计算过程：比如要比较累加寄存器中XXX值和通用寄存器中YYY值，执行比较指令后，CPU的运算会在内部进行XXX-YYY减法运算。而无论剑法运算的结果为正数，负数，还是零，都会保存到标志寄存器中。结果为正，表示XXX比YYY大，标志寄存器的正位置为1；结果为0，表示XXX和YYY相等，标志寄存器的零位置为1；结果为负值，表示XXX比YYY小，标志寄存器的负位置为1.</p>
 <blockquote>
@@ -439,15 +439,15 @@
 </blockquote>
 <h3 id="计算机的二进制"><a href="#计算机的二进制" class="headerlink" title="计算机的二进制"></a>计算机的二进制</h3><blockquote>
 <p>前面说过，CPU是由IC集成电路组成的，而IC通常如下：</p>
-<p><img src="F:\HexoBlog\blog\source\images\IC集成电路.png"></p>
+<p><img src="/images/IC%E9%9B%86%E6%88%90%E7%94%B5%E8%B7%AF.png"></p>
 <p>所有引脚只有直流电压0V或5V两个状态，也就说一个引脚只能表示两个状态。IC的这个特性，决定了计算机的信息，只能通过二进制数来处理。</p>
 <h4 id="二进制表示的数和运算"><a href="#二进制表示的数和运算" class="headerlink" title="二进制表示的数和运算"></a>二进制表示的数和运算</h4><p>正数用原码表示；负数用补码表示。这样做的原因是将计算机中的减法运算，转化成加法运算。比如1-1实际上为1+(-1) ：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">的二进制数：</span> <span class="number">0000 </span><span class="number">0001</span></span><br><span class="line"><span class="number">-1</span><span class="string">的二进制数：1111</span> <span class="number">1111   </span><span class="number">1000 </span><span class="number">0001</span><span class="string">取反加1</span></span><br><span class="line"><span class="number">1</span><span class="number">-1</span> <span class="string">变为</span> <span class="number">1</span><span class="string">+(-1):</span>   <span class="number">0000 </span><span class="number">0001</span></span><br><span class="line">                 <span class="string">+1111</span> <span class="number">1111</span></span><br><span class="line">                  <span class="number">0000 </span><span class="number">0000</span> <span class="string">等于0</span></span><br><span class="line"><span class="string">例2：2的二进制数</span>  <span class="number">0000 </span><span class="number">0010</span></span><br><span class="line">    <span class="number">-3</span><span class="string">的二进制数</span> <span class="number">1111 </span><span class="number">1101   </span><span class="number">1000 </span><span class="number">0011</span><span class="string">取反加1</span></span><br><span class="line"><span class="number">2</span><span class="number">-3</span> <span class="string">变为</span> <span class="number">2</span><span class="string">+(-3)：</span> <span class="number">0000 </span><span class="number">0010</span></span><br><span class="line">				<span class="string">+1111</span> <span class="number">1101</span></span><br><span class="line">				 <span class="number">1111 </span><span class="number">1111</span> <span class="string">等于-1</span></span><br></pre></td></tr></table></figure>
 
 <h4 id="浮点数表示"><a href="#浮点数表示" class="headerlink" title="浮点数表示"></a>浮点数表示</h4><p>有些浮点数在计算机中是无法表示的，只能近似表示：比如十进制0.1无法用二进制表示，只能近似表示。如何规避浮点数错误？<strong>无视错误，或将小数转换成整数后计算</strong></p>
 <p>那如何用二进制表示浮点数？</p>
-<p><img src="F:\HexoBlog\blog\source\images\浮点数.png"></p>
-<img src="F:\HexoBlog\blog\source\images\浮点数表示.png" style="zoom:75%;" />
+<p><img src="/images/%E6%B5%AE%E7%82%B9%E6%95%B0.png"></p>
+<img src="/F:/HexoBlog\blog\source\images\浮点数表示.png" style="zoom:75%;">
 $$
 
 <p>$$<br><strong>其中正负号为符号位，m为尾数，2为基数，e为指数</strong></p>
@@ -516,7 +516,7 @@ $$
 </tr>
 </tbody></table>
 <p>指令的跳转调用的是jump指令，一旦跳转后就不需要返回了，而函数的跳转调用的是CALL指令和RET指令的组合。当函数被调用时，调用CALL指令跳转到函数执行的起始地址，当函数执行完毕，需要调用RET指令返回到原来的调用点，执行调用点的下一条指令。</p>
-<p><img src="F:\HexoBlog\blog\source\images\CALL和RET指令.png"></p>
+<p><img src="/images/CALL%E5%92%8CRET%E6%8C%87%E4%BB%A4.png"></p>
 </blockquote>
 <h2 id="求余"><a href="#求余" class="headerlink" title="求余"></a>求余</h2><blockquote>
 <p>这部分经常遇到，也经常忘记。</p>
@@ -527,7 +527,7 @@ $$
 <h2 id="内存，或者称为主存"><a href="#内存，或者称为主存" class="headerlink" title="内存，或者称为主存"></a>内存，或者称为主存</h2><blockquote>
 <p>主存通过控制芯片等与CPU相连，主要负责存储指令和数据。在主存中，每个字节都有一个地址编号，CPU可以通过该地址读取主存中的指令和数据，或者写入数据。</p>
 <p>前面说过，CPU和主存都是通过IC构成的，通常主存的IC引脚可以分为如下几部分：电源、地址引脚、数据引脚、控制引脚。</p>
-<p><img src="F:\HexoBlog\blog\source\images\内存IC.png"></p>
+<p><img src="/images/%E5%86%85%E5%AD%98IC.png"></p>
 <p>VCC和GND为电源引脚：为内存IC提供电源</p>
 <p>A0~A9为地址引脚(Address)：指定数据存储的场所</p>
 <p>D0~D7为数据引脚：写入数据或读取数据</p>
@@ -545,7 +545,7 @@ $$
 <h2 id="磁盘存储"><a href="#磁盘存储" class="headerlink" title="磁盘存储"></a>磁盘存储</h2><blockquote>
 <p>磁盘的物理结构：磁盘是通过其物理表明划分成多个空间来使用。划分的方式有扇区方式和可变长方式两种。扇区方式将磁盘划分成固定长度的空间，而可变长方式则将磁盘划分成长度可变的空间。</p>
 <p>大部分磁盘采用的是扇区的方式划分磁盘。扇区划分方式中，把磁盘表面分成若干个同心圆的空间就是磁道，而把磁道按照固定大小长度划分成的空间就是扇区。</p>
-<p><img src="F:\HexoBlog\blog\source\images\磁盘划分.png"></p>
+<p><img src="/images/%E7%A3%81%E7%9B%98%E5%88%92%E5%88%86.png"></p>
 <p>一般而言，一个扇区大小为512字节，也就是说无论文件多小，只要文件有内容，且不超过512字节，那么它就会占据512字节的磁盘空间。</p>
 <p>而且通过图我们可以很容易看出，外圈磁道拥有更多的扇区。</p>
 </blockquote>
@@ -559,7 +559,7 @@ $$
 <p>哈夫曼压缩算法为：先将文件中字符出现的频率由高到低进行排序，然后从低频率的字符开始拼接成二叉树，位于左枝的边为0，位于右枝的边为1。</p>
 <p>比如：AAAAAA BB C DD EEEEE F</p>
 <p>统计后：A(6) E(5) B(2) D(2) C(1) F(1)，然后有如下过程：</p>
-<p><img src="F:\HexoBlog\blog\source\images\哈夫曼压缩算法过程.png"></p>
+<p><img src="/images/%E5%93%88%E5%A4%AB%E6%9B%BC%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95%E8%BF%87%E7%A8%8B.png"></p>
 <p>从而得到字符的编码：</p>
 <table>
 <thead>
@@ -712,7 +712,7 @@ $$
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">73</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -725,7 +725,7 @@ $$
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -758,7 +758,7 @@ $$
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">计算机程序基本知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.1.</span> <span class="nav-text">程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU"><span class="nav-number">1.2.</span> <span class="nav-text">CPU</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CPU%E6%9E%84%E6%88%90"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">CPU构成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6"><span class="nav-number">1.2.1.</span> <span class="nav-text">计算机的二进制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E8%A1%A8%E7%A4%BA%E7%9A%84%E6%95%B0%E5%92%8C%E8%BF%90%E7%AE%97"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">二进制表示的数和运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E6%95%B0%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">浮点数表示</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%9C%BA%E5%99%A8%E8%AF%AD%E8%A8%80%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.</span> <span class="nav-text">常用机器语言指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%82%E4%BD%99"><span class="nav-number">1.4.</span> <span class="nav-text">求余</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%EF%BC%8C%E6%88%96%E8%80%85%E7%A7%B0%E4%B8%BA%E4%B8%BB%E5%AD%98"><span class="nav-number">1.5.</span> <span class="nav-text">内存，或者称为主存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E4%B8%8E%E6%95%B0%E7%BB%84"><span class="nav-number">1.5.0.1.</span> <span class="nav-text">内存与数组</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E5%AD%98%E5%82%A8"><span class="nav-number">1.6.</span> <span class="nav-text">磁盘存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%88%E5%A4%AB%E6%9B%BC%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95"><span class="nav-number">1.7.</span> <span class="nav-text">哈夫曼压缩算法</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.</span> <span class="nav-text">程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU"><span class="nav-number">2.</span> <span class="nav-text">CPU</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CPU%E6%9E%84%E6%88%90"><span class="nav-number">2.0.1.</span> <span class="nav-text">CPU构成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6"><span class="nav-number">2.1.</span> <span class="nav-text">计算机的二进制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E8%A1%A8%E7%A4%BA%E7%9A%84%E6%95%B0%E5%92%8C%E8%BF%90%E7%AE%97"><span class="nav-number">2.1.1.</span> <span class="nav-text">二进制表示的数和运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E6%95%B0%E8%A1%A8%E7%A4%BA"><span class="nav-number">2.1.2.</span> <span class="nav-text">浮点数表示</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%9C%BA%E5%99%A8%E8%AF%AD%E8%A8%80%E6%8C%87%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">常用机器语言指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%82%E4%BD%99"><span class="nav-number">4.</span> <span class="nav-text">求余</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%EF%BC%8C%E6%88%96%E8%80%85%E7%A7%B0%E4%B8%BA%E4%B8%BB%E5%AD%98"><span class="nav-number">5.</span> <span class="nav-text">内存，或者称为主存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E4%B8%8E%E6%95%B0%E7%BB%84"><span class="nav-number">5.0.1.</span> <span class="nav-text">内存与数组</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E5%AD%98%E5%82%A8"><span class="nav-number">6.</span> <span class="nav-text">磁盘存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%88%E5%A4%AB%E6%9B%BC%E5%8E%8B%E7%BC%A9%E7%AE%97%E6%B3%95"><span class="nav-number">7.</span> <span class="nav-text">哈夫曼压缩算法</span></a></li></ol></div>
             
 
           </div>

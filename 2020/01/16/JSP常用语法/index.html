@@ -129,15 +129,15 @@
 
 
 
-<meta name="description" content="JSP常用语法JSP页面本质上为一个Servlet程序，当我们第一次访问JSP页面时，服务器会将JSP页面翻译成一个Servlet类。比如，一个JSP文件为 user.jsp  那么就会被翻译成 public final class user_jsp extends HttpJspBase implements… 而HttpJspBase extends HttpServlet implement">
+<meta name="description" content="JSP页面本质上为一个Servlet程序，当我们第一次访问JSP页面时，服务器会将JSP页面翻译成一个Servlet类。比如，一个JSP文件为 user.jsp  那么就会被翻译成 public final class user_jsp extends HttpJspBase implements… 而HttpJspBase extends HttpServlet implements HttpJ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JSP常用语法">
 <meta property="og:url" content="http://example.com/2020/01/16/JSP%E5%B8%B8%E7%94%A8%E8%AF%AD%E6%B3%95/index.html">
 <meta property="og:site_name" content="Doug-Wilson&#39;s blogs">
-<meta property="og:description" content="JSP常用语法JSP页面本质上为一个Servlet程序，当我们第一次访问JSP页面时，服务器会将JSP页面翻译成一个Servlet类。比如，一个JSP文件为 user.jsp  那么就会被翻译成 public final class user_jsp extends HttpJspBase implements… 而HttpJspBase extends HttpServlet implement">
+<meta property="og:description" content="JSP页面本质上为一个Servlet程序，当我们第一次访问JSP页面时，服务器会将JSP页面翻译成一个Servlet类。比如，一个JSP文件为 user.jsp  那么就会被翻译成 public final class user_jsp extends HttpJspBase implements… 而HttpJspBase extends HttpServlet implements HttpJ">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-01-16T05:17:02.000Z">
-<meta property="article:modified_time" content="2021-05-12T13:45:12.933Z">
+<meta property="article:modified_time" content="2021-05-27T01:47:08.074Z">
 <meta property="article:author" content="Doug-Wilson">
 <meta property="article:tag" content="JSP">
 <meta name="twitter:card" content="summary">
@@ -392,7 +392,7 @@
       
 
       
-        <h1 id="JSP常用语法"><a href="#JSP常用语法" class="headerlink" title="JSP常用语法"></a>JSP常用语法</h1><p>JSP页面本质上为一个Servlet程序，当我们第一次访问JSP页面时，服务器会将JSP页面翻译成一个Servlet类。比如，一个JSP文件为 user.jsp  那么就会被翻译成 public final class user_jsp extends HttpJspBase implements…</p>
+        <p>JSP页面本质上为一个Servlet程序，当我们第一次访问JSP页面时，服务器会将JSP页面翻译成一个Servlet类。比如，一个JSP文件为 user.jsp  那么就会被翻译成 public final class user_jsp extends HttpJspBase implements…</p>
 <p>而HttpJspBase extends HttpServlet implements HttpJspPage</p>
 <p>具体做的事情给个简单例子：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page contentType=<span class="string">&quot;text/html;charset=utf-8&quot;</span> language=<span class="string">&quot;java&quot;</span>%&gt;</span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></span></span><br><span class="line"><span class="xml">    	......</span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="xml">    	......</span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
@@ -427,6 +427,24 @@
 <blockquote>
 <p><strong>Java代码脚本：相当于在编译后的Servlet类的_jspService方法中定义代码内容</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">12</span>;</span><br><span class="line">	System.out.println(<span class="string">&quot;i的值：&quot;</span> + i);</span><br><span class="line">%&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">//等同于</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">_jspService</span><span class="params">(HttpServletRequest request, HttpServletResponse response&#123;</span></span></span><br><span class="line"><span class="params"><span class="function">	//省略其它内容</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">int</span> i = <span class="number">12</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    System.out.println(<span class="string">&quot;i的值：&quot;</span> + i)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p><strong>JSP的两种include指令机制：</strong></p>
+<p><code>&lt;%@ include file=”header.jsp” %&gt;</code> 也称为include指令。通过file属性来指定包含的页面，当JSP转换成Servlet时引入指定文件。</p>
+<p><code>&lt;jsp:include page=”header.jsp” /&gt;</code> 也称为include动作。通过page属性来指定被包含的页面，当JSP页面被请求时引入指定文件，通常用于经常改动的JSP页面，且因为被包含的JSP的改动不会影响到包含的JSP，因此不需要对包含文件进行重新编译。</p>
+<p>用法区别：</p>
+<ol>
+<li>引入的内容不同，执行时间不同</li>
+</ol>
+<p>  &lt;%@include file=””%&gt; (静态包含)将被包含的文件原封不动第插入到包含页面中使用该指令的位置，然后JSP编译器再对这个合成的文件进行编译，最终编译后的文件只有一个，在翻译阶段执行。</p>
+<p>  (该指令属于编译指令，发生在JSP转换为Servlet阶段。简单来说，就是在转换阶段将被包含的文件内容复制到当前页面中，然后和当前页面一起编译生成一个Servlet文件。由于容器是把两个文件合并后再执行编译，所以编译后只会生成一个class文件，因此，不管是主文件或者是被包含文件发送改变，容器都需要重新编译主文件。所以，一般而言，include指令包含静态的资源文件，比如页眉和页脚。)</p>
+<ol start="2">
+<li>&lt;jsp:include page=””/&gt; (动态包含)包含文件时，当该动作标识执行后，JSP程序会将请求转发到(不是重定向)被包含页面，并将执行结果输出到浏览器中，然后继续执行后面的代码，因为web容器执行两个文件，所以JSP编译器会分别对这两个文件进行编译，在请求处理阶段执行。</li>
+</ol>
+<p>  (该动作属于运行时方法调用，发生再运行Servlet生成响应的阶段。简单来说，就是在运行servlet时插入被包含文件的响应内容。该动作的关键在于，容器需要根据页面属性创建出一个RequestDispatcher并调用include()方法，将被包含文件的响应插到当前响应中，然后一起输出。</p>
+<p>  使用include动作时，容器会分别对主文件和被包含文件进行单独的编译，所以编译后会产生两个class文件。另外，被包含文件的编译工作是在主文件运行时发生的。因此，被包含文件发送改变时，只需要重新编译被包含文件即可，而无须重新编译主文件。一般使用include动作包含经常需要变动的文件。)</p>
+<p>使用注意：<br>对于include指令，由于是在编译时包含源文件，所以被包含页面可以包含可能影响主页面的JSP构造，如文档类型的设定等，不过要避免声明相同的变量或方法，否则会产生编译错误。</p>
+<p>对于include动作，由于是在运行时包含响应内容，因此被包含页面不能使用任何会影响主页面的JSP构造。另外被包含页面不能包含开始和结束html及body标签。被包含页面不能修改响应状态码或者设置首部。</p>
 </blockquote>
 <h2 id="JSP内置对象"><a href="#JSP内置对象" class="headerlink" title="JSP内置对象"></a>JSP内置对象</h2><blockquote>
 <h4 id="request-response-session-application-out-pageContext-config-page-exception"><a href="#request-response-session-application-out-pageContext-config-page-exception" class="headerlink" title="request/response/session/application/out/pageContext/config/page/exception"></a>request/response/session/application/out/pageContext/config/page/exception</h4></blockquote>
@@ -663,7 +681,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">73</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -676,7 +694,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -709,7 +727,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JSP%E5%B8%B8%E7%94%A8%E8%AF%AD%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">JSP常用语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%8C%87%E4%BB%A4"><span class="nav-number">1.1.</span> <span class="nav-text">基本指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSP%E5%86%85%E7%BD%AE%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.2.</span> <span class="nav-text">JSP内置对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#request-response-session-application-out-pageContext-config-page-exception"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">request&#x2F;response&#x2F;session&#x2F;application&#x2F;out&#x2F;pageContext&#x2F;config&#x2F;page&#x2F;exception</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EL%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">EL表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSTL"><span class="nav-number">1.4.</span> <span class="nav-text">JSTL</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%8C%87%E4%BB%A4"><span class="nav-number">1.</span> <span class="nav-text">基本指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSP%E5%86%85%E7%BD%AE%E5%AF%B9%E8%B1%A1"><span class="nav-number">2.</span> <span class="nav-text">JSP内置对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#request-response-session-application-out-pageContext-config-page-exception"><span class="nav-number">2.0.1.</span> <span class="nav-text">request&#x2F;response&#x2F;session&#x2F;application&#x2F;out&#x2F;pageContext&#x2F;config&#x2F;page&#x2F;exception</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EL%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">EL表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSTL"><span class="nav-number">4.</span> <span class="nav-text">JSTL</span></a></li></ol></div>
             
 
           </div>

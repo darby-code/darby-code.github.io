@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="计算机网络, 基本概述," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="网络协议网络协议类似于人类协议，除了交换报文和采取动作的实体是通过设备的硬件或软件组件。在因特网中，凡是涉及到两个及两个以上远程通信实体的活动都要受到协议的制约。 比如，在两台物理上连接的计算机中，硬件实现的协议控制了两块网络接口卡间的比特流；在计算机端系统中，拥塞控制协议控制了发送方和接受方之间传输的分组发送的速率；在web应用中，HTTP协议控制了请求报文格式，响应报文格式，当客户端向web服">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络之基本概述">
+<meta property="og:url" content="http://example.com/2020/07/10/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%B9%8B%E5%9F%BA%E6%9C%AC%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:site_name" content="Doug-Wilson&#39;s blogs">
+<meta property="og:description" content="网络协议网络协议类似于人类协议，除了交换报文和采取动作的实体是通过设备的硬件或软件组件。在因特网中，凡是涉及到两个及两个以上远程通信实体的活动都要受到协议的制约。 比如，在两台物理上连接的计算机中，硬件实现的协议控制了两块网络接口卡间的比特流；在计算机端系统中，拥塞控制协议控制了发送方和接受方之间传输的分组发送的速率；在web应用中，HTTP协议控制了请求报文格式，响应报文格式，当客户端向web服">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/%E7%BD%91%E7%BB%9C%E6%A0%B8%E5%BF%83.png">
+<meta property="og:image" content="http://example.com/images/%E4%BC%A0%E8%BE%93%E7%AD%89%E5%BE%85%E6%9C%BA%E5%88%B6.png">
+<meta property="og:image" content="http://example.com/images/FDM%E5%92%8CTDM.png">
+<meta property="og:image" content="http://example.com/images/%E5%8D%8F%E8%AE%AE%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B.png">
+<meta property="og:image" content="http://example.com/images/%E4%BC%A0%E8%BE%93%E8%BF%87%E7%A8%8B.png">
+<meta property="article:published_time" content="2020-07-10T01:32:07.000Z">
+<meta property="article:modified_time" content="2021-05-27T13:21:16.364Z">
+<meta property="article:author" content="Doug-Wilson">
+<meta property="article:tag" content="计算机网络, 基本概述">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/%E7%BD%91%E7%BB%9C%E6%A0%B8%E5%BF%83.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2020/07/10/计算机网络之基本概述/"/>
+
+
+
+
+
+  <title>计算机网络之基本概述 | Doug-Wilson's blogs</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+		<a target="_blank" rel="noopener" href="https://your-url" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Doug-Wilson's blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">学无止境，积累技术</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-主页">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            主页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-关于">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-标签">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-目录">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归类">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-时间表">
+          <a href="/schedule/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            时间表
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/10/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%B9%8B%E5%9F%BA%E6%9C%AC%E6%A6%82%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Doug-Wilson's blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">计算机网络之基本概述</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-10T09:32:07+08:00">
+                2020-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="网络协议"><a href="#网络协议" class="headerlink" title="网络协议"></a>网络协议</h2><p>网络协议类似于人类协议，除了交换报文和采取动作的实体是通过设备的硬件或软件组件。在因特网中，凡是涉及到两个及两个以上远程通信实体的活动都要受到协议的制约。</p>
+<p>比如，在两台物理上连接的计算机中，硬件实现的协议控制了两块网络接口卡间的比特流；在计算机端系统中，拥塞控制协议控制了发送方和接受方之间传输的分组发送的速率；在web应用中，HTTP协议控制了请求报文格式，响应报文格式，当客户端向web服务器发送一条连接请求报文，等待回答，而web服务器在收到连接请求报文后，要返回一条连接响应报文。</p>
+<p>从上述例子可知，网络协议可定义成如下语句：</p>
+<p><em>协议定义了在两个或多个通信实体之间交换的报文格式和次序，以及报文发送或接收一条报文或其他事件所采取的动作。</em></p>
+<h2 id="网络边缘"><a href="#网络边缘" class="headerlink" title="网络边缘"></a>网络边缘</h2><p>和因特网相连的计算机和其他设备都位于因特网中的“端点”，即因特网的边缘，所以也通常被称为端系统。因特网的端系统包括桌面计算机和移动计算机，以及越来越多的其他类型设备，比如共享单车等。</p>
+<p>端系统也称为主机，因为它们容纳应用程序。所以，主机和端系统是两个相等的概念。而主机有时会被进一步划分成两类：<strong>客户(client)</strong> 和 <strong>服务器(server)</strong> 。客户大约等同于桌面PC、移动PC和智能手机等，而服务器则大约等同于强大的及其，用于存储和发布web页面、流视频等。</p>
+<h2 id="接入网"><a href="#接入网" class="headerlink" title="接入网"></a>接入网</h2><p>接入网则是将端系统连接到<strong>边路由器</strong>的物理链路。边路由器是端系统到任何其他远程端系统路径上的第一台路由器。</p>
+<h2 id="网络核心"><a href="#网络核心" class="headerlink" title="网络核心"></a>网络核心</h2><p>网络核心，即由互联网端系统分组交换机和链路构成的网状网络。</p>
+<p><img src="/images/%E7%BD%91%E7%BB%9C%E6%A0%B8%E5%BF%83.png"></p>
+<h3 id="分组交换"><a href="#分组交换" class="headerlink" title="分组交换"></a>分组交换</h3><p>在各种网络应用中，端系统彼此间交换**报文(message)**。报文能够包含协议设计者需要的任何东西。</p>
+<p>为了从源端系统向目的端系统发送一个报文，源端系统会将报文划分成较小的数据块，称之为<strong>分组(packet)<strong>。在源端系统和目的端系统间，每个分组都会通过通信链路和</strong>分组交换机(packet switch) 主要包括路由器和链路层交换机</strong>进行传输。</p>
+<p>因此，分组的传输速率和通信链路的传输速率有关，比如一个分组有 L 比特，链路的传输速率为 R比特/秒 ，则传输该分组的理论时间为 L/R 秒。</p>
+<h4 id="存储转发"><a href="#存储转发" class="headerlink" title="存储转发"></a>存储转发</h4><p>多数分组交换机在链路的输入端使用**存储转发传输(store and forward transmission)**机制。存储转发机制是指在交换机能够开始向输出链路传输该分组的第一个比特之前，必须接收到整个分组。  </p>
+<p><img src="/images/%E4%BC%A0%E8%BE%93%E7%AD%89%E5%BE%85%E6%9C%BA%E5%88%B6.png"></p>
+<p>比如上述这个例子，源端系统要发送4个分组，该路由器（交换机）的任务就是将一个分组交换到一条出链路。当在某个时刻，源端系统传输了分组1的一部分（假设为分组1），分组1的前沿部分已经到达了路由器，但是因为该路由器应用了存储转发机制，所以这时候它还不能传输已经接收的比特，而是必须先缓存分组1已经达到路由器的比特，只有当路由器接收完分组1的所有比特，它才会向出链路传输该分组，目的端系统才能接收到分组数据。</p>
+<p>由于存储转发机制的存在，该机制也会产生一定的时延，称该时延为存储转发时延。</p>
+<h4 id="排队时延和分组丢失"><a href="#排队时延和分组丢失" class="headerlink" title="排队时延和分组丢失"></a>排队时延和分组丢失</h4><p>每个分组交换机有多条链路与之相连，而对于每条相连的链路，分组交换机具有一个**输出缓存(output buffer)**（也称为 **输出队列(output queue)**），用于存储路由器出链路的分组。</p>
+<p>输出缓存在分组交换中有着重要的作用。如果到达的分组需要传输到某条链路，但是发现该链路正忙于传输其他分组，那么该到达的分组必须在该输出缓存中等待。因此，除了存储转发时延外，分组还会有输出缓存的**排队时延(queue delay)**。</p>
+<p>因为缓存空间的大小是有限的，因此，一个分组到达路由器时，有可能缓存已经被其他等待传输的分组占满了。此情况下，就会出现**分组丢失(packet lost)**，到达的分组或者排队的分组之一就会被丢弃。</p>
+<h4 id="转发表和路由选择协议"><a href="#转发表和路由选择协议" class="headerlink" title="转发表和路由选择协议"></a>转发表和路由选择协议</h4><p>路由器从与它相连的一条通信链路得到分组，向另一条与它相连的通信链路转发。路由器如何选择转发分组的链路？</p>
+<p>分组的首部都会包含目的端系统的IP地址。当一个分组到达网络中的路由器时，路由器检查该分组的目的地址，根据该目的地址（或者目的地址一部分）搜索**转发表(forwarding table)**，以发现合适的出链路，然后将该分组导向该出链路。</p>
+<p>而转发表的设置则是由**路由选择协议(routing protocol)**来完成。路由选择协议可以决定从每台路由器到每个目的地的最短路径，并使用这些最短路径结果来配置路由器的转发表。</p>
+<h4 id="时延"><a href="#时延" class="headerlink" title="时延"></a>时延</h4><p>主要包括：**节点处理时延(nodal procession delay)、排队时延(queuing delay)、传输时延(transmission delay)、传播时延(propagation delay)**。</p>
+<ol>
+<li>处理时延。检查分组首部和决定将分组导向相应链路所需要的时间。</li>
+<li>排队时延。分组在链路上等待传输时所需要的时间。该时延大小取决于正在排队等待向链路传输的分组数量。</li>
+<li>传输时延。将分组所有的比特发送到链路所需要的时间。</li>
+<li>传播时延。分组数据从链路起点到达下一个节点传播所需要的时间。</li>
+</ol>
+<h3 id="电路交换"><a href="#电路交换" class="headerlink" title="电路交换"></a>电路交换</h3><p>**电路交换(circuit switching)**在电路交换网络中，会预留端系统会话期间通信沿路径所需要的资源（缓存，链路传输速率）。在分组交换网络中，这些资源是不预留的。</p>
+<p>传统的电话网络是电路交换网络的例子。考虑当一个人通过电话网向另一个人发送信息所发生的情况。在发送方能够发送信息之前，该网络必须在发送方和接收方间建立一条连接，并且沿着发送方和接收方上的交换机都会为该连接维护连接状态。用电话的术语来说，该连接被称为一条**电路(circuit)*<em>。当网络创建这种电路时，也会在连接期间在该网络链路上预留恒定的传输速率，因此，发送方能够以</em>确保*的恒定速率向接收方传送数据。</p>
+<h4 id="电路交换网络中的复用"><a href="#电路交换网络中的复用" class="headerlink" title="电路交换网络中的复用"></a>电路交换网络中的复用</h4><p>链路中的电路通过<strong>频分复用(Frequency-Division Multiplexing FDM)</strong> 或 <strong>时分复用(Time-Division Multiplexing TDM)</strong> 实现。对于频分复用FDM，链路的频谱由跨越链路创建的所有连接所共享。特别是，在连接期间链路为每条连接专用一个频段，该频段的宽度称为**带宽(bandwidth)**。</p>
+<p>对于时分复用TDM，链路的时间被划分为固定区间的帧，并且每帧又被划分成固定数量的间隙。当网络跨越一条链路创建一条连接时，网络在每个帧中为该连接指定一个时隙。这些时隙专门由该连接单独使用，连接在一个时隙（在每个帧内）可用于传输该连接的数据。</p>
+<p><img src="/images/FDM%E5%92%8CTDM.png"></p>
+<blockquote>
+<p>假设从主机A到主机B经过一个电路交换网络发送一个64000比特的文件。加入在该网络中链路使用24时隙的TDM，具有1.536Mbps的比特速率。同时假定主机A在开始传输该文件时，需要500ms去创建一条端到端电路。那么传输文件的时间可以进行如下计算：</p>
+<p>每条链路具有的传输速率是：1.536Mbps/24 = 64kbps</p>
+<p>传输文件时间：640kb / 64kbps = 10s 再加上电路创建的时间，时间就变为10.5秒</p>
+<p>该传输时间和链路数量无关：不管端到端的电路是一条链路还是100条链路，传输时间都是10秒</p>
+</blockquote>
+<h4 id="分组交换和电路交换的对比"><a href="#分组交换和电路交换的对比" class="headerlink" title="分组交换和电路交换的对比"></a>分组交换和电路交换的对比</h4><p>举一个例子：</p>
+<p>假定多个用户共享一条1Mbps链路，用户时而以100kbps恒定速率产生数据，时而不产生数据，并且用户只有10%时间活跃。因此，对于电路交换而言，在所有时间内，必须为每个用户预留100kbps，比如对于TDM类型的电路交换，如果一个1s的帧被划分成10个时隙，每个时隙100ms，则每帧将为每个用户分配一个时隙。那么，该电路交换链路仅能支持10（1Mbps/100kbps）个并发用户。而对于分组交换而言，有11个或更多并发活跃用户的概率大概是0.0004，有10个或更少并发用户的概率是0.9996。因此，当有10个或更少活跃用户时，到达的聚合数据率小于等于该链路的输出速率1Mbps。当同时活跃用户超过10个时，分组的聚合到达率超过该链路的输出容量，输出队列将会开始变长，但是这个概率极小，所以，某种程度上，分组交换差不多提供了和电路交换相同的性能。</p>
+<p>现考虑第二个简单例子。假定就只有10个用户，某个用户突然产生了1000个1000比特分组，而其他用户保持沉默，不产生分组。那么在每帧具有10个时隙并且每个时隙包含1000比特的TDM电路交换情况下，活跃用户仅能使用每帧中的一个时隙来传输数据，而剩余的9个时隙保持空闲。该活跃用户传输完10万个比特的数据需要10s的时间。而在分组交换情况下，活跃用户能够连续地以1Mbps的全部链路速率发送其分组，因为没有其他用户产生分组域该活跃用户的分组进行复用。在此情况下，该活跃用户的所有数据将在1s内发送完毕。</p>
+<h2 id="网络协议层次"><a href="#网络协议层次" class="headerlink" title="网络协议层次"></a>网络协议层次</h2><p><img src="/images/%E5%8D%8F%E8%AE%AE%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B.png"></p>
+<ol>
+<li><p>应用层。应用层是网络应用程序及它们的应用层协议存留的地方。应用层包括许多协议，如HTTP协议（提供web文档的请求和传送）、SMTP协议（提供电子邮件报文的传输）、FTP协议（提供端系统间的文件传送）</p>
+<p>一个端系统中的应用程序使用协议与另一个端系统中的应用程序交换信息的分组，我们称之为<strong>报文(message)</strong></p>
+</li>
+<li><p>传输层。传输层在应用程序断点之间传送应用层报文。非常重要的两个协议TCP和UDP协议都能够完成应用层报文的传输。TCP提供面向连接的服务，能够确保应用层报文向目的端系统的传递和流量控制，并且将长报文划分成短报文，提供拥塞控制机制，当网络拥塞时，控制器传输速率。UDP则提供无连接服务，没有可靠性，没有流量控制，也没有拥塞控制。传输层的分组一般称为<strong>报文段(segment)</strong></p>
+</li>
+<li><p>网络层。网络层的分组称为**数据报(datagram)**。网络层负责将数据报从一台主机移动到另一台主机。极其重要的一个网络层协议就是IP协议，该协议定义了数据报各个字段的含义，让端系统和路由器知道如何读取这些字段。</p>
+</li>
+<li><p>链路层。网络层通过源端系统和目的端系统之间的路由器将分组从一个节点移动到下一个节点，而这必须依靠链路层的服务。特别是在每个节点，网络层将数据报下传给链路层，链路层沿着庐江将数据报传递给下个节点。而在下个节点中，链路层又会将数据报上传给网络层。链路层的分组我们称之为<strong>帧(frame)</strong></p>
+</li>
+<li><p>物理层。物理层的任务就是将帧的一个一个比特从一个节点移动到另一个节点，和实际的链路有关（双绞铜线、光纤等）。</p>
+</li>
+</ol>
+<h3 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h3><p><img src="/images/%E4%BC%A0%E8%BE%93%E8%BF%87%E7%A8%8B.png"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%9F%BA%E6%9C%AC%E6%A6%82%E8%BF%B0/" rel="tag"># 计算机网络, 基本概述</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/03/Spring%E5%A3%B0%E6%98%8E%E5%BC%8F%E4%BA%8B%E5%8A%A1%E5%8E%9F%E7%90%86/" rel="next" title="Spring声明式事务原理">
+                <i class="fa fa-chevron-left"></i> Spring声明式事务原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/07/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%B9%8B%E7%BD%91%E7%BB%9C%E5%B1%82/" rel="prev" title="计算机网络之网络层">
+                计算机网络之网络层 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.</span> <span class="nav-text">网络协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E8%BE%B9%E7%BC%98"><span class="nav-number">2.</span> <span class="nav-text">网络边缘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%85%A5%E7%BD%91"><span class="nav-number">3.</span> <span class="nav-text">接入网</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%A0%B8%E5%BF%83"><span class="nav-number">4.</span> <span class="nav-text">网络核心</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%BB%84%E4%BA%A4%E6%8D%A2"><span class="nav-number">4.1.</span> <span class="nav-text">分组交换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E8%BD%AC%E5%8F%91"><span class="nav-number">4.1.1.</span> <span class="nav-text">存储转发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%92%E9%98%9F%E6%97%B6%E5%BB%B6%E5%92%8C%E5%88%86%E7%BB%84%E4%B8%A2%E5%A4%B1"><span class="nav-number">4.1.2.</span> <span class="nav-text">排队时延和分组丢失</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%AC%E5%8F%91%E8%A1%A8%E5%92%8C%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%E5%8D%8F%E8%AE%AE"><span class="nav-number">4.1.3.</span> <span class="nav-text">转发表和路由选择协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%B6%E5%BB%B6"><span class="nav-number">4.1.4.</span> <span class="nav-text">时延</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B5%E8%B7%AF%E4%BA%A4%E6%8D%A2"><span class="nav-number">4.2.</span> <span class="nav-text">电路交换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%B5%E8%B7%AF%E4%BA%A4%E6%8D%A2%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E5%A4%8D%E7%94%A8"><span class="nav-number">4.2.1.</span> <span class="nav-text">电路交换网络中的复用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E7%BB%84%E4%BA%A4%E6%8D%A2%E5%92%8C%E7%94%B5%E8%B7%AF%E4%BA%A4%E6%8D%A2%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-number">4.2.2.</span> <span class="nav-text">分组交换和电路交换的对比</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E5%B1%82%E6%AC%A1"><span class="nav-number">5.</span> <span class="nav-text">网络协议层次</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%81%E8%A3%85"><span class="nav-number">5.1.</span> <span class="nav-text">封装</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Doug-Wilson</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/Gantzert_Felixander.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

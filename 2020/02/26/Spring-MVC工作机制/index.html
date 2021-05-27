@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="spring MVC," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Spring MVC的M、V、C是什么？Spring MVC用于帮助我们处理什么工作？Spring MVC如何允许？Spring MVC和Spring有什么关系？我希望自己能掌握明白。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring MVC工作机制">
+<meta property="og:url" content="http://example.com/2020/02/26/Spring-MVC%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/index.html">
+<meta property="og:site_name" content="Doug-Wilson&#39;s blogs">
+<meta property="og:description" content="Spring MVC的M、V、C是什么？Spring MVC用于帮助我们处理什么工作？Spring MVC如何允许？Spring MVC和Spring有什么关系？我希望自己能掌握明白。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/spring-MVC%E7%BB%84%E4%BB%B6%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/DispatcherServlet%E7%B1%BB%E7%BB%93%E6%9E%84%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/HandlerAdapter%E7%B1%BB%E7%BB%93%E6%9E%84%E5%9B%BE.png">
+<meta property="article:published_time" content="2020-02-26T10:49:33.000Z">
+<meta property="article:modified_time" content="2021-05-27T01:48:23.468Z">
+<meta property="article:author" content="Doug-Wilson">
+<meta property="article:tag" content="spring MVC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/spring-MVC%E7%BB%84%E4%BB%B6%E5%9B%BE.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2020/02/26/Spring-MVC工作机制/"/>
+
+
+
+
+
+  <title>Spring MVC工作机制 | Doug-Wilson's blogs</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+		<a target="_blank" rel="noopener" href="https://your-url" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Doug-Wilson's blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">学无止境，积累技术</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-主页">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            主页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-关于">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-标签">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-目录">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归类">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-时间表">
+          <a href="/schedule/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            时间表
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/02/26/Spring-MVC%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Doug-Wilson's blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring MVC工作机制</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-26T18:49:33+08:00">
+                2020-02-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Spring MVC的M、V、C是什么？Spring MVC用于帮助我们处理什么工作？Spring MVC如何允许？Spring MVC和Spring有什么关系？我希望自己能掌握明白。</p>
+<span id="more"></span>
+
+<h2 id="Spring-MVC概述"><a href="#Spring-MVC概述" class="headerlink" title="Spring MVC概述"></a>Spring MVC概述</h2><blockquote>
+<p>Spring MVC含有三个模块：模型(Model)、视图(View)、控制器(Controller)。模型封装了应用的数据和业务逻辑，视图负责应用的展示，控制器负责接收用户的请求，用于改变模型和调整视图的显示。</p>
+<p>Spring MVC中，DispatcherServlet用于负责接收并处理所有web请求，并根据具体的处理逻辑，委派给下一控制器实现。</p>
+<p>Spring MVC作用就是处理web请求，将请求分派给对应的业务逻辑处理。其处理请求过程如下：</p>
+<ol>
+<li>web请求到达DispatcherServlet后，DispatcherServlet将寻求HandlerMapping的具体实现类，HandlerMapping根据web请求返回具体的Controller处理类</li>
+<li>Controller根据web请求参数进行逻辑处理，并返回一个ModelAndView实例，该实例包含两部分信息：视图的逻辑名称和模型数据</li>
+<li>DispatcherServlet根据Controller返回的视图逻辑名称，通过ViewResolver找到逻辑视图名称对应的View实现类，并将查找结构返回到DispatcherServlet</li>
+<li>DispatcherServlet会将ModelAndView中模型数据交给具体的View实现类，委派该View实现类将模型数据渲染到对应的视图中，完成最终的视图渲染工作</li>
+<li>DispatcherServlet将最终的视图结构通过HttpServletResponse输出到客户端</li>
+</ol>
+<p>时序图如下：</p>
+<p>![](/images/Spring MVC请求时序图.png)</p>
+<p>组件图如下：</p>
+<p><img src="/images/spring-MVC%E7%BB%84%E4%BB%B6%E5%9B%BE.png"></p>
+</blockquote>
+<h2 id="DispatcherServlet"><a href="#DispatcherServlet" class="headerlink" title="DispatcherServlet"></a>DispatcherServlet</h2><blockquote>
+<p>实际上Spring MVC的使用十分简单，只需要扩展一个路径映射关系，定义一个视图解析器，再定义一个业务逻辑的处理流程规则，剩余的事情就可以让Spring MVC帮你完成。</p>
+<p>要搞清楚Spring MVC如何工作，主要看DispatcherServlet代码。先查看其类结构图：</p>
+<p><img src="/images/DispatcherServlet%E7%B1%BB%E7%BB%93%E6%9E%84%E5%9B%BE.png"></p>
+<p>DispatcherServlet类继承了HttpServlet，在Servlet的init方法调用时，DispatcherServlet就会执行Spring MVC的初始化工作。DispatcherServlet的初始化内容，在initStrategies方法中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">initStrategies</span><span class="params">(ApplicationContext context)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//初始化MultipartResolver，用于处理文件上传服务，如果有文件上传，那么会将当前的HttpServletRequest包装成DefaultMultipartHttpServletRequest，并且将每个上传的内容封装成CommonsMultipartFile对象</span></span><br><span class="line">    initMultipartResolver(context);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//处理应用的国际化问题，通过解析请求的Locale和设置响应的Locale来控制应用中的字符编码问题</span></span><br><span class="line">    initLocaleResolver(context);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//定义一个主题，设置访问页面的样式，将样式作为一个Theme Name保存，保存在用于请求的Cookie中或者保存在服务端的Session中，以后每次请求根据这个Theme Name 返回特定内容</span></span><br><span class="line">    initThemeResolver(context);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//定义设置的请求映射关系，用于将用户请求的URL映射成一个个Handler实例。对HandlerMapping如果没有定义，则会使用默认的两个HandlerMapping：BeanNameUrlHandlerMapping和DefaultAnnotationHandlerMapping</span></span><br><span class="line">    initHandlerMappings(context);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//根据Handler类型定义不同的处理规则。比如SimpleControllerHandlerAdapter处理所有的Controller实例对象，则在HandlerMapping中会将URL映射成一个Controller实例，Spring MVC在解析时，SimpleControllerHandlerAdapter就会调用这个Controller实例。如果HandlerAdapters没有自定义，也会获取DispatcherServlet.properties文件中默认的4个HandlerAdapters：HttpRequestHandlerAdapter/SimpleControllerAdapter/ThrowawayControllerHandlerAdapter/AnnotationMethodHandlerAdapter</span></span><br><span class="line">    initHandlerAdapters(context);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//当Handler处理出错，就会通过这个Handler来统一处理，默认实现类是SimpleMappingExceptionResolver，将错误日志记录在log文件中，并转到默认的错误页面</span></span><br><span class="line">    initHandlerExceptionResolvers(context);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//将指定的ViewName按照定义的RequestToViewNameTranslator替换成想要的格式，如加上前缀或者后缀</span></span><br><span class="line">    initRequestToViewNameTranslator(context);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//用于将View解析成页面，在ViewResolvers中可以设置多个解析策略，如按照JSP解析，按照Velocity模板解析。默认的解析策略是InternalResourceViewResolver，按照JSP页面来解析</span></span><br><span class="line">    initViewResolvers(context);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>DispatcherServlet启动时的工作：</strong></p>
+<p><strong>HttpServlet初始化时会调用HttpServletBean的init方法，以获取Servlet中的init参数，并创建一个BeanWrapper对象，然后由HttpServletBean的子类执行BeanWrapper的初始化工作。但是HttpServletBean的子类FrameworkServlet和DispatcherServlet都没有覆盖initBeanWrapper方法，因此无法对BeanWrapper执行初始化工作，所以创建的BeanWrapper对象没有任何作用，Spring容器Context也不是通过BeanWrapper来创建的。</strong></p>
+<p><strong>Spring容器的创建是在FrameworkServlet的initServletBean方法中完成，initServletBean方法会创建WebApplicationContext对象，并调用refresh方法完成配置文件的加载。配置文件的加载会先查找Servlet的init-param参数中设置的路径，如果没有，则会根据namespace+Servlet的名称查找XML文件。</strong></p>
+<p><strong>Spring容器创建完成后，在加载时会调用DispatcherServlet的initStrategies方法完成DispatcherServlet中定义的初始化工作。在initStrategies方法中会初始化Spring MVC框架需要的8个组件，这8个组件对应的8个Bean对象保存在DispatcherServlet类中。</strong></p>
+<p>至此，Spring MVC初始化完成，可以接受HTTP请求</p>
+</blockquote>
+<h3 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h3><blockquote>
+<p>Spring MVC中的Controller是处理请求的核心，主要由HandlerMapping和HandlerAdapters两个组件提供。HandlerMapping负责映射用户的请求和对应的处理类。类似于Servlet中Filter的FilterChain，HandlerMapping接口也定义了一个由HandlerExecutionChain代表的处理链，通过在这个处理链添加HandlerAdapters实例来处理用户请求。</p>
+<h4 id="HandlerMapping"><a href="#HandlerMapping" class="headerlink" title="HandlerMapping"></a>HandlerMapping</h4><p>HandlerMapping的作用就是帮助我们管理请求URL和处理类Controller的映射关系，默认的HandlerMapping为BeanNameUrlHandlerMapping。比如我们定义这样一个Bean：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;test&quot;</span> <span class="attr">name</span>=<span class="string">&quot;/test&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.doug.wilson.controller.Test&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;viewPage&quot;</span>&gt;</span></span><br><span class="line">    	<span class="tag">&lt;<span class="name">value</span>&gt;</span>/test.html<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果没有定义其他HandlerMapping，那么Spring MVC就会将/test.html映射到com.doug.wilson.controller.Test处理类。也就是说，如果需要映射的URL很多，那么所有的URL的匹配规则都需要在配置文件中定义。</p>
+<p>HandlerMapping的初始化工作主要有两个比较重要的部分：</p>
+<ol>
+<li>将URL于Handler的对应关系保存在handlerMap集合中</li>
+<li>将所有的实现HandlerInterceptor接口的interceptor对象保存在adaptedInterceptors数组中，等请求到来时执行adaptedInterceptors数组中所有的interceptor对象</li>
+</ol>
+<h4 id="HandlerAdapter"><a href="#HandlerAdapter" class="headerlink" title="HandlerAdapter"></a>HandlerAdapter</h4><p>HandlerMapping定义URL与Handler关系，HandlerAdapter则用于定义Handler，并且该Handler必定得符合某种规则，才能被Spring MVC识别，常见的就是继承一个接口。大部分框架都是采用这种方法，Spring MVC也不例外。下面是HandlerAdapter相关的类结构图：</p>
+<p><img src="/images/HandlerAdapter%E7%B1%BB%E7%BB%93%E6%9E%84%E5%9B%BE.png"></p>
+<ul>
+<li>HttpRequestHandlerAdapter。通过继承HttpRequestHandler接口，并重写void handleRequest(HttpServletRequest request，HttpServletResponse response)方法</li>
+<li>SimpleControllerHandlerAdapter。通过继承Controller接口，并重写 ModelAndView handle(HttpServletRequest request，HttpServletResponse response，Object handler)方法</li>
+<li>SimpleServletHandlerAdapter。通过继承Servlet接口，将一个Servlet作为一个Handler来处理请求</li>
+</ul>
+<p>HandlerAdapter的初始化过程为：创建一个HandlerAdapter对象，将这个对象保存在DispatcherServlet的handlerAdapters集合中。当Spring MVC将某个URL对应到某个Handler时，在handlerAdapters集合中查询到对应的handler，然后将该handler对应的handlerAdapter对象返回，并调用handlerAdapter相应类型对应的方法。</p>
+</blockquote>
+<h3 id="ModelAndView"><a href="#ModelAndView" class="headerlink" title="ModelAndView"></a>ModelAndView</h3><blockquote>
+<p>ModelAndView对象是连接业务逻辑层和View展示层的桥梁，对于Spring MVC具体来说，则是连接Handler与View的桥梁。</p>
+<p>ModelAndView对象会持有一个ModelMap对象和一个View对象(也可以是View名称)。ModelMap就是执行模板渲染时所需要的变量，Handler会将模板所需要的数据存在这个Map中，然后传递到View对象对应的ViewResolvers中。不同的ViewResolvers对ModelMap的处理方式不同，如Velocity将该ModelMap保存到org.apache.velocity.VelocityContext中，JSP则将ModelMap中的元素设置到request.setAttribute(modelName, modelValue)中。</p>
+</blockquote>
+<h3 id="View"><a href="#View" class="headerlink" title="View"></a>View</h3><blockquote>
+<p>View主要由两个组件支持：RequestToViewNameTranslator和ViewResolver。</p>
+<p>RequestToViewNameTranslator顾名思义就是对ViewName的解析，比如在请求的ViewName加上前缀或后缀，替换相应的字符串等。</p>
+<p>ViewResolver则是根据请求的ViewName创建合适的模板引擎来渲染最终的页面。ViewResolver会根据ViewName创建一个View对象，调用View对象的void render(Map model, HttpRequest request, HttpServletResponse response)方法渲染页面。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/spring-MVC/" rel="tag"># spring MVC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/23/Spring%E6%A1%86%E6%9E%B6/" rel="next" title="Spring框架">
+                <i class="fa fa-chevron-left"></i> Spring框架
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/01/Servlet%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" rel="prev" title="Servlet相关知识">
+                Servlet相关知识 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-MVC%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">Spring MVC概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DispatcherServlet"><span class="nav-number">2.</span> <span class="nav-text">DispatcherServlet</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Controller"><span class="nav-number">2.1.</span> <span class="nav-text">Controller</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HandlerMapping"><span class="nav-number">2.1.1.</span> <span class="nav-text">HandlerMapping</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HandlerAdapter"><span class="nav-number">2.1.2.</span> <span class="nav-text">HandlerAdapter</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ModelAndView"><span class="nav-number">2.2.</span> <span class="nav-text">ModelAndView</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#View"><span class="nav-number">2.3.</span> <span class="nav-text">View</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Doug-Wilson</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/Gantzert_Felixander.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="对称加密算法," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="对称加密算法加密和解密使用的是同一份秘钥，解密是加密的逆运算。对称加密算法加密速度快，密文可逆，一旦秘钥文件泄露，就会导致原始数据暴露。对称加密的结果一般使用Base64算法编码，便于阅读和传输。JDK8支持的对称加密算法主要有DES、DESede、AES、Blowfish，以及RC2和RC4等。不同的算法秘钥长度不同，秘钥长度越长，加密安全性越高。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java对称加密算法">
+<meta property="og:url" content="http://example.com/2020/08/04/Java%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="Doug-Wilson&#39;s blogs">
+<meta property="og:description" content="对称加密算法加密和解密使用的是同一份秘钥，解密是加密的逆运算。对称加密算法加密速度快，密文可逆，一旦秘钥文件泄露，就会导致原始数据暴露。对称加密的结果一般使用Base64算法编码，便于阅读和传输。JDK8支持的对称加密算法主要有DES、DESede、AES、Blowfish，以及RC2和RC4等。不同的算法秘钥长度不同，秘钥长度越长，加密安全性越高。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/ECB%E5%8A%A0%E5%AF%86%E8%A7%A3%E5%AF%86.png">
+<meta property="og:image" content="http://example.com/images/CBC%E5%8A%A0%E5%AF%86%E8%A7%A3%E5%AF%86.png">
+<meta property="og:image" content="http://example.com/images/CFB%E5%8A%A0%E5%AF%86%E8%A7%A3%E5%AF%86.png">
+<meta property="og:image" content="http://example.com/images/OFB%E5%8A%A0%E5%AF%86%E8%A7%A3%E5%AF%86.png">
+<meta property="og:image" content="http://example.com/images/CTR%E5%8A%A0%E5%AF%86%E8%A7%A3%E5%AF%86.png">
+<meta property="article:published_time" content="2020-08-04T11:07:33.000Z">
+<meta property="article:modified_time" content="2021-05-27T01:46:39.859Z">
+<meta property="article:author" content="Doug-Wilson">
+<meta property="article:tag" content="对称加密算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/ECB%E5%8A%A0%E5%AF%86%E8%A7%A3%E5%AF%86.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2020/08/04/Java对称加密算法/"/>
+
+
+
+
+
+  <title>Java对称加密算法 | Doug-Wilson's blogs</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+		<a target="_blank" rel="noopener" href="https://your-url" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Doug-Wilson's blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">学无止境，积累技术</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-主页">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            主页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-关于">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-标签">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-目录">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归类">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-时间表">
+          <a href="/schedule/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            时间表
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/04/Java%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Doug-Wilson's blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java对称加密算法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-08-04T19:07:33+08:00">
+                2020-08-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>对称加密算法加密和解密使用的是同一份秘钥，解密是加密的逆运算。对称加密算法加密速度快，密文可逆，一旦秘钥文件泄露，就会导致原始数据暴露。对称加密的结果一般使用Base64算法编码，便于阅读和传输。JDK8支持的对称加密算法主要有DES、DESede、AES、Blowfish，以及RC2和RC4等。不同的算法秘钥长度不同，秘钥长度越长，加密安全性越高。</p>
+<span id="more"></span>
+
+<h2 id="DES"><a href="#DES" class="headerlink" title="DES"></a>DES</h2><p>DES（Data Encryption Standard，数据加密标准）算法是对称加密算法领域中的典型算法，DES算法秘钥较短，以现在计算机的计算能力，DES算法加密的数据在24小时内可能被破解。所以DES算法已经被淘汰，建议使用AES算法，不过这里还是简单了解下。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        String value = <span class="string">&quot;Doug Wilson&quot;</span>;</span><br><span class="line">        System.out.println(<span class="string">&quot;待加密值：&quot;</span> + value);</span><br><span class="line">        <span class="comment">// 加密算法</span></span><br><span class="line">        String algorithm = <span class="string">&quot;DES&quot;</span>;</span><br><span class="line">        <span class="comment">// 转换模式</span></span><br><span class="line">        String transformation = <span class="string">&quot;DES&quot;</span>;</span><br><span class="line">        <span class="comment">// --- 生成秘钥 ---</span></span><br><span class="line">        <span class="comment">// 实例化秘钥生成器</span></span><br><span class="line">        KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm);</span><br><span class="line">        <span class="comment">// 初始化秘钥长度</span></span><br><span class="line">        keyGenerator.init(<span class="number">56</span>);</span><br><span class="line">        <span class="comment">// 生成秘钥</span></span><br><span class="line">        SecretKey secretKey = keyGenerator.generateKey();</span><br><span class="line">        <span class="comment">// 实例化DES秘钥材料</span></span><br><span class="line">        DESKeySpec desKeySpec = <span class="keyword">new</span> DESKeySpec(secretKey.getEncoded());</span><br><span class="line">        <span class="comment">// 实例化秘钥工厂</span></span><br><span class="line">        SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(algorithm);</span><br><span class="line">        <span class="comment">// 生成DES秘钥</span></span><br><span class="line">        SecretKey desSecretKey = secretKeyFactory.generateSecret(desKeySpec);</span><br><span class="line">        System.out.println(<span class="string">&quot;DES秘钥：&quot;</span> + Base64.getEncoder().encodeToString(desSecretKey.getEncoded()));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 实例化密码对象</span></span><br><span class="line">        Cipher cipher = Cipher.getInstance(transformation);</span><br><span class="line">        <span class="comment">// 设置模式（ENCRYPT_MODE：加密模式；DECRYPT_MODE：解密模式）和指定秘钥</span></span><br><span class="line">        cipher.init(Cipher.ENCRYPT_MODE, desSecretKey);</span><br><span class="line">        <span class="comment">// 加密</span></span><br><span class="line">        <span class="keyword">byte</span>[] encrypt = cipher.doFinal(value.getBytes());</span><br><span class="line">        System.out.println(<span class="string">&quot;DES加密结果：&quot;</span> + Base64.getEncoder().encodeToString(encrypt));</span><br><span class="line">        <span class="comment">// 解密</span></span><br><span class="line">        <span class="comment">// 设置为解密模式</span></span><br><span class="line">        cipher.init(Cipher.DECRYPT_MODE, desSecretKey);</span><br><span class="line">        <span class="keyword">byte</span>[] decrypt = cipher.doFinal(encrypt);</span><br><span class="line">        System.out.println(<span class="string">&quot;DES解密结果：&quot;</span> + <span class="keyword">new</span> String(decrypt));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面步骤看着挺多，其实可以总结为如下几步：</p>
+<ol>
+<li><p>生成加密秘钥；</p>
+<p>1.1. 通过KeyGenerator生成一个指定位数的秘钥；</p>
+<p>1.2. 通过上面生成的秘钥实例化算法对应的秘钥材料KeySpec；</p>
+<p>1.3. 使用秘钥材料通过秘钥工厂SecretKeyFactory生成算法秘钥SecretKey。</p>
+</li>
+<li><p>通过转换模式实例化Cipher；</p>
+</li>
+<li><p>指定Cipher模式和秘钥，进行加解密操作。</p>
+</li>
+</ol>
+<p>运行结果如下：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">待加密值：Doug Wilson</span><br><span class="line"><span class="keyword">DES</span>秘钥：LO/CCEC8y8E=</span><br><span class="line"><span class="keyword">DES</span>加密结果：hRZdN6f+6yj/lhPWUPsayA==</span><br><span class="line"><span class="keyword">DES</span>解密结果：Doug Wilson</span><br></pre></td></tr></table></figure>
+
+<p>特别注意：<strong>如果在生成秘钥的时候，不指定为56位，则会抛出java.security.InvalidParameterException: Wrong keysize: must be equal to 56异常</strong></p>
+<h2 id="DESede"><a href="#DESede" class="headerlink" title="DESede"></a>DESede</h2><p>作为DES算法的一种改良，DESede算法（也称为3DES，三重DES）针对其秘钥长度偏短和迭代次数偏少等问题做了相应改进，提高了安全强度，但同时也造成处理速度较慢、秘钥计算时间加长、加密效率不高的问题。所以这里还是简单了解下，实际还是推荐用AES。</p>
+<p>JDK8支持112位或168位长度的DESede秘钥：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        String value = <span class="string">&quot;Doug Wilson&quot;</span>;</span><br><span class="line">        System.out.println(<span class="string">&quot;待加密值：&quot;</span> + value);</span><br><span class="line">        <span class="comment">// 加密算法</span></span><br><span class="line">        String algorithm = <span class="string">&quot;DESede&quot;</span>;</span><br><span class="line">        <span class="comment">// 转换模式</span></span><br><span class="line">        String transformation = <span class="string">&quot;DESede&quot;</span>;</span><br><span class="line">        <span class="comment">// --- 生成秘钥 ---</span></span><br><span class="line">        <span class="comment">// 实例化秘钥生成器</span></span><br><span class="line">        KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm);</span><br><span class="line">        <span class="comment">// 初始化秘钥长度</span></span><br><span class="line">        keyGenerator.init(<span class="number">112</span>);</span><br><span class="line">        <span class="comment">// 生成秘钥</span></span><br><span class="line">        SecretKey secretKey = keyGenerator.generateKey();</span><br><span class="line">        <span class="comment">// 实例化DESede秘钥材料</span></span><br><span class="line">        DESedeKeySpec desKeySpec = <span class="keyword">new</span> DESedeKeySpec(secretKey.getEncoded());</span><br><span class="line">        <span class="comment">// 实例化秘钥工厂</span></span><br><span class="line">        SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(algorithm);</span><br><span class="line">        <span class="comment">// 生成DES秘钥</span></span><br><span class="line">        SecretKey desSecretKey = secretKeyFactory.generateSecret(desKeySpec);</span><br><span class="line">        System.out.println(<span class="string">&quot;DESede秘钥：&quot;</span> + Base64.getEncoder().encodeToString(desSecretKey.getEncoded()));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 实例化密码对象</span></span><br><span class="line">        Cipher cipher = Cipher.getInstance(transformation);</span><br><span class="line">        <span class="comment">// 设置模式（ENCRYPT_MODE：加密模式；DECRYPT_MODE：解密模式）和指定秘钥</span></span><br><span class="line">        cipher.init(Cipher.ENCRYPT_MODE, desSecretKey);</span><br><span class="line">        <span class="comment">// 加密</span></span><br><span class="line">        <span class="keyword">byte</span>[] encrypt = cipher.doFinal(value.getBytes());</span><br><span class="line">        System.out.println(<span class="string">&quot;DESede加密结果：&quot;</span> + Base64.getEncoder().encodeToString(encrypt));</span><br><span class="line">        <span class="comment">// 解密</span></span><br><span class="line">        <span class="comment">// 设置为解密模式</span></span><br><span class="line">        cipher.init(Cipher.DECRYPT_MODE, desSecretKey);</span><br><span class="line">        <span class="keyword">byte</span>[] decrypt = cipher.doFinal(encrypt);</span><br><span class="line">        System.out.println(<span class="string">&quot;DESede解密结果：&quot;</span> + <span class="keyword">new</span> String(decrypt));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>过程和DES一致，区别仅在于使用的加密算法为DESede，秘钥长度指定为112，秘钥材料对象为DESedeKeySpec类。</p>
+<p>上面程序输出如下：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">待加密值：Doug Wilson</span><br><span class="line">DESede秘钥：1fFb+F1wboVGGTSPNIBJ+9XxW/hdcG6F</span><br><span class="line">DESede加密结果：WVg9w6exyRREqY1vNyRI+<span class="attribute">Q</span>==</span><br><span class="line">DESede解密结果：Doug Wilson</span><br></pre></td></tr></table></figure>
+
+<p>特别注意：<strong>如果指定不合法的秘钥长度，程序将抛出java.security.InvalidParameterException: Wrong keysize: must be equal to 112 or 168异常</strong></p>
+<h2 id="AES"><a href="#AES" class="headerlink" title="AES"></a>AES</h2><p>AES（AdvancedEncryption Standard，高级数据加密标准）算法支持128位、192位和256位的秘钥长度，加密速度比DES和DESede都快，至今还没有被破解的报道。经过验证，目前采用的AES算法能够有效抵御已知的针对DES算法的所有攻击方法，如部分差分攻击、相关秘钥攻击等。AES算法因秘钥建立时间短、灵敏性好、内存需求低等优点，在各个领域得到广泛的研究与应用。</p>
+<p>JDK8支持128位、192位和256位长度的AES秘钥：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        String value = <span class="string">&quot;Doug Wilson&quot;</span>;</span><br><span class="line">        System.out.println(<span class="string">&quot;待加密值：&quot;</span> + value);</span><br><span class="line">        <span class="comment">// 加密算法</span></span><br><span class="line">        String algorithm = <span class="string">&quot;AES&quot;</span>;</span><br><span class="line">        <span class="comment">// 转换模式</span></span><br><span class="line">        String transformation = <span class="string">&quot;AES&quot;</span>;</span><br><span class="line">        <span class="comment">// --- 生成秘钥 ---</span></span><br><span class="line">        <span class="comment">// 实例化秘钥生成器</span></span><br><span class="line">        KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm);</span><br><span class="line">        <span class="comment">// 初始化秘钥长度</span></span><br><span class="line">        keyGenerator.init(<span class="number">256</span>);</span><br><span class="line">        <span class="comment">// 生成秘钥</span></span><br><span class="line">        SecretKey secretKey = keyGenerator.generateKey();</span><br><span class="line">        <span class="comment">// 生成秘钥材料</span></span><br><span class="line">        SecretKeySpec secretKeySpec = <span class="keyword">new</span> SecretKeySpec(secretKey.getEncoded(), algorithm);</span><br><span class="line">        System.out.println(<span class="string">&quot;AES秘钥：&quot;</span> + Base64.getEncoder().encodeToString(secretKey.getEncoded()));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 实例化密码对象</span></span><br><span class="line">        Cipher cipher = Cipher.getInstance(transformation);</span><br><span class="line">        <span class="comment">// 设置模式（ENCRYPT_MODE：加密模式；DECRYPT_MODE：解密模式）和指定秘钥</span></span><br><span class="line">        cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);</span><br><span class="line">        <span class="comment">// 加密</span></span><br><span class="line">        <span class="keyword">byte</span>[] encrypt = cipher.doFinal(value.getBytes());</span><br><span class="line">        System.out.println(<span class="string">&quot;AES加密结果：&quot;</span> + Base64.getEncoder().encodeToString(encrypt));</span><br><span class="line">        <span class="comment">// 解密</span></span><br><span class="line">        <span class="comment">// 设置为解密模式</span></span><br><span class="line">        cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);</span><br><span class="line">        <span class="keyword">byte</span>[] decrypt = cipher.doFinal(encrypt);</span><br><span class="line">        System.out.println(<span class="string">&quot;AES解密结果：&quot;</span> + <span class="keyword">new</span> String(decrypt));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>过程和上面例子大体一致，唯一区别是使用AES算法无需指定特定类型的秘钥材料，直接用SecretKeySpec对象即可。</p>
+<p>程序输出如下：</p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">待加密值：Doug Wilson</span><br><span class="line">AES秘钥：vMj1fnhYdIGpTfxpEeKaynG879ARZ5r2AcfBpf+<span class="attr">yoRs=</span></span><br><span class="line">AES加密结果：GCmIlqEJIBlBRw/<span class="number">474</span><span class="attr">OanQ==</span></span><br><span class="line">AES解密结果：Doug Wilson</span><br></pre></td></tr></table></figure>
+
+<p>特别注意：<strong>如果指定不合法的秘钥长度，程序将抛出java.security.InvalidParameterException: Wrong keysize: must be equal to 128, 192 or 256异常</strong></p>
+<h2 id="RC2、RC4"><a href="#RC2、RC4" class="headerlink" title="RC2、RC4"></a>RC2、RC4</h2><p>RC2和RC4算法也可以用于替换DES算法，特点是秘钥长度较为灵活，RC2和RC4的秘钥长度范围为40到1024位</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        String value = <span class="string">&quot;Doug Wilson&quot;</span>;</span><br><span class="line">        System.out.println(<span class="string">&quot;待加密值：&quot;</span> + value);</span><br><span class="line">        <span class="comment">// 加密算法</span></span><br><span class="line">        String algorithm = <span class="string">&quot;RC2&quot;</span>;</span><br><span class="line">        <span class="comment">// 转换模式</span></span><br><span class="line">        String transformation = <span class="string">&quot;RC2&quot;</span>;</span><br><span class="line">        <span class="comment">// --- 生成秘钥 ---</span></span><br><span class="line">        <span class="comment">// 实例化秘钥生成器</span></span><br><span class="line">        KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm);</span><br><span class="line">        <span class="comment">// 初始化秘钥长度</span></span><br><span class="line">        keyGenerator.init(<span class="number">666</span>);</span><br><span class="line">        <span class="comment">// 生成秘钥</span></span><br><span class="line">        SecretKey secretKey = keyGenerator.generateKey();</span><br><span class="line">        <span class="comment">// 生成秘钥材料</span></span><br><span class="line">        SecretKeySpec secretKeySpec = <span class="keyword">new</span> SecretKeySpec(secretKey.getEncoded(), algorithm);</span><br><span class="line">        System.out.println(<span class="string">&quot;RC2秘钥：&quot;</span> + Base64.getEncoder().encodeToString(secretKey.getEncoded()));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 实例化密码对象</span></span><br><span class="line">        Cipher cipher = Cipher.getInstance(transformation);</span><br><span class="line">        <span class="comment">// 设置模式（ENCRYPT_MODE：加密模式；DECRYPT_MODE：解密模式）和指定秘钥</span></span><br><span class="line">        cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);</span><br><span class="line">        <span class="comment">// 加密</span></span><br><span class="line">        <span class="keyword">byte</span>[] encrypt = cipher.doFinal(value.getBytes());</span><br><span class="line">        System.out.println(<span class="string">&quot;RC2加密结果：&quot;</span> + Base64.getEncoder().encodeToString(encrypt));</span><br><span class="line">        <span class="comment">// 解密</span></span><br><span class="line">        <span class="comment">// 设置为解密模式</span></span><br><span class="line">        cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);</span><br><span class="line">        <span class="keyword">byte</span>[] decrypt = cipher.doFinal(encrypt);</span><br><span class="line">        System.out.println(<span class="string">&quot;RC2解密结果：&quot;</span> + <span class="keyword">new</span> String(decrypt));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>程序输出如下：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">待加密值：Doug Wilson</span><br><span class="line">RC2秘钥：<span class="regexp">//</span>wHmkfa<span class="regexp">/TpQqeard5RD8h6Gdd1YJQZbFT4pUsssRfitpz1YkhJfCN/</span>J<span class="regexp">/hjR0Q1HmVReJaSPCNDqP+GUBlvnWi7zsoKW35O6R5W/</span>R0Bgnjh/qVsu</span><br><span class="line">RC2加密结果：+XL70sqXz/myi1JRiLVbCw==</span><br><span class="line">RC2解密结果：Doug Wilson</span><br></pre></td></tr></table></figure>
+
+<p><strong>如果指定不合法的秘钥长度，程序将抛出java.security.InvalidParameterException: Key length for RC2 must be between 40 and 1024 bits异常</strong></p>
+<h2 id="Blowfish"><a href="#Blowfish" class="headerlink" title="Blowfish"></a>Blowfish</h2><p>Blowfish算法也可以用于替换DES，Blowfish算法的秘钥长度范围为32到448位，并且必须为8的倍数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        String value = <span class="string">&quot;Doug Wilson&quot;</span>;</span><br><span class="line">        System.out.println(<span class="string">&quot;待加密值：&quot;</span> + value);</span><br><span class="line">        <span class="comment">// 加密算法</span></span><br><span class="line">        String algorithm = <span class="string">&quot;Blowfish&quot;</span>;</span><br><span class="line">        <span class="comment">// 转换模式</span></span><br><span class="line">        String transformation = <span class="string">&quot;Blowfish&quot;</span>;</span><br><span class="line">        <span class="comment">// --- 生成秘钥 ---</span></span><br><span class="line">        <span class="comment">// 实例化秘钥生成器</span></span><br><span class="line">        KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm);</span><br><span class="line">        <span class="comment">// 初始化秘钥长度</span></span><br><span class="line">        keyGenerator.init(<span class="number">128</span>);</span><br><span class="line">        <span class="comment">// 生成秘钥</span></span><br><span class="line">        SecretKey secretKey = keyGenerator.generateKey();</span><br><span class="line">        <span class="comment">// 生成秘钥材料</span></span><br><span class="line">        SecretKeySpec secretKeySpec = <span class="keyword">new</span> SecretKeySpec(secretKey.getEncoded(), algorithm);</span><br><span class="line">        System.out.println(<span class="string">&quot;Blowfish秘钥：&quot;</span> + Base64.getEncoder().encodeToString(secretKey.getEncoded()));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 实例化密码对象</span></span><br><span class="line">        Cipher cipher = Cipher.getInstance(transformation);</span><br><span class="line">        <span class="comment">// 设置模式（ENCRYPT_MODE：加密模式；DECRYPT_MODE：解密模式）和指定秘钥</span></span><br><span class="line">        cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);</span><br><span class="line">        <span class="comment">// 加密</span></span><br><span class="line">        <span class="keyword">byte</span>[] encrypt = cipher.doFinal(value.getBytes());</span><br><span class="line">        System.out.println(<span class="string">&quot;Blowfish加密结果：&quot;</span> + Base64.getEncoder().encodeToString(encrypt));</span><br><span class="line">        <span class="comment">// 解密</span></span><br><span class="line">        <span class="comment">// 设置为解密模式</span></span><br><span class="line">        cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);</span><br><span class="line">        <span class="keyword">byte</span>[] decrypt = cipher.doFinal(encrypt);</span><br><span class="line">        System.out.println(<span class="string">&quot;Blowfish解密结果：&quot;</span> + <span class="keyword">new</span> String(decrypt));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>程序运行结果：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">待加密值：Doug Wilson</span><br><span class="line">Blowfish秘钥：<span class="attribute">d3ReFylxI2OI7n3qgPFViQ</span>==</span><br><span class="line">Blowfish加密结果：<span class="attribute">nnH2mqVZhhhegBwAuqecLw</span>==</span><br><span class="line">Blowfish解密结果：Doug Wilson</span><br></pre></td></tr></table></figure>
+
+<p><strong>如果指定不合法的秘钥长度，程序将抛出java.security.InvalidParameterException: Keysize must be multiple of 8, and can only range from 32 to 448 (inclusive)异常</strong></p>
+<h2 id="加密模式"><a href="#加密模式" class="headerlink" title="加密模式"></a>加密模式</h2><p>对称加密算法分为：序列密码(流密码)加密，分组密码(块密码)加密两种。流密码是对信息流中的每一个元素（一个字母或一个比特）作为基本的处理单元进行加密，块密码是先对信息流分块，再对每一块分别加密。</p>
+<p>上面介绍的这些都属于块密码加密。不同的算法侧重点不同，有的强调效率，有的强调安全，有的强调容错性。根据数据加密时每个加密区块间的关联方式来区分，可以分为4种加密模式：电子密码本模式（Electronic Code Book，ECB）、密文链接模式（Cipher Book Chaining，CBC）、密文反馈模式（Cipher Feed Back，CFB）、输出反馈模式（Output Feed Back，OFB）。AES标准除了推荐上述4种工作模式外，还推荐了一种新的工作模式—计数器模式（Counter，CTR）。这些工作模式可适用于各种分组密码算法。</p>
+<h3 id="ECB"><a href="#ECB" class="headerlink" title="ECB"></a>ECB</h3><p>ECB模式加解密过程如下图所示：</p>
+<p><img src="/images/ECB%E5%8A%A0%E5%AF%86%E8%A7%A3%E5%AF%86.png"></p>
+<p>明文分为若干块，每次加密均产生独立的密文分组，每组的加密结果不会对其他分组产生影响，相同的明文加密后对应产生相同的密文。</p>
+<ul>
+<li><strong>优点</strong>：可并行操作，没有误差传递（因为每个密文都是独立加密来的）；</li>
+<li><strong>缺点</strong>：如果明文重复，则对应的密文也会重复，对明文进行主动攻击的可能性较高；</li>
+<li><strong>用途</strong>：适合加密秘钥、随机数等短数据。例如，安全地传递DES秘钥，ECB是最合适的模式。</li>
+</ul>
+<h3 id="CBC"><a href="#CBC" class="headerlink" title="CBC"></a>CBC</h3><p>CBC模式加解密过程如下图所示：</p>
+<p><img src="/images/CBC%E5%8A%A0%E5%AF%86%E8%A7%A3%E5%AF%86.png"></p>
+<p>明文分为若干块，每次加密前，明文块都和前一个明文块加密后的内容进行异或处理，然后再用秘钥加密。因为第一个明文块没有可以用来异或处理的密文块，所以我们需要提供一个初始化向量来替代。</p>
+<ul>
+<li><strong>优点</strong>：密文链接模式加密后的密文上下文关联，对明文的主动攻击的可能性较低；</li>
+<li><strong>缺点</strong>：不能并行加密，如果在加密过程中发生错误，则错误将被无限放大，导致加密失败。并且需要提供初始化向量；</li>
+<li><strong>用途</strong>：可加密任意长度的数据；适用于计算产生检测数据完整性的消息认证码Mac。</li>
+</ul>
+<h3 id="CFB"><a href="#CFB" class="headerlink" title="CFB"></a>CFB</h3><p>CFB模式加解密过程如下图所示：</p>
+<p><img src="/images/CFB%E5%8A%A0%E5%AF%86%E8%A7%A3%E5%AF%86.png"></p>
+<p>明文分为若干块，每次加密前，先将前一个密文块使用秘钥加密，加密结果和当前明文块异或处理得到密文块。同样的，需要为第一个明文块加密提供初始化向量。</p>
+<ul>
+<li><strong>优点</strong>：和CBC类似；</li>
+<li><strong>缺点</strong>：和CBC类似；</li>
+<li><strong>用途</strong>：因错误传播无界，可用于检查发现明文密文的篡改。</li>
+</ul>
+<h3 id="OFB"><a href="#OFB" class="headerlink" title="OFB"></a>OFB</h3><p>OFB模式加解密过程如下图所示：</p>
+<p><img src="/images/OFB%E5%8A%A0%E5%AF%86%E8%A7%A3%E5%AF%86.png"></p>
+<p>过程和CFB类似，区别在于OFB第一次使用秘钥对初始化向量进行加密（结果为A），加密结果和明文块异或处理得到密文块，下一次操作时候，不是使用秘钥加密前一个密文块，而是使用秘钥加密A的结果再和明文块异或处理，得到当前密文块。</p>
+<ul>
+<li><strong>优点</strong>：和CFB类似；</li>
+<li><strong>缺点</strong>：不利于并行计算；对明文的主动攻击是可能的，安全性较CFB差；</li>
+<li><strong>用途</strong>：适用于加密冗余性较大的数据，比如语音和图像数据。</li>
+</ul>
+<h3 id="CTR"><a href="#CTR" class="headerlink" title="CTR"></a>CTR</h3><p>CTR模式加解密过程如下图所示：</p>
+<p><img src="/images/CTR%E5%8A%A0%E5%AF%86%E8%A7%A3%E5%AF%86.png"></p>
+<p>CTR含义是计数器模式，所以它维护了一个递增的计数器。秘钥加密计数器，结果和明文块异或得到密文块，依次类推。</p>
+<ul>
+<li><strong>优点</strong>：可以并行操作，安全性和CBC一样好；</li>
+<li><strong>缺点</strong>：没有错误传播，因此不易确保数据完整性；</li>
+<li><strong>用途</strong>：适用于各种加密应用。</li>
+</ul>
+<h2 id="填充模式"><a href="#填充模式" class="headerlink" title="填充模式"></a>填充模式</h2><p>当需要按块处理的数据, 数据长度不符合块处理需求时, 按照一定的方法填充满块长的规则。如果不填充，待加密的数据块长度不符合要求时程序会抛出异常。</p>
+<p>JDK8中主要支持NoPadding和PKCS5Padding填充模式。</p>
+<ol>
+<li>NoPadding：不填充；</li>
+<li>PKCS5Padding：数据块的大小为8位, 不够就补足。</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><table>
+<thead>
+<tr>
+<th align="left">算法</th>
+<th align="left">秘钥长度（位）</th>
+<th align="left">工作模式</th>
+<th align="left">填充模式</th>
+<th align="left">初始化向量秘钥长度（字节）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">DES</td>
+<td align="left">56</td>
+<td align="left">ECB、CBC、CFB、OFB、CTR等</td>
+<td align="left">NoPadding、 PKCS5Padding、 ISO10126Padding</td>
+<td align="left">8</td>
+</tr>
+<tr>
+<td align="left">DESede</td>
+<td align="left">112、168</td>
+<td align="left">ECB、CBC、CFB、OFB、CTR等</td>
+<td align="left">NoPadding、 PKCS5Padding、 ISO10126Padding</td>
+<td align="left">8</td>
+</tr>
+<tr>
+<td align="left">AES</td>
+<td align="left">128、192、256</td>
+<td align="left">ECB、CBC、CFB、OFB、CTR等</td>
+<td align="left">NoPadding、 PKCS5Padding、 ISO10126Padding</td>
+<td align="left">16</td>
+</tr>
+<tr>
+<td align="left">RC2</td>
+<td align="left">40~1024</td>
+<td align="left">ECB、CBC、CFB、OFB、CTR等</td>
+<td align="left">NoPadding、 PKCS5Padding、 ISO10126Padding</td>
+<td align="left">8</td>
+</tr>
+<tr>
+<td align="left">RC4</td>
+<td align="left">40~1024</td>
+<td align="left">ECB</td>
+<td align="left">NoPadding</td>
+<td align="left">无</td>
+</tr>
+<tr>
+<td align="left">Blowfish</td>
+<td align="left">32~448，8的倍数</td>
+<td align="left">ECB、CBC、CFB、OFB、CTR等</td>
+<td align="left">NoPadding、 PKCS5Padding、 ISO10126Padding</td>
+<td align="left">8</td>
+</tr>
+<tr>
+<td align="left">PBE</td>
+<td align="left">无</td>
+<td align="left">CBC</td>
+<td align="left">PKCS5Padding</td>
+<td align="left">16（带Hmac）</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/" rel="tag"># 对称加密算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/08/03/Java%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/" rel="next" title="Java非对称加密算法">
+                <i class="fa fa-chevron-left"></i> Java非对称加密算法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/08/05/Java-Base64%E7%AE%97%E6%B3%95/" rel="prev" title="Java Base64算法">
+                Java Base64算法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#DES"><span class="nav-number">1.</span> <span class="nav-text">DES</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DESede"><span class="nav-number">2.</span> <span class="nav-text">DESede</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AES"><span class="nav-number">3.</span> <span class="nav-text">AES</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RC2%E3%80%81RC4"><span class="nav-number">4.</span> <span class="nav-text">RC2、RC4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Blowfish"><span class="nav-number">5.</span> <span class="nav-text">Blowfish</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F"><span class="nav-number">6.</span> <span class="nav-text">加密模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ECB"><span class="nav-number">6.1.</span> <span class="nav-text">ECB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CBC"><span class="nav-number">6.2.</span> <span class="nav-text">CBC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CFB"><span class="nav-number">6.3.</span> <span class="nav-text">CFB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OFB"><span class="nav-number">6.4.</span> <span class="nav-text">OFB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CTR"><span class="nav-number">6.5.</span> <span class="nav-text">CTR</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A1%AB%E5%85%85%E6%A8%A1%E5%BC%8F"><span class="nav-number">7.</span> <span class="nav-text">填充模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Doug-Wilson</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/Gantzert_Felixander.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

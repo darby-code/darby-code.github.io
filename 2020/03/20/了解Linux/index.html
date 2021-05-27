@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="我喜欢一段比喻，用于说明Windows和Linux的区别(引用自 《Linux命令行大全》)：  Windows就像Game Boy游戏机。你去商店买了一个全新的游戏机。你把它带回家，启动，玩游戏机中的游戏，漂亮的画面，优美的声音，人性化的操作。但是，不久，你对这款游戏玩腻了，于是你回到商店，买了另一款游戏机。就这样一遍一遍重复着，然后当你想玩一个不一样的游戏时，你回到商店，对柜台的售货员说：“我">
+<meta property="og:type" content="article">
+<meta property="og:title" content="了解Linux">
+<meta property="og:url" content="http://example.com/2020/03/20/%E4%BA%86%E8%A7%A3Linux/index.html">
+<meta property="og:site_name" content="Doug-Wilson&#39;s blogs">
+<meta property="og:description" content="我喜欢一段比喻，用于说明Windows和Linux的区别(引用自 《Linux命令行大全》)：  Windows就像Game Boy游戏机。你去商店买了一个全新的游戏机。你把它带回家，启动，玩游戏机中的游戏，漂亮的画面，优美的声音，人性化的操作。但是，不久，你对这款游戏玩腻了，于是你回到商店，买了另一款游戏机。就这样一遍一遍重复着，然后当你想玩一个不一样的游戏时，你回到商店，对柜台的售货员说：“我">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-20T08:29:01.000Z">
+<meta property="article:modified_time" content="2021-05-27T01:44:27.276Z">
+<meta property="article:author" content="Doug-Wilson">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2020/03/20/了解Linux/"/>
+
+
+
+
+
+  <title>了解Linux | Doug-Wilson's blogs</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+		<a target="_blank" rel="noopener" href="https://your-url" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Doug-Wilson's blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">学无止境，积累技术</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-主页">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            主页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-关于">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-标签">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-目录">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归类">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-时间表">
+          <a href="/schedule/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            时间表
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/03/20/%E4%BA%86%E8%A7%A3Linux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Doug-Wilson's blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">了解Linux</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-20T16:29:01+08:00">
+                2020-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我喜欢一段比喻，用于说明Windows和Linux的区别(引用自 《Linux命令行大全》)：</p>
+<blockquote>
+<p>Windows就像Game Boy游戏机。你去商店买了一个全新的游戏机。你把它带回家，启动，玩游戏机中的游戏，漂亮的画面，优美的声音，人性化的操作。但是，不久，你对这款游戏玩腻了，于是你回到商店，买了另一款游戏机。就这样一遍一遍重复着，然后当你想玩一个不一样的游戏时，你回到商店，对柜台的售货员说：“我想要这样这样的游戏”，但却被告知没有这样的游戏。然后你对售货员说：“只需要更换游戏中的某个东西就可以了”。售货员对你说：“你不能更换它，这个游戏机盒子是密封好的”。你很沮丧，你只能由别人决定你可以玩的游戏，并没有更多的选项可以选择。</p>
+<p>而Linux就像是世界上最大的拼装玩具。你打开它，它是一个零件集，螺丝钉，齿轮，马达，等等。你可以拼装成任何基于你想象的内容，拼装完一个参考样式后，再拼装另一种。你不再需要回到商店，因为你已经有了拼装所需要的所有东西。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="Linux软件包系统"><a href="#Linux软件包系统" class="headerlink" title="Linux软件包系统"></a>Linux软件包系统</h2><blockquote>
+<p>不同的Linux用不同的软件包系统，并且原则上，适用于一种发行版的软件包和其他版本是不兼容的。多数Linux发行版采用两种软件包，**Debian的 .deb 和Red Hat的 .rpm ** </p>
+<table>
+<thead>
+<tr>
+<th>软件包系统</th>
+<th>发行版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.deb</td>
+<td>Debian/Ubuntu/Xandros/Linspire</td>
+</tr>
+<tr>
+<td>.rpm</td>
+<td>Fedora/CentOS/Red Hat/openSUSE/Mandriva/PCLinuxOS</td>
+</tr>
+</tbody></table>
+<p>包文件是组成软件包系统的基本软件单元。是由组成软件包的文件压缩而成的文件集。</p>
+<p>一个包可能含有大量的程序以及支持这些程序的数据文件。此外，许多软件包中还包含了安装软件包前后执行配置任务的安装脚本。</p>
+<p>包文件通常由软件包维护者创建。包维护者从程序的作者处或供应商获得软件源码，然后进行编译，并创建包的元数据及其他所必须的安装脚本。</p>
+<h3 id="库"><a href="#库" class="headerlink" title="库"></a>库</h3><p>Linux用户可以从其所使用的Linux版本的中心库获得软件包。所谓的中心库，一般包含了成千上万个软件包，每个软件包都是为相应的发行版本建立和维护的。</p>
+<p>用户必须充分了解每个软件包的信息，然后手动将其加入到软件包文件管理系统的配置文件中，才能使用它们。</p>
+<h3 id="高级和低级软件包工具"><a href="#高级和低级软件包工具" class="headerlink" title="高级和低级软件包工具"></a>高级和低级软件包工具</h3><p>软件包管理系统通常包含两类工具——执行安装、删除软件包文件等任务的低级工具。以及进行元数据搜索和提供依赖性解决的高级工具。</p>
+<table>
+<thead>
+<tr>
+<th>发行版本</th>
+<th>低级工具</th>
+<th>高级工具</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Debian系统</td>
+<td>dpkg</td>
+<td>apt-get/aptitude</td>
+</tr>
+<tr>
+<td>Red Hat系统</td>
+<td>rpm</td>
+<td>yum</td>
+</tr>
+</tbody></table>
+<h3 id="在库中查找软件包，安装软件包"><a href="#在库中查找软件包，安装软件包" class="headerlink" title="在库中查找软件包，安装软件包"></a>在库中查找软件包，安装软件包</h3><p>通过使用高级工具来搜索库元数据时，可以根据包文件名来查找对应的包文件：</p>
+<table>
+<thead>
+<tr>
+<th>系统类型</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Debian系统</td>
+<td>apt-get update/apt-cache search package-name</td>
+</tr>
+<tr>
+<td>Red Hat系统</td>
+<td>yum search package-name</td>
+</tr>
+</tbody></table>
+<p>安装包文件：</p>
+<table>
+<thead>
+<tr>
+<th>系统类型</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Debian系统</td>
+<td>apt-get update/apt-get install package-name</td>
+</tr>
+<tr>
+<td>Red Hat系统</td>
+<td>yum install package-name</td>
+</tr>
+</tbody></table>
+<h3 id="卸载软件包和更新软件包"><a href="#卸载软件包和更新软件包" class="headerlink" title="卸载软件包和更新软件包"></a>卸载软件包和更新软件包</h3><p>卸载软件包：</p>
+<table>
+<thead>
+<tr>
+<th>系统类型</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Debian系统</td>
+<td>apt-get remove package-name</td>
+</tr>
+<tr>
+<td>Red Hat系统</td>
+<td>yum erase package-name</td>
+</tr>
+</tbody></table>
+<p>更新软件包：</p>
+<table>
+<thead>
+<tr>
+<th>系统类型</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Debian系统</td>
+<td>apt-get update;apt-get upgrade</td>
+</tr>
+<tr>
+<td>Red Hat系统</td>
+<td>yum update</td>
+</tr>
+</tbody></table>
+<h3 id="列出已安装的软件包列表"><a href="#列出已安装的软件包列表" class="headerlink" title="列出已安装的软件包列表"></a>列出已安装的软件包列表</h3><table>
+<thead>
+<tr>
+<th>系统类型</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Debian系统</td>
+<td>dpkg –list</td>
+</tr>
+<tr>
+<td>Red Hat系统</td>
+<td>rpm -qa</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/19/%E5%B8%B8%E7%94%A8Linux%E5%91%BD%E4%BB%A4/" rel="next" title="常用Linux命令">
+                <i class="fa fa-chevron-left"></i> 常用Linux命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/25/%E5%B8%B8%E7%94%A8Linux%E5%91%BD%E4%BB%A4%E7%AC%AC%E4%BA%8C%E7%89%88/" rel="prev" title="常用Linux命令第二版">
+                常用Linux命令第二版 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">Linux软件包系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%93"><span class="nav-number">1.1.</span> <span class="nav-text">库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E5%92%8C%E4%BD%8E%E7%BA%A7%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%B7%A5%E5%85%B7"><span class="nav-number">1.2.</span> <span class="nav-text">高级和低级软件包工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E5%BA%93%E4%B8%AD%E6%9F%A5%E6%89%BE%E8%BD%AF%E4%BB%B6%E5%8C%85%EF%BC%8C%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="nav-number">1.3.</span> <span class="nav-text">在库中查找软件包，安装软件包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%B8%E8%BD%BD%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%92%8C%E6%9B%B4%E6%96%B0%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="nav-number">1.4.</span> <span class="nav-text">卸载软件包和更新软件包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E5%87%BA%E5%B7%B2%E5%AE%89%E8%A3%85%E7%9A%84%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%88%97%E8%A1%A8"><span class="nav-number">1.5.</span> <span class="nav-text">列出已安装的软件包列表</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Doug-Wilson</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/Gantzert_Felixander.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
