@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="文件系统," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="对于长期的信息存储，有三个基本要求：  必须能够存储大量的信息 在使用信息的进程终止时，信息必须保存下来 多个进程可以并发地存取信息  解决上面所有问题的方法就是将信息以一种单元——**文件(file)**的形式存储在磁盘或其他外部介质上。 文件是通过操作系统管理的，通常的内容为：文件结构选取、命名、使用、保护等。通常而言，操作系统中处理文件部分的服务称为**文件系统(file system)**">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件系统">
+<meta property="og:url" content="http://example.com/2020/11/15/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="Doug-Wilson&#39;s blogs">
+<meta property="og:description" content="对于长期的信息存储，有三个基本要求：  必须能够存储大量的信息 在使用信息的进程终止时，信息必须保存下来 多个进程可以并发地存取信息  解决上面所有问题的方法就是将信息以一种单元——**文件(file)**的形式存储在磁盘或其他外部介质上。 文件是通过操作系统管理的，通常的内容为：文件结构选取、命名、使用、保护等。通常而言，操作系统中处理文件部分的服务称为**文件系统(file system)**">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/%E6%96%87%E4%BB%B6%E5%B1%9E%E6%80%A7.png">
+<meta property="og:image" content="http://example.com/images/%E5%B1%82%E6%AC%A1%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://example.com/images/%E8%BF%9E%E7%BB%AD%E5%88%86%E9%85%8D%E6%96%B9%E6%A1%88.png">
+<meta property="og:image" content="http://example.com/images/%E9%93%BE%E6%8E%A5%E8%A1%A8%E5%88%86%E9%85%8D%E6%96%B9%E6%A1%88.png">
+<meta property="og:image" content="http://example.com/images/i%E8%8A%82%E7%82%B9%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95.png">
+<meta property="og:image" content="http://example.com/images/%E7%9B%AE%E5%BD%95%E9%A1%B9.png">
+<meta property="og:image" content="http://example.com/images/i%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E9%A1%B9.png">
+<meta property="og:image" content="http://example.com/images/i%E8%8A%82%E7%82%B9%E6%9F%A5%E6%89%BE.png">
+<meta property="article:published_time" content="2020-11-15T05:51:03.000Z">
+<meta property="article:modified_time" content="2021-05-31T09:22:34.886Z">
+<meta property="article:author" content="Doug-Wilson">
+<meta property="article:tag" content="文件系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/%E6%96%87%E4%BB%B6%E5%B1%9E%E6%80%A7.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2020/11/15/文件系统/"/>
+
+
+
+
+
+  <title>文件系统 | Doug-Wilson's blogs</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+		<a target="_blank" rel="noopener" href="https://your-url" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Doug-Wilson's blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">学无止境，积累技术</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-主页">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            主页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-关于">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-标签">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-目录">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归类">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-时间表">
+          <a href="/schedule/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            时间表
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/15/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Doug-Wilson's blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">文件系统</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-11-15T13:51:03+08:00">
+                2020-11-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>对于长期的信息存储，有三个基本要求：</p>
+<ol>
+<li>必须能够存储大量的信息</li>
+<li>在使用信息的进程终止时，信息必须保存下来</li>
+<li>多个进程可以并发地存取信息</li>
+</ol>
+<p>解决上面所有问题的方法就是将信息以一种单元——**文件(file)**的形式存储在磁盘或其他外部介质上。</p>
+<p>文件是通过操作系统管理的，通常的内容为：文件结构选取、命名、使用、保护等。通常而言，操作系统中处理文件部分的服务称为**文件系统(file system)**。</p>
+<span id="more"></span>
+
+<h2 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h2><h3 id="文件命名"><a href="#文件命名" class="headerlink" title="文件命名"></a>文件命名</h3><p>文件是一个抽象的机制，提供了一种把信息保存在磁盘上而且便于后续读取的方法。通过文件的抽象，用户不必了解信息存储的方法、位置以及磁盘实际运作方式等细节。</p>
+<p>各种系统的文件命名的规则略有不同，比如windows系统不区分字母大小写，而在Linux系统中则是严格区分大小写。但所有的操作系统都允许采用数字+字母的字符串作为合法的文件名。</p>
+<p>文件命名通常包含两部分：文件名和扩展名，两部分间以 <code>.</code>  分隔，比如 <code>file.c</code> 。</p>
+<p>常用扩展名如下：</p>
+<table>
+<thead>
+<tr>
+<th>扩展名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>.bak</code></td>
+<td>备份文件</td>
+</tr>
+<tr>
+<td><code>.c</code></td>
+<td>C语言程序</td>
+</tr>
+<tr>
+<td><code>.f77</code></td>
+<td>Fortran 77程序</td>
+</tr>
+<tr>
+<td><code>.gif</code></td>
+<td>动态图片格式</td>
+</tr>
+<tr>
+<td><code>.hlp</code></td>
+<td>帮助文档</td>
+</tr>
+<tr>
+<td><code>.html</code></td>
+<td>网页</td>
+</tr>
+<tr>
+<td><code>.mpg</code></td>
+<td>MPEG格式图片</td>
+</tr>
+<tr>
+<td><code>.o</code></td>
+<td>对象文件</td>
+</tr>
+<tr>
+<td><code>.ps</code></td>
+<td>PostScript文件</td>
+</tr>
+<tr>
+<td><code>.tex</code></td>
+<td>TEX格式化程序</td>
+</tr>
+<tr>
+<td><code>.txt</code></td>
+<td>文本</td>
+</tr>
+<tr>
+<td><code>.zip</code></td>
+<td>压缩包</td>
+</tr>
+</tbody></table>
+<h3 id="文件类型"><a href="#文件类型" class="headerlink" title="文件类型"></a>文件类型</h3><p>许多操作系统都支持几种类型的文件。比如Windows和Linux操作系统都支持文件和目录。而在Linux系统中，文件还包括正规文件、字符设备文件和块文件设备。正规文件含有用户信息以及需要保存的信息。字符设备文件(character special file)和输入/输出有关，用于模仿串行I/O设备，比如终端、打印机、网络等。块设备文件(block special file)则用于模仿磁盘。</p>
+<p>一般来说，正规文件是ASCII文件或二进制文件。ASCII我呢见的最大优点是可以原样地打印和显式，也可以用通常的文本编辑器进行编辑。二进制文件往往具有一定的内部结构，通常是一个可执行文件。</p>
+<h3 id="文件存取"><a href="#文件存取" class="headerlink" title="文件存取"></a>文件存取</h3><p>早期的操作系统只提供了一种文件存取方式：顺序存取(sequential access)。在这些系统中，进程从文件开始处顺序读取文件中所有字节或记录，不能略过某些内容，也不能非顺序读取。这在早期的存储媒介是磁带而不是磁盘是，还较为使用方便。</p>
+<p>当开始用磁盘存储文件后，就可以非顺序地读取文件中的字节或记录，这种读取文件的方式称为**随机存取文件(random access file)**。</p>
+<h3 id="文件属性"><a href="#文件属性" class="headerlink" title="文件属性"></a>文件属性</h3><p>每个文件都有文件名和数据。此外，操作系统还会给文件赋予其他信息，如：文件创建日期、文件长度、文件属主等。将这些额外的项称为**文件属性(file attribute)**。下面的列表为常见的文件属性：</p>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>protection</td>
+<td>不同类别用户对文件的访问权限</td>
+</tr>
+<tr>
+<td>password</td>
+<td>访问文件需要提供的密码</td>
+</tr>
+<tr>
+<td>creator</td>
+<td>文件创建者</td>
+</tr>
+<tr>
+<td>owner</td>
+<td>文件当前属主</td>
+</tr>
+<tr>
+<td>read-only flag</td>
+<td>0表示可读可写；1表示可读</td>
+</tr>
+<tr>
+<td>hidden flag</td>
+<td>0表示正常；1表示隐藏</td>
+</tr>
+<tr>
+<td>system flag</td>
+<td>0表示普通文件；1表示系统文件</td>
+</tr>
+<tr>
+<td>archive flag</td>
+<td>0表示已备份完毕；1表示需要备份</td>
+</tr>
+<tr>
+<td>ASCII/binary flag</td>
+<td>0表示ASCII文件；1表示二进制文件</td>
+</tr>
+<tr>
+<td>random access flag</td>
+<td>0表示顺序读取；1表示随机读取</td>
+</tr>
+<tr>
+<td>temporary flag</td>
+<td>0表示正常；1表示进程结束后删除文件</td>
+</tr>
+<tr>
+<td>lock flag</td>
+<td>0表示未锁定；非零表示锁定</td>
+</tr>
+<tr>
+<td>record length</td>
+<td>记录的字节数</td>
+</tr>
+<tr>
+<td>key position</td>
+<td>关键字在记录中的位置</td>
+</tr>
+<tr>
+<td>key length</td>
+<td>关键字的字节数</td>
+</tr>
+<tr>
+<td>creation time</td>
+<td>文件创建日期以及创建者名称</td>
+</tr>
+<tr>
+<td>time of last access</td>
+<td>文件最后一次访问的时间</td>
+</tr>
+<tr>
+<td>time of last change</td>
+<td>文件最后一次修改的时间</td>
+</tr>
+<tr>
+<td>current size</td>
+<td>文件当前大小</td>
+</tr>
+<tr>
+<td>maximum size</td>
+<td>文件可能达到的大小</td>
+</tr>
+</tbody></table>
+<h3 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h3><p>常用文件操作的系统调用：</p>
+<ol>
+<li>create。声明文件存在，并设置一些属性</li>
+<li>delete。删除文件以得到一些磁盘空间</li>
+<li>open。将文件属性和磁盘地址表载入主存，便于之后系统调用的快速存取</li>
+<li>close。关闭文件以释放内部表空间</li>
+<li>read。从文件中读取数据</li>
+<li>write。向文件写入数据</li>
+<li>append。在文件末尾添加数据</li>
+<li>seek。对于随机存取文件，通过seek系统调用将当前位置指针指向文件中特定位置</li>
+<li>get attributes。读取文件属性</li>
+<li>set attributes。设置文件属性</li>
+<li>rename。文件重命名</li>
+</ol>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><h3 id="层次目录系统"><a href="#层次目录系统" class="headerlink" title="层次目录系统"></a>层次目录系统</h3><p>目录通常包含了许多目录项，每个目录项代表一个文件，其中每个目录项包含文件名、文件属性和文件数据在磁盘上的地址等。两种常见的目录项结构都得到了广泛的应用：</p>
+<p><img src="/images/%E6%96%87%E4%BB%B6%E5%B1%9E%E6%80%A7.png"></p>
+<p>打开文件时，操作系统查找目录，直到找到要打开文件的文件名。然后从目录项或者所指向的数据结构中取得文件属性和磁盘地址，放入内存的相应表中。之后，对该文件的所有引用都使用主存中的信息。</p>
+<p>几乎所有的操作系统都会使用层次目录结构，方便管理，并且每个用户可以拥有需要的多个目录，组织自己的文件。</p>
+<p><img src="/images/%E5%B1%82%E6%AC%A1%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png"></p>
+<h3 id="路径名"><a href="#路径名" class="headerlink" title="路径名"></a>路径名</h3><p><strong>绝对路径名(absolute path name)：</strong></p>
+<p>绝对路径名由根目录到文件的路径组成。如 <code>/usr/ast/mailbox</code> 表示根目录含有子目录usr，而usr中又包含子目录ast，文件mailbox就在目录ast下。</p>
+<p>绝对路径名总是从根目录开始，并且是唯一的，路径各部分间用”/“表示隔开。如果一个路径以分隔符“/”开始，那么这个路径名就是绝对路径名</p>
+<p><strong>相对路径名(relative path name)：</strong></p>
+<p>用户可以指定一个目录为当前工作目录，这时，如果所有的路径名不是从根目录开始的，都是相对于工作目录的。比如当前工作目录为 <code>/usr/ast</code> ，则上述的绝对路径名可以用 <code>mailbox</code> 来引用，实现的功能和绝对路径名完全一样。</p>
+<h3 id="目录操作"><a href="#目录操作" class="headerlink" title="目录操作"></a>目录操作</h3><p>常用系统调用</p>
+<ol>
+<li>create。创建目录</li>
+<li>delete。删除目录，只有空目录可删除</li>
+<li>opendir。目录内容可悲读取。为了列出目录所有文件，列表程序必须先打开该目录，然后读取其中所有文件的文件名</li>
+<li>closedir。关闭目录以释放内部表空间</li>
+<li>readdir。打开目录下的一个目录项</li>
+<li>rename。目录重命名</li>
+<li>link。建立目录项链接。指定一个存在的文件和一个路径名，建立从文件到路径所指定的名字的链接，这样，同一个文件可以在多个目录中出现</li>
+<li>unlink。删除目录项链接</li>
+</ol>
+<p>大多数支持层次目录结构的操作系统，在每个目录还有两个特殊的目录项 <code>. 和 ..</code>。<code>对于. 和 ..</code>   ：<code>.</code> 指当前目录，<code>..</code> 指其父目录。</p>
+<h2 id="文件系统实现"><a href="#文件系统实现" class="headerlink" title="文件系统实现"></a>文件系统实现</h2><p>实现文件存储中最重要的问题是记录各个文件分别用到哪些磁盘块。</p>
+<h3 id="实现文件"><a href="#实现文件" class="headerlink" title="实现文件"></a>实现文件</h3><h4 id="连续分配"><a href="#连续分配" class="headerlink" title="连续分配"></a>连续分配</h4><p>最简单分配方案就是将每个文件作为连续数据块存储在磁盘上。因此，在具有1K大小块的磁盘上，50K的文件要分配50个连续的块。连续分配方案有两大优点：首先，简单，容易实现，记录每个文件用到的磁盘块仅需要记住一个数字即可，也就是第一块的磁盘地址；其次，性能较好，一次操作中就能从磁盘上读取出整个文件。</p>
+<p><img src="/images/%E8%BF%9E%E7%BB%AD%E5%88%86%E9%85%8D%E6%96%B9%E6%A1%88.png"></p>
+<p>缺点就是：1. 除非创建文件时就知道文件的最大长度，否则该方案行不通 2. 当删除文件的时候会产生磁盘碎片，原本可以使用的空间被浪费了，虽然可以通过磁盘压缩来完成清理，但是磁盘压缩的代价很高，不可取</p>
+<h4 id="链接表分配"><a href="#链接表分配" class="headerlink" title="链接表分配"></a>链接表分配</h4><p><img src="/images/%E9%93%BE%E6%8E%A5%E8%A1%A8%E5%88%86%E9%85%8D%E6%96%B9%E6%A1%88.png"></p>
+<p>每个块的第一个字用于指向下一块的职责，块的其他部分存放数据。</p>
+<p>与连续分配方案不同，这种方法中每个磁盘块都被利用，不会因为磁盘碎片而浪费存储空间。同样，只需要在目录项存放第一个文件块的磁盘地址，文件的其他块可以根据这个地址查找。</p>
+<p>虽然在链接表分配方案中，顺序读取非常方便，但是随机读取却相当缓慢。此外，因为指针占去了一些字节，每个磁盘块存储的数据不再是2的指数次幂，这个问题会降低系统的运行效率。</p>
+<h4 id="使用索引的链接表分配"><a href="#使用索引的链接表分配" class="headerlink" title="使用索引的链接表分配"></a>使用索引的链接表分配</h4><p>通过取出每个磁盘块的指针，将其放在内存的表的索引中，就可以消除链接表上述的两个不足。</p>
+<p>使用索引的链接表分配的缺陷是必须将整个链表都存放在内存中，这会占用一部分内存空间，特别是当磁盘块不是特别大的时候。</p>
+<h4 id="i节点"><a href="#i节点" class="headerlink" title="i节点"></a>i节点</h4><p>该方法通过给每个文件赋予一张称为i节点的小型表，列出文件属性和各块在磁盘上的地址。比如：</p>
+<p><img src="/images/i%E8%8A%82%E7%82%B9%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95.png"></p>
+<p>开始几个磁盘地址存放在i节点内，因此对于小文件，所需信息均在i节点，打开文件时，这些信息仓磁盘读入主存。稍大一些的文件，在i节点中有一个称为一次间接块的磁盘块地址，这个磁盘块中含有附加的磁盘地址。如果文件更大，则可以使用i节点的另一个地址，称为二次间接块地址，二次间接块包含了许多一次间接块的地址，而每个一次间接块又指向几百个磁盘数据块。如果这还不够，还可以使用三次间接块。</p>
+<h3 id="实现目录"><a href="#实现目录" class="headerlink" title="实现目录"></a>实现目录</h3><p>在读文件前，必须先打开文件，而打开文件需要获取文件的信息。而文件的信息如何保存，就是这里要讨论的内容。</p>
+<p>一般的方法是将文件信息直接存放在目录项中。还有一种是将文件信息存放在i节点中。</p>
+<h4 id="存放到目录项"><a href="#存放到目录项" class="headerlink" title="存放到目录项"></a>存放到目录项</h4><p>要查找文件名，文件系统需要做的就是查找目录中的目录项。当找到对应的目录项后，也就知道了文件的磁盘块号。如果我呢见的磁盘块数多于一个目录项所能容纳的数目，就为这个文件分配额外的目录项。</p>
+<p><img src="/images/%E7%9B%AE%E5%BD%95%E9%A1%B9.png"></p>
+<p>上图各域含义为：</p>
+<p>User code：记录文件拥有者</p>
+<p>File name 和 Extent：文件的文件名和扩展名</p>
+<p>Block count：文件实际使用了16个磁盘块的个数</p>
+<p>Disk block numbers：磁盘块号本身，最后一个块可能没有写满</p>
+<h4 id="存放到i节点"><a href="#存放到i节点" class="headerlink" title="存放到i节点"></a>存放到i节点</h4><p>每个目录项只包含一个文件名和一个i节点。有关文件类型、长度、时间、磁盘块等信息都放在i节点中。</p>
+<p><img src="/images/i%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E9%A1%B9.png"></p>
+<p>比如查找路径名：/usr/ast/mailbox</p>
+<p>首先文件系统找到根目录，因为根目录在磁盘上的固定位置，所以这比较容易。然后在根目录中查找路径的第一部分：usr，获得usr的i节点号。因为每个i节点位于磁盘的固定位置，所以根据i节点号找到i节点是很直接的。找到目录usr后，就会查找下一部分ast，找到ast目录项后，得到目录/usr/ast的i节点号，从而找到目录/usr/ast的i节点，并在该目录中查找文件mailbox。接着文件mailbox的i节点被读入内存，并保存在内存中，直到关闭mailbox文件。</p>
+<p><img src="/images/i%E8%8A%82%E7%82%B9%E6%9F%A5%E6%89%BE.png"></p>
+<h3 id="文件系统可靠性"><a href="#文件系统可靠性" class="headerlink" title="文件系统可靠性"></a>文件系统可靠性</h3><h4 id="文件系统的一致性"><a href="#文件系统的一致性" class="headerlink" title="文件系统的一致性"></a>文件系统的一致性</h4><p>文件的一致性检查分为两种：块的一致性检查和文件的一致性检查。在检查块的一致性时，该程序建立两张表。每张表中，每块对应有一个计数器，初始值设为0。第一张表的技术及记录了每块在文件中出现的次数，第二张表的计数器记录了每块在空闲块链表中出现的次数。</p>
+<p>检验程序读取所有的i节点，从i节点开始，建立相应文件中使用的所有块的块号表。每当读到一个块号时，该块在第一张表中的计数器加1，接着这个程序检查空闲块链表或位图，查找所有未使用的块。每当在空闲表中找到一个块时，在第二张表的计数器加1。</p>
+<p>如果文件系统一致，则每个块要么在第一张表中为1，要么在第二张表中为1。其他情况表示文件不一致。</p>
+<p>文件的一致性检查除了检查每个磁盘块以外，还检查目录系统。这时也会用到一张计数器表，每个计数器对应于一个文件。检验程序从根目录开始，沿目录树递归下降，检查文件系统每个目录，对每个目录中的文件，其i节点对应的计数器全部加1。</p>
+<p>当全部检查完后，得到一张表，对应于每个i节点号，表中给出了指向这个i节点的目录数目，然后，检验程序把这些数字和存储在文件i节点中的链接数目相比较。在一致的文件系统中，这两个数目相吻合。否则则出现两种错误，i节点中的链接数太大或太小。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" rel="tag"># 文件系统</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/11/12/%E5%AD%98%E5%82%A8%E5%99%A8%E7%AE%A1%E7%90%86/" rel="next" title="存储器管理">
+                <i class="fa fa-chevron-left"></i> 存储器管理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/11/26/Tomcat%E6%80%BB%E4%BD%93%E6%9E%B6%E6%9E%84%E8%A7%A3%E6%9E%90/" rel="prev" title="Tomcat总体架构解析">
+                Tomcat总体架构解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%91%BD%E5%90%8D"><span class="nav-number">1.1.</span> <span class="nav-text">文件命名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">文件类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%AD%98%E5%8F%96"><span class="nav-number">1.3.</span> <span class="nav-text">文件存取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%B1%9E%E6%80%A7"><span class="nav-number">1.4.</span> <span class="nav-text">文件属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-number">1.5.</span> <span class="nav-text">文件操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95"><span class="nav-number">2.</span> <span class="nav-text">目录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%82%E6%AC%A1%E7%9B%AE%E5%BD%95%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.1.</span> <span class="nav-text">层次目录系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%AF%E5%BE%84%E5%90%8D"><span class="nav-number">2.2.</span> <span class="nav-text">路径名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E6%93%8D%E4%BD%9C"><span class="nav-number">2.3.</span> <span class="nav-text">目录操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">文件系统实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%87%E4%BB%B6"><span class="nav-number">3.1.</span> <span class="nav-text">实现文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E5%88%86%E9%85%8D"><span class="nav-number">3.1.1.</span> <span class="nav-text">连续分配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5%E8%A1%A8%E5%88%86%E9%85%8D"><span class="nav-number">3.1.2.</span> <span class="nav-text">链接表分配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%B4%A2%E5%BC%95%E7%9A%84%E9%93%BE%E6%8E%A5%E8%A1%A8%E5%88%86%E9%85%8D"><span class="nav-number">3.1.3.</span> <span class="nav-text">使用索引的链接表分配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#i%E8%8A%82%E7%82%B9"><span class="nav-number">3.1.4.</span> <span class="nav-text">i节点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E7%9B%AE%E5%BD%95"><span class="nav-number">3.2.</span> <span class="nav-text">实现目录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%98%E6%94%BE%E5%88%B0%E7%9B%AE%E5%BD%95%E9%A1%B9"><span class="nav-number">3.2.1.</span> <span class="nav-text">存放到目录项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%98%E6%94%BE%E5%88%B0i%E8%8A%82%E7%82%B9"><span class="nav-number">3.2.2.</span> <span class="nav-text">存放到i节点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="nav-number">3.3.</span> <span class="nav-text">文件系统可靠性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-number">3.3.1.</span> <span class="nav-text">文件系统的一致性</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Doug-Wilson</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/Gantzert_Felixander.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

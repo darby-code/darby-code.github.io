@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="IO," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="操作系统的主要功能之一是控制所有的**输入&#x2F;输出(Input&#x2F;Output)**设备，它必须向设备发布命令，捕获中断并进行错误处理，还要提供一个设备与系统其余部分之间的简单易用的界面，该界面应该对所有设备尽可能一致。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="输入输出系统">
+<meta property="og:url" content="http://example.com/2020/10/31/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="Doug-Wilson&#39;s blogs">
+<meta property="og:description" content="操作系统的主要功能之一是控制所有的**输入&#x2F;输出(Input&#x2F;Output)**设备，它必须向设备发布命令，捕获中断并进行错误处理，还要提供一个设备与系统其余部分之间的简单易用的界面，该界面应该对所有设备尽可能一致。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E8%AE%BE%E5%A4%87%E6%A8%A1%E5%9E%8B.png">
+<meta property="og:image" content="http://example.com/images/DMA%E7%9B%B4%E6%8E%A5%E5%AD%98%E5%82%A8.png">
+<meta property="og:image" content="http://example.com/images/%E4%BA%A4%E5%8F%89%E7%BC%96%E5%9D%80%E7%A4%BA%E4%BE%8B.png">
+<meta property="og:image" content="http://example.com/images/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E7%B3%BB%E7%BB%9F%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://example.com/images/%E6%AD%BB%E9%94%81%E6%A8%A1%E5%9E%8B.png">
+<meta property="og:image" content="http://example.com/images/%E8%B5%84%E6%BA%90%E9%A1%BA%E5%BA%8F%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/RAM%E7%9B%98.png">
+<meta property="og:image" content="http://example.com/images/%E5%AF%BB%E9%81%93%E9%A1%BA%E5%BA%8F.png">
+<meta property="og:image" content="http://example.com/images/%E6%96%B0%E5%AF%BB%E9%81%93%E9%A1%BA%E5%BA%8F.png">
+<meta property="og:image" content="http://example.com/images/%E5%8F%AF%E7%BC%96%E7%A8%8B%E6%97%B6%E9%92%9F.png">
+<meta property="article:published_time" content="2020-10-31T11:51:29.000Z">
+<meta property="article:modified_time" content="2021-05-30T08:55:44.384Z">
+<meta property="article:author" content="Doug-Wilson">
+<meta property="article:tag" content="IO">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E8%AE%BE%E5%A4%87%E6%A8%A1%E5%9E%8B.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2020/10/31/输入输出系统/"/>
+
+
+
+
+
+  <title>输入输出系统 | Doug-Wilson's blogs</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+		<a target="_blank" rel="noopener" href="https://your-url" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Doug-Wilson's blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">学无止境，积累技术</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-主页">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            主页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-关于">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-标签">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-目录">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归类">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-时间表">
+          <a href="/schedule/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            时间表
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/31/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Doug-Wilson's blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">输入输出系统</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-31T19:51:29+08:00">
+                2020-10-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>操作系统的主要功能之一是控制所有的**输入/输出(Input/Output)**设备，它必须向设备发布命令，捕获中断并进行错误处理，还要提供一个设备与系统其余部分之间的简单易用的界面，该界面应该对所有设备尽可能一致。</p>
+<span id="more"></span>
+
+<h2 id="I-O硬件原理"><a href="#I-O硬件原理" class="headerlink" title="I/O硬件原理"></a>I/O硬件原理</h2><h3 id="I-O设备"><a href="#I-O设备" class="headerlink" title="I/O设备"></a>I/O设备</h3><p>I/O设备可粗略地分为两类：<strong>块设备（block devices）和字符设备（character devices）</strong>。</p>
+<p>块设备将信息存储在可寻址的固定大小数据块中，通常数据块的大小范围从512字节到32768字节不等。块设备的主要特征是能够独立地读写单个数据块。磁盘则是最常见的块设备。（块设备明显的特征如下：1. 能够定位需要的数据块，比如磁盘的磁头，无论当前磁头处于什么位置，总可以定位到其他柱面并等待需要的数据块旋转到磁头下面；2. 数据块大小是可以固定的）</p>
+<p>字符设备可以发送和接收一个字符流。字符设备无法编址，也不存在任何寻址。打印机、网络接口、鼠标等设备均可视为字符设备。</p>
+<h3 id="设备控制器"><a href="#设备控制器" class="headerlink" title="设备控制器"></a>设备控制器</h3><p>I/O设备通常包含一个机械部件和一个电子部件。为了达到设计的模块性和通用性，一般将其分开。机械部分是设备本身，电子部分称为设备控制器或适配器，在个人计算机中，常常是一块可以插入主板扩展槽的印刷电路板。</p>
+<p>设备控制器卡上一般有一个接线器，用于将与设备相连的电缆线接进来。许多控制器可以控制2个、4个、甚至8个相同的设备。如果控制器和设备间的接口采用标准接口，那么许多厂商都可以制造与该接口匹配的控制器和设备。</p>
+<p>操作系统大多都是和控制器打交道，而不是机械部分。而计算机的CPU和控制器间的通信采用下图所示的单总线模型：</p>
+<p><img src="/images/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E8%AE%BE%E5%A4%87%E6%A8%A1%E5%9E%8B.png"></p>
+<p>控制器与设备间的接口通常是一种很低层次的接口。比如一个磁盘，可能会被格式化为每道16个512字节的扇区。实际从驱动器读出来的是一个比特流：以一个前缀开始，随后是一个扇区的4096比特，最后是一个检查和（也称为纠错码ECC）。其中，前缀是磁盘格式化时写进磁盘的，里面包含有柱面数和扇区数、扇区大小之类的数据，以及同步信息。</p>
+<p>控制器的任务是将这个串行的比特流转换成字节块，并在需要时进行纠错。字节块通常是在控制器的一个缓冲区中逐个比特汇集而成的，在检查和进行校验证实数据正确之后，该块数据随后被拷贝到主存中。</p>
+<p>控制器和CPU通信有两种方案：一种是每个控制器有专门与CPU通信的寄存器，这些寄存器占用内存地址空间的一部分，该方案称为<strong>内存映像I/O</strong>；另一种方案就是计算机有I/O专用的地址，每个控制器占用其中的一部分，设备的I/O地址分配由控制器上的总线解码逻辑完成。第一种方案为常见方案。此外，许多控制器还使用中断来通知CPU自己已经做好准备，使其寄存器或可以读写。中断是一个电信号事件，硬件的中断请求信号线提供了中断控制芯片的物理输入，但这种输入的输入线的数量是有限的。中断控制芯片将每个输入映射到一个中断向量，通过该中断向量便可以找到相应的中断服务程序。</p>
+<p>操作系统通过向控制器寄存器写命令来执行I/O功能。其中许多命令带有参数，这些参数也要装入控制器的寄存器中。当某设备控制器接收到一条命令后，CPU可以执行其他进程，而让该设备控制器自行完成具体的I/O操作。而在命令执行完毕后，控制器发出一个中断信号，以便使操作系统重新获得CPU的控制权并检查执行结果。CPU通过从控制器寄存器中读取若干字节信息来获得执行结果和设备的状态信息。</p>
+<h3 id="存储器直接存取"><a href="#存储器直接存取" class="headerlink" title="存储器直接存取"></a>存储器直接存取</h3><p><strong>DMA(direct memory access)</strong></p>
+<p>先知道没有使用DMA时，磁盘是如何读取数据的：首先控制器逐个比特地从设备完整地读出一块数据放入内部缓冲区中，然后计算该块数据的 检查和 以保证读取正确。接着控制器发出中断信号，操作系统开始逐个字节或字地从控制器的设备寄存器中将数据读入内存，一次只能读取一个字节或字，需要通过一个循环才能将整个数据块读完。</p>
+<p>很明显，这种读取效率低下并且费时，为了解决这个问题，引入了DMA存储器直接存储。使用DMA时，CPU除了告诉控制器数据块地址外，还需要告诉控制器两条信息：<strong>数据块要存放的内存地址和要传输的字节数</strong>。接收到信息后，控制器首先从设备中将整个数据块读入内部缓冲区并进行校验，接着控制器会将第一个字节或字拷贝到DMA内存地址处，随后控制器对DMA地址和DMA计数分别增减刚刚传送的字节数。这个过程重复下去，直到DMA计数变为0。此时，设备控制器发出中断信号，通知操作系统数据读取完毕，在这里，操作系统无须再将数据拷贝到主存中，因为数据在读的过程中已经放在那里了。</p>
+<p><img src="/images/DMA%E7%9B%B4%E6%8E%A5%E5%AD%98%E5%82%A8.png"></p>
+<p>图中还有个缓冲区，其作用为：一旦磁盘启动开始读取数据，从磁盘读出比特率的速率是恒定的，无论控制器是否作好接收这些比特的准备。如果此时控制器要将数据直接拷贝到内存中，则它必须在每个字节传送完毕后获得系统总线的控制权。如果由于其他设备的使用而导致总线忙，那么只能等待。而等待过程，如果上个字节还未送入内存前，下个字节到达，那么控制器就只能找个地方将其暂存起来。从另一方面来看，如果采用缓冲区，则在DMA操作启动前不需要使用总线，这样控制器就能够设计的简单一些，因为DMA到主存的传输对时间要求不严格。</p>
+<p>此外，控制器读取数据也不像我们想象的那样简单。假设当数据被CPU或控制器从控制器传送到内存时，下一个扇区正好通过磁头下边，同时扇区上存储的信息正在送入控制器。但是简单的控制器不具备同时执行输入和输出的功能，因此，当进行内存传送时，当前通过磁头下的扇区的数据将会丢失。这样的结果就是控制器只能隔一个或多个数据块读取一个数据块，读完一条完整的磁道，磁盘至少需要旋转两周，旋转的周数取决于数据通过总线从控制器传到内存所用的时间相比于从磁盘读取数据到控制器的时间的大小。</p>
+<p>因为上面不连续读取的问题存在，有意地跳过一些快，以便为控制器腾出时间将数据传送到内存的计数称为交叉编址。磁盘在格式化的时候，数据块编号就考虑到了交叉系数。</p>
+<p><img src="/images/%E4%BA%A4%E5%8F%89%E7%BC%96%E5%9D%80%E7%A4%BA%E4%BE%8B.png"></p>
+<p>这种磁盘块编址方案的意图为：使操作系统能够连贯地读取出数据块，并同时达到硬件许可的最大速度。如果按无交叉编址进行编址，控制器只能做到隔一个块读取数据的速度，则操作系统为了保证将8个数据块按照0到7的顺序读出，磁盘需要旋转8周。</p>
+<h2 id="I-O软件原理"><a href="#I-O软件原理" class="headerlink" title="I/O软件原理"></a>I/O软件原理</h2><p>将软件组织成一种层次结构，低层软件屏蔽硬件具体细节，高层软件为用户提供简洁、规范的界面。</p>
+<h3 id="I-O软件的目标"><a href="#I-O软件的目标" class="headerlink" title="I/O软件的目标"></a>I/O软件的目标</h3><p><strong>设备无关性</strong></p>
+<p>I/O软件的设计的一个关键概念就是：<strong>设备无关性</strong>。程序员编写的软件无需根据不同的设备进行修改，只需要按照规范编写，则操作系统会通过调用不同的设备驱动来处理不同设备间的差异。</p>
+<p><strong>统一命名</strong></p>
+<p><strong>错误处理</strong></p>
+<p>错误应尽可能在接近硬件的地方处理。比如，如果控制器发现错误，则应该尽可能在控制器中进行处理，如果控制器处理不了，则交给设备驱动程序，只有在这些低层软件均处理不了错误的情况下，才通知高层软件。</p>
+<p><strong>同步（阻塞）——异步（中断驱动）传输</strong></p>
+<p>多数物理I/O是异步传输，比如CPU在启动传输操作后便转向其他工作，直到中断到达。如果I/O操作采用阻塞语义，那么用户编程将得到简化：发出一条read系统调用后，程序自动被挂起，直到数据被读到缓冲区中。</p>
+<p>综上，可以将I/O软件分成以下四个层次：</p>
+<ol>
+<li>底层：中断处理程序</li>
+<li>设备驱动程序</li>
+<li>与设备无关的操作系统软件</li>
+<li>高层：用户层软件</li>
+</ol>
+<p>这和进程的四个层次完全对应，看似偶然，实则并不是。</p>
+<h3 id="中断处理程序"><a href="#中断处理程序" class="headerlink" title="中断处理程序"></a>中断处理程序</h3><p>中断处理程序应放在操作系统的底层进行处理，以便其余部分尽可能少地与之发生联系。</p>
+<h3 id="设备驱动程序"><a href="#设备驱动程序" class="headerlink" title="设备驱动程序"></a>设备驱动程序</h3><p>设备驱动程序中包括了所有与设备相关的代码。每个设备驱动程序只处理一种设备，或者一类紧密相关的设备。在前面，直到设备控制器的功能是和操作系统打交道，每个控制器都有一个或多个寄存器来接收命令。设备驱动程序发出这些命令并进行检查，因此操作系统中只有硬盘驱动程序才知道磁盘控制器有多少给寄存器，以及它们的用途。磁盘驱动程序知道使磁盘正确操作所需要的全部参数，包括扇区、磁道、柱面、磁头、磁头臂的移动、交叉系数、步进电机、磁头定位时间等。</p>
+<p>设备驱动程序工作过程：从软件中接收抽象的请求，并执行。如果请求到来时，驱动程序空闲，则立即执行请求。但如果正在处理另一个请求，则将当前请求挂在一个等待队列中。当执行请求时，驱动程序会将请求转换成更具体的形式，包括确定需要哪些控制器命令以及命令的执行次序。一旦决定向控制器发送什么命令，驱动程序将向控制器的设备寄存器写入这些命令。一些控制器一次只能处理一条命令，而另一些则可以接收一串命令并自行处理。</p>
+<p>当控制命令发出后，会有两种可能：一是驱动程序需要等待控制器完成一些操作，驱动程序阻塞，知道中断信号到达才解除阻塞；二是操作没有任何延迟，所有驱动程序无需阻塞。对于第一种情况，被阻塞的驱动程序须由中断唤醒。</p>
+<p>无论上面的哪种情况发生，最后都要进行错误检查，如果一切正常，则驱动程序将 数据报 传送给上层的设备无关软件，然后向调用者返回一些状态信息。</p>
+<h3 id="与硬件无关的I-O软件"><a href="#与硬件无关的I-O软件" class="headerlink" title="与硬件无关的I/O软件"></a>与硬件无关的I/O软件</h3><p>与硬件无关的I/O软件的基本功能是执行适用于所有设备常用的I/O功能，并向用户层软件提供一个一致的接口。常见的硬件无关软件有：设备命名、设备保护、块设备的存储分配、错误报告等，通常属于文件系统，属于系统的第三层服务层。举例：</p>
+<ol>
+<li>设备命名。文件系统（与硬件无关的I/O软件）负责将设备名映射到相应的驱动程序。比如在MINIX中，一个设备名 /dev/tty00 唯一确定了一个i节点，节点包含了主设备号、次设备号，通过主设备号可以找到相应的设备驱动程序，通过次设备号则可以指定具体的物理设备</li>
+<li>设备保护。通过对设备的保护采用rwx权限机制，为每一台设备设置合理的访问权限</li>
+</ol>
+<h3 id="用户空间的I-O软件"><a href="#用户空间的I-O软件" class="headerlink" title="用户空间的I/O软件"></a>用户空间的I/O软件</h3><p>大部分的I/O软件属于操作系统，还有<strong>一小部分</strong>是和用户程序链接在一起的库程序，这些库程序的主要工作就是提供参数给相应的系统调用并调用该系统调用。比如常见的 count = write(fd, buffer, nbytes);  库函数write和程序链接在一起，并包含在运行时的程序代码中。这类程序显然是I/O系统的一部分，但是不属于操作系统。</p>
+<p>除了库程序外，另一个重要的类别就是Spooling系统。Spooling（英文含义：多任务缓存处理）是处理独占设备的一种方法，防止一个进程空占而导致其他进程无法使用设备。比如打印机，假设一个进程打开它而几个小时都不用，则其他进程都无法进行打印。而Spooling系统通过创建一个特殊的精灵进程（守护进程daemon）以及一个特殊的目录——Spooling目录来避免这种情况。打印一个文件前，需要打印的进程把待打印文件放在Spooling目录下，由该精灵进程进行打印，并且只能由该精灵进程进行打印，从而解决了上述的空占问题。此外，Spooling系统还多用于网络传输文件。</p>
+<h3 id="I-O系统层次结构"><a href="#I-O系统层次结构" class="headerlink" title="I/O系统层次结构"></a>I/O系统层次结构</h3><p>从底层开始分别是：硬件、中断处理程序、设备驱动程序、设备无关软件、用户进程</p>
+<p><img src="/images/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E7%B3%BB%E7%BB%9F%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84.png"></p>
+<p>图中的箭头表示控制流。当用户程序试图从文件读取数据块时，需要通过操作系统来执行此操作。设备无关软件首先在数据块缓冲区中查找此块，如果没有找到，则调用设备驱动程序向硬件发出相应的请求。用户进程随即阻塞，知道数据块被读出。当磁盘操作结束时，硬件发出一个中断，激活中断处理程序。中断处理程序则从设备获取返回状态值并唤醒睡眠的进程来结束此次I/O请求，并使用户进程继续执行。</p>
+<h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><h3 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h3><p>进程对设备、文件等获得独占性的访问权时有可能发生死锁。为了便于讨论死锁发生的情况，将这种需要排它使用的对象称为资源，换句话说，资源在任何时刻只能被单个进程使用。</p>
+<p>资源分成两类：可剥夺式和不可剥夺式。可剥夺式资源从拥有它的进程处剥夺不会产生其他情况，比如主存，一个进程占用主存中一段内存地址，假如现在要在该段内存地址执行另一个进程，那么进行进程换出换入即可。</p>
+<p>而相反，不可剥夺式资源无法再不导致相关计算失败的情况下将资源从属主进程处剥夺。比如一个进程已经开始打印了，如果剥夺进程占用的打印机给另一个进程使用，那么打印结果是混乱的，无效的。</p>
+<p>申请一个资源的事件顺序为：</p>
+<ol>
+<li>申请资源</li>
+<li>使用资源</li>
+<li>释放资源</li>
+</ol>
+<h3 id="死锁原理"><a href="#死锁原理" class="headerlink" title="死锁原理"></a>死锁原理</h3><p>死锁的定义：若一个进程集合中的每一个进程都在等待只能由本集合中的另一个进程才能引发的事件，则这种情况被视为死锁。由于所有进程都在等待，所以没有一个进程能够触发能够唤醒本集合另一个进程的事件，于是，所有进程都将永远地等待下去。</p>
+<p>死锁的条件：</p>
+<ol>
+<li>互斥条件。每一个资源要么被分配给一个进程，要么空闲</li>
+<li>保持和等待条件。已分配到资源的进程可以申请新的资源</li>
+<li>非剥夺条件。已分配给一个进程的资源不可被剥夺，只能被占有它的进程显式地释放</li>
+<li>循环等待条件。系统必然有一条：由两个或两个以上进程组成的循环链，链中的每个进程都在等待相邻进程释放占用的资源</li>
+</ol>
+<p>以上条件就是死锁发生的必然条件，只要一条不成立，死锁就不会发生。</p>
+<h3 id="死锁模型——资源图"><a href="#死锁模型——资源图" class="headerlink" title="死锁模型——资源图"></a>死锁模型——资源图</h3><p>术语：</p>
+<ol>
+<li>圆形表示进程</li>
+<li>方形表示资源</li>
+<li>资源指向进程表示该资源已被进程占用</li>
+<li>进程指向资源表示进程正在申请资源并处于阻塞状态。</li>
+</ol>
+<p><img src="/images/%E6%AD%BB%E9%94%81%E6%A8%A1%E5%9E%8B.png"></p>
+<p>通过资源图，可以分析判断是否发生死锁。通过申请和释放资源的顺序一步步将资源图画出，最后检查是否存在环路，如果有，则发生死锁，如果没有则无。</p>
+<h3 id="处理死锁策略"><a href="#处理死锁策略" class="headerlink" title="处理死锁策略"></a>处理死锁策略</h3><ol>
+<li>忽略死锁问题</li>
+<li>检测死锁并恢复</li>
+<li>谨慎对资源进行动态分配，避免死锁</li>
+<li>破坏死锁产生的4个条件的其中一个来预防死锁的发生</li>
+</ol>
+<h4 id="鸵鸟算法"><a href="#鸵鸟算法" class="headerlink" title="鸵鸟算法"></a>鸵鸟算法</h4><p>像鸵鸟一样，对死锁视而不见。（什么也不做也是一种算法）</p>
+<h4 id="死锁检测和恢复"><a href="#死锁检测和恢复" class="headerlink" title="死锁检测和恢复"></a>死锁检测和恢复</h4><p>监视资源的申请和释放。每次资源被申请或释放时，资源图随之刷新，同时检测是否存在环路。如果存在一个环，则环中的一个进程被撤销，如果仍然不能去除死锁，则撤销环的另一个进程，如此往复，知道环被破坏。</p>
+<h4 id="死锁预防"><a href="#死锁预防" class="headerlink" title="死锁预防"></a>死锁预防</h4><p>对进程施加适当的限制以从根本上消除死锁，即破坏死锁成立的四个条件中的一个，那么死锁将不会发生。</p>
+<ol>
+<li><p>考虑互斥条件。如果资源不被单一进程独占，则死锁肯定不会发生。</p>
+</li>
+<li><p>禁止已分配资源的进程再次申请其他资源。该方法容易实现，一种实现方式就是规定所有进程再开始执行前申请所需的全部资源，如果所需的资源全部可用则可进行分配，如果一个或多个资源正在被使用，则不进行分配，进程阻塞。这种方法虽然实现简单，但是不实用。</p>
+</li>
+<li><p>消除不可剥夺。这很明显不可行，如果这样做的话，系统将无法正确运行。</p>
+</li>
+<li><p>破坏循环等待条件。这也是目前去除死锁最常用的方式。下面的算法都是在围绕破环循环等待条件进行展开：</p>
+<p>赋予所有资源一个全局编号，进程申请资源必须按照编号的顺序。比如：</p>
+<p><img src="/images/%E8%B5%84%E6%BA%90%E9%A1%BA%E5%BA%8F%E5%9B%BE.png"></p>
+<p>进程可用先申请打印机然后申请磁带机，但是不可以先申请绘图仪，后申请打印机。</p>
+<p>那为什么按顺序申请资源不会出现死锁？考虑图中的两种情况，进程A申请资源i，进程B申请资源j，假设i和j是不同的资源，因此它们的资源编号不同。假如i&gt;j，那么进程A不能申请资源j ，进程B可用申请资源i；假如i&lt;j，那么进程A可用申请资源j，进程B不可以申请资源i。无论哪一种情况，都不会出现闭环，也就不会出现死锁的情况。</p>
+<p>对于进程数大于2的情况，即多进程的情况，上述逻辑依然成立。无论是哪一种情况，必然有一个资源的编号是最高的，占用该资源的进程不能申请其他已被占用的资源，它要么执行完毕，要么申请资源编号更高的资源，而资源编号更高的资源是肯定可以获得的，那么它最终将执行完毕并释放资源。那么此时，次高编号的资源编号就变成了最高的资源编号，也将会执行上述过程。以此类推，每个进程都将执行完毕，没有死锁发生。</p>
+<p>看似资源编号的方法很完美，但是就是难在如何给资源进行资源编号，还有就是当资源包括进程表、Spooling磁盘空间、加锁的数据块积累以及其他抽象资源时，潜在的资源以及不同用途的数目会十分庞大，以至于资源编号法根本无法使用。所以资源编号法也是不太可行的。</p>
+</li>
+</ol>
+<h2 id="RAM盘"><a href="#RAM盘" class="headerlink" title="RAM盘"></a>RAM盘</h2><p><strong>RAM盘也称为虚拟内存盘，通过软件将一部分内存(RAM)模拟为硬盘来使用的一种技术。</strong></p>
+<p>通过RAM盘驱动程序可以访问存储器的任何部分，主要用途就是保留一部分存储器，并向普通磁盘一样使用它。RAM盘不提供永久存储，但是一旦文件被拷贝到这一区域，就可以以极快的速度进行访问。</p>
+<h3 id="RAM盘硬件和软件"><a href="#RAM盘硬件和软件" class="headerlink" title="RAM盘硬件和软件"></a>RAM盘硬件和软件</h3><p>块设备的数据块存储于旋转存储设备上，而RAM盘则简单地多。RAM盘使用预先分配的主存存储数据块，因此具有快速存取的优点（没有寻道和旋转延迟），适用于需要频繁存取的数据和程序。</p>
+<p><img src="/images/RAM%E7%9B%98.png"></p>
+<p>RAM盘被分为n块，每块的大小和实际磁盘块的大小相同。当驱动程序收到一条读写一个数据块的消息时，它只计算被请求的块在RAM盘存储区的位置，并读出或写入该块，而不读写软盘或硬盘。</p>
+<h2 id="磁盘"><a href="#磁盘" class="headerlink" title="磁盘"></a>磁盘</h2><h3 id="磁盘硬件概述"><a href="#磁盘硬件概述" class="headerlink" title="磁盘硬件概述"></a>磁盘硬件概述</h3><p>实际的磁盘都组织成许多柱面，一个柱面上的磁道数和垂直放置的磁头个数相同。磁道又被分成许多扇区，每条磁道上扇区数目典型的范围是：软盘为每条磁道8~32扇区；硬盘数目不固定，通常可多达几百扇区。</p>
+<p>对于磁盘，最简单的设计是每条磁道具有相同的扇区数，每个扇区包含相同数目的字节。那么很显然，靠近磁盘外沿的扇区比靠近磁盘内边沿的扇区要长一些，最里面的柱面上的数据密度要高一些。内圈磁道和外圈磁道数据密度不同意味着会牺牲一些磁盘容量，也意味着存在更复杂的系统。一种当磁头处于外部磁道时，磁盘旋转速度更快的磁盘，这样外圈磁道就可以有更多的扇区，从而增加磁盘的容量，目前MINIX系统还不支持这种磁盘。</p>
+<p>对磁盘驱动程序有重要的一个设备特性是：控制器可以同时控制两个或多个驱动器进行寻道，称为<strong>重叠寻道(overlapped seeks)<strong>。当控制器和软件等待一个驱动器完成寻道时，控制器可以启动另一个驱动器进行寻道。许多控制器可以在对一个或多个其他驱动器寻道的同时在一个驱动器上进行读写操作，比如对于硬盘。在一个有多个硬盘的系统中，这些驱动器就能同时操作，</strong>至少在磁盘和控制器缓冲区之间的数据传输可以并行进行，然而，在控制器和系统内存之间只能同时执行一个传输，同时执行两个或多个操作的能力极大地降低了平均读写时间。</strong></p>
+<h3 id="磁盘软件概述"><a href="#磁盘软件概述" class="headerlink" title="磁盘软件概述"></a>磁盘软件概述</h3><p>考虑读写一个磁盘块需要多长时间，需要的时间由下面三个因素决定：</p>
+<ol>
+<li>寻道时间（将磁头臂移动到相应柱面所需要的时间）</li>
+<li>旋转延迟（相应的扇区旋转到磁头下面所需要的时间）</li>
+<li>实际的数据传输时间</li>
+</ol>
+<p>相对于旋转延迟和实际的数据传输时间相比，寻道时间要大的多，因此，减小平均寻道时间将极大提高系统的性能。</p>
+<h4 id="磁盘臂调度算法"><a href="#磁盘臂调度算法" class="headerlink" title="磁盘臂调度算法"></a>磁盘臂调度算法</h4><p>如果磁盘驱动程序每次按接收一个请求并按照接收顺序执行，则很难优化寻道时间。许多磁盘驱动器都维护了一张表格，按柱面号索引，每一柱面的全部请求用一个链接表链在一起，链表头指针存放在表格相应的表目中。</p>
+<p>有了这种数据结构，就可以改进顺序执行服务（FCFS）的调度算法。比如一个具有40个柱面的磁盘，假设一个请求请求读取柱面11上的一个数据块，当对柱面11寻道时，又顺序到达了新的寻道请求：1、36、16、34、9、12，则它们会被安排到请求等待表，每个柱面对应一个单独的链表：</p>
+<p><img src="/images/%E5%AF%BB%E9%81%93%E9%A1%BA%E5%BA%8F.png"></p>
+<p>比较：</p>
+<p>按顺序执行服务：11、1、36、16、34、9、12，磁盘臂分别需要移动10、35、20、18、25、3 总共111个柱面</p>
+<p>改进后的服务：11、12、9、16、2、34、36，磁盘臂分别需要移动1、3、7、15、33、2 总共61个柱面 ，柱面移动数大概减少了一半。该算法也称为<strong>最短寻道算法(shortest seek first SSF)</strong></p>
+<p>但是SSF算法存在远离柱面中部区域的请求的服务很差的问题。比如当机械臂移到柱面16的时候，又有对柱面8、柱面10等等临近柱面的请求，那么柱面2、34、36极端区域的请求处理就不得不等待，直到中部区域没有请求为止。如何解决这个问题？这里参考了日常生活。</p>
+<p>比如高层建筑都有电梯，电梯运行的时候都是朝着一个方向运行。比如当一个电梯在2楼时，4楼按下了上升按钮，5楼按下上升按钮，6楼按下下降按钮，1楼也按下上升按钮，这时候电梯并不会回到一楼，而是继续网上，先在4楼停靠，然后在5楼停靠，6楼不停靠。当电梯到达目的地下降的时候，才在6楼停靠，最后停到1楼。根据这个思路，就设计了一个算法叫**电梯算法(elevator algorithm)**。该算法需要维护一个二进制位：当前方向是向上还是向下。当一个请求结束之后，磁盘的驱动程序就检查该二进制位，如果是向上，则磁盘臂移动到下一个更高的等待请求，如果没有更高的位置请求，就翻转方向，如果存在一个低位置的请求，则移向该位置。则我们可以对上面的SSF算法进行改进，得到如下新的结果：</p>
+<p><img src="/images/%E6%96%B0%E5%AF%BB%E9%81%93%E9%A1%BA%E5%BA%8F.png"></p>
+<h3 id="磁盘常见错误"><a href="#磁盘常见错误" class="headerlink" title="磁盘常见错误"></a>磁盘常见错误</h3><ol>
+<li>程序性错误（请求读写区不存在的扇区）</li>
+<li>暂时性校验和错误（磁头上的灰尘引起）</li>
+<li>永久性校验和错误（磁盘块的物理损坏）</li>
+<li>寻道出错（磁盘臂定位柱面出现错误）</li>
+<li>控制器出错（控制器拒绝接受命令）</li>
+</ol>
+<h2 id="时钟"><a href="#时钟" class="headerlink" title="时钟"></a>时钟</h2><h3 id="时钟硬件"><a href="#时钟硬件" class="headerlink" title="时钟硬件"></a>时钟硬件</h3><p>计算机通常使用两种类型的时钟，一种时钟连接到110V或220V的电力线上，以50或60HZ的频率在每个电压周期产生一次中断。另一种时钟由三个元件组成：晶振、计数器、保持寄存器。当把石英晶体进行合适的切削并安装于一定压力之下时，它会产生非常精确的周期信号。根据所选晶体的不同，典型范围在5~100MHz之间。在任何计算机系统中，至少都可以发现这样的电路向计算机的各种电路提供同步信号：将信号送入计数器并使其递减计数至零，当计数至零时，产生一个中断。</p>
+<p><img src="/images/%E5%8F%AF%E7%BC%96%E7%A8%8B%E6%97%B6%E9%92%9F.png"></p>
+<p>可编程时钟有几种操作模式。在<strong>单触发模式（One-shot Mode）</strong>中，当一个时钟启动时，它把保持寄存器的值拷贝到计数器中，然后每从晶振来一个脉冲，计数器的值就减1，当计数器为零时，产生一个中断，并停止工作，直到再次被软件启动为止。<strong>方波模式（Square-wave Mode）</strong>中，每次计数至零并引起中断后，保持寄存器自动拷贝到计数器，整个过程不断重复执行。这些周期性的中断称为<strong>时钟滴答（Clock Tick）</strong>。</p>
+<p>此外，可编程时钟的中断频率可以由软件控制。</p>
+<h3 id="时钟软件"><a href="#时钟软件" class="headerlink" title="时钟软件"></a>时钟软件</h3><p>硬件所做的工作是按已知时间间隔产生中断，其他和时间有关的工作都必须由软件驱动程序实现。时钟驱动程序的任务一般包括以下内容:</p>
+<ol>
+<li>维护日期时间</li>
+<li>防止进程的运行时间超出其允许的时间</li>
+<li>对CPU使用进行记费</li>
+<li>处理用户进程提出的时间闹钟系统调用</li>
+<li>对系统某些部分提高监视定时器</li>
+</ol>
+<h2 id="终端"><a href="#终端" class="headerlink" title="终端"></a>终端</h2><p>这里之后再回来补。</p>
+<h2 id="系统任务"><a href="#系统任务" class="headerlink" title="系统任务"></a>系统任务</h2><p>文件系统和存储管理器服务进程处于系统结构的第三层——服务层，也就是说这两个服务并不在内核中（第一、二层）。有时候它们拥有内核所需要的信息，但不被允许直接将信息写入到内核表中，也就无法与内核进行通信。为了解决这个问题，引入了系统任务（位于第二层），系统任务使得内核任务可以通过消息机制和文件系统和存储管理器通信，并且系统任务拥有对内核表的存取权。它和其它任务相似，唯一区别就是它不控制任何的I/O设备，而是面向系统中的大部分内部组件。</p>
+<p>系统任务接受的19种消息如下：</p>
+<table>
+<thead>
+<tr>
+<th>消息类型</th>
+<th>消息源</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SYS_FORK</td>
+<td>MM(Main Memory)</td>
+<td>产生了一个新进程</td>
+</tr>
+<tr>
+<td>SYS_NEWMAP</td>
+<td>MM</td>
+<td>新建进程的存储映像并通知内核</td>
+</tr>
+<tr>
+<td>SYS_GETMAP</td>
+<td>MM</td>
+<td>获取进程的存储映像信息</td>
+</tr>
+<tr>
+<td>SYS_EXEC</td>
+<td>MM</td>
+<td>将exec系统调用后堆栈的指针传给内核</td>
+</tr>
+<tr>
+<td>SYS_XIT</td>
+<td>MM</td>
+<td>进程结束</td>
+</tr>
+<tr>
+<td>SYS_TIMES</td>
+<td>FS(File System)</td>
+<td>文件系统想要一个进程的运行时间</td>
+</tr>
+<tr>
+<td>SYS_ABORT</td>
+<td>Both</td>
+<td>发现根设备的超级块有致命损坏，将陷入混乱状态</td>
+</tr>
+<tr>
+<td>SYS_SENDSIG</td>
+<td>MM</td>
+<td>发送一个信号给一个进程</td>
+</tr>
+<tr>
+<td>SYS_SIGRETURN</td>
+<td>MM</td>
+<td>将sigcontext结构拷贝回内核空间，然后恢复进程的寄存器</td>
+</tr>
+<tr>
+<td>SYS_KILL</td>
+<td>FS</td>
+<td>文件系统用来请求产生一个信号</td>
+</tr>
+<tr>
+<td>SYS_ENDSIG</td>
+<td>MM</td>
+<td>减少等待信号的计数，如果计数减到零，则重置进程的SIG_PENDING位</td>
+</tr>
+<tr>
+<td>SYS_COPY</td>
+<td>Both</td>
+<td>主存从用户进程拷贝信息</td>
+</tr>
+<tr>
+<td>SYS_VCOPY</td>
+<td>Both</td>
+<td>进程间多个数据块的复制</td>
+</tr>
+<tr>
+<td>SYS_GBOOT</td>
+<td>FS</td>
+<td>获取启动参数</td>
+</tr>
+<tr>
+<td>SYS_MEM</td>
+<td>MM</td>
+<td>主存想知道下一个物理内存空闲块</td>
+</tr>
+<tr>
+<td>SYS_UMAP</td>
+<td>FS</td>
+<td>将虚拟地址转换成实际物理地址</td>
+</tr>
+<tr>
+<td>SYS_TRACE</td>
+<td>MM</td>
+<td>执行PTRACE调用的操作</td>
+</tr>
+<tr>
+<td>SYS_GETSP</td>
+<td>MM</td>
+<td>找出某些进程当前堆栈指针的值</td>
+</tr>
+<tr>
+<td>SYS_TIMES</td>
+<td>Both</td>
+<td>向调用者返回记账时间</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/IO/" rel="tag"># IO</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/10/26/%E8%BF%9B%E7%A8%8B/" rel="next" title="进程">
+                <i class="fa fa-chevron-left"></i> 进程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/11/05/Tomcat%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/" rel="prev" title="Tomcat系统架构">
+                Tomcat系统架构 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#I-O%E7%A1%AC%E4%BB%B6%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">I&#x2F;O硬件原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#I-O%E8%AE%BE%E5%A4%87"><span class="nav-number">1.1.</span> <span class="nav-text">I&#x2F;O设备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">设备控制器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%99%A8%E7%9B%B4%E6%8E%A5%E5%AD%98%E5%8F%96"><span class="nav-number">1.3.</span> <span class="nav-text">存储器直接存取</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#I-O%E8%BD%AF%E4%BB%B6%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">I&#x2F;O软件原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#I-O%E8%BD%AF%E4%BB%B6%E7%9A%84%E7%9B%AE%E6%A0%87"><span class="nav-number">2.1.</span> <span class="nav-text">I&#x2F;O软件的目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E6%96%AD%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.2.</span> <span class="nav-text">中断处理程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.3.</span> <span class="nav-text">设备驱动程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E%E7%A1%AC%E4%BB%B6%E6%97%A0%E5%85%B3%E7%9A%84I-O%E8%BD%AF%E4%BB%B6"><span class="nav-number">2.4.</span> <span class="nav-text">与硬件无关的I&#x2F;O软件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E7%9A%84I-O%E8%BD%AF%E4%BB%B6"><span class="nav-number">2.5.</span> <span class="nav-text">用户空间的I&#x2F;O软件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I-O%E7%B3%BB%E7%BB%9F%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84"><span class="nav-number">2.6.</span> <span class="nav-text">I&#x2F;O系统层次结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%BB%E9%94%81"><span class="nav-number">3.</span> <span class="nav-text">死锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%84%E6%BA%90"><span class="nav-number">3.1.</span> <span class="nav-text">资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%BB%E9%94%81%E5%8E%9F%E7%90%86"><span class="nav-number">3.2.</span> <span class="nav-text">死锁原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%BB%E9%94%81%E6%A8%A1%E5%9E%8B%E2%80%94%E2%80%94%E8%B5%84%E6%BA%90%E5%9B%BE"><span class="nav-number">3.3.</span> <span class="nav-text">死锁模型——资源图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E6%AD%BB%E9%94%81%E7%AD%96%E7%95%A5"><span class="nav-number">3.4.</span> <span class="nav-text">处理死锁策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%B8%B5%E9%B8%9F%E7%AE%97%E6%B3%95"><span class="nav-number">3.4.1.</span> <span class="nav-text">鸵鸟算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%BB%E9%94%81%E6%A3%80%E6%B5%8B%E5%92%8C%E6%81%A2%E5%A4%8D"><span class="nav-number">3.4.2.</span> <span class="nav-text">死锁检测和恢复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%BB%E9%94%81%E9%A2%84%E9%98%B2"><span class="nav-number">3.4.3.</span> <span class="nav-text">死锁预防</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RAM%E7%9B%98"><span class="nav-number">4.</span> <span class="nav-text">RAM盘</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RAM%E7%9B%98%E7%A1%AC%E4%BB%B6%E5%92%8C%E8%BD%AF%E4%BB%B6"><span class="nav-number">4.1.</span> <span class="nav-text">RAM盘硬件和软件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A3%81%E7%9B%98"><span class="nav-number">5.</span> <span class="nav-text">磁盘</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E7%A1%AC%E4%BB%B6%E6%A6%82%E8%BF%B0"><span class="nav-number">5.1.</span> <span class="nav-text">磁盘硬件概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E8%BD%AF%E4%BB%B6%E6%A6%82%E8%BF%B0"><span class="nav-number">5.2.</span> <span class="nav-text">磁盘软件概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E8%87%82%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="nav-number">5.2.1.</span> <span class="nav-text">磁盘臂调度算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF"><span class="nav-number">5.3.</span> <span class="nav-text">磁盘常见错误</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%92%9F"><span class="nav-number">6.</span> <span class="nav-text">时钟</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E7%A1%AC%E4%BB%B6"><span class="nav-number">6.1.</span> <span class="nav-text">时钟硬件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%92%9F%E8%BD%AF%E4%BB%B6"><span class="nav-number">6.2.</span> <span class="nav-text">时钟软件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%88%E7%AB%AF"><span class="nav-number">7.</span> <span class="nav-text">终端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E4%BB%BB%E5%8A%A1"><span class="nav-number">8.</span> <span class="nav-text">系统任务</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Doug-Wilson</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/Gantzert_Felixander.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

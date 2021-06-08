@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic|Ubuntu:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="tomcat," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="之前学习了Tomcat的请求解析流程，也对Tomcat整体有一个大概的了解，但是对于其整体的学习还不够深入，比如启动Tomcat的时候经常会见到 “Catalina” 这个单词，它是什么含义？Tomcat是如何启动的？启动需要哪些内容？等等问题，都想了解，这里记录一下学习过程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tomcat总体架构解析">
+<meta property="og:url" content="http://example.com/2020/11/26/Tomcat%E6%80%BB%E4%BD%93%E6%9E%B6%E6%9E%84%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="Doug-Wilson&#39;s blogs">
+<meta property="og:description" content="之前学习了Tomcat的请求解析流程，也对Tomcat整体有一个大概的了解，但是对于其整体的学习还不够深入，比如启动Tomcat的时候经常会见到 “Catalina” 这个单词，它是什么含义？Tomcat是如何启动的？启动需要哪些内容？等等问题，都想了解，这里记录一下学习过程。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD.png">
+<meta property="og:image" content="http://example.com/images/%E8%AF%B7%E6%B1%82%E7%9B%91%E5%90%AC%E5%92%8C%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86%E8%A7%A3%E8%80%A6.png">
+<meta property="og:image" content="http://example.com/images/%E8%AE%BE%E8%AE%A1Service%E5%B1%82.png">
+<meta property="og:image" content="http://example.com/images/Container%E6%8D%A2%E6%88%90Engine.png">
+<meta property="og:image" content="http://example.com/images/%E5%AE%B9%E5%99%A8%E9%97%B4%E8%BF%9B%E4%B8%80%E6%AD%A5%E8%A7%A3%E8%80%A6.png">
+<meta property="og:image" content="http://example.com/images/%E8%AE%BE%E7%BD%AE%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA.png">
+<meta property="og:image" content="http://example.com/images/Servlet%E5%AE%B9%E5%99%A8%E5%8C%96.png">
+<meta property="og:image" content="http://example.com/images/%E5%AE%B9%E5%99%A8Container%E7%BB%84%E4%BB%B6%E7%88%B6%E7%B1%BB.png">
+<meta property="og:image" content="http://example.com/images/%E5%8A%A0%E5%85%A5LifeCycle.png">
+<meta property="og:image" content="http://example.com/images/%E7%BB%84%E4%BB%B6%E7%9A%84%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2.png">
+<meta property="og:image" content="http://example.com/images/%E7%AE%A1%E9%81%93%E5%92%8C%E9%98%80.png">
+<meta property="og:image" content="http://example.com/images/%E5%85%B3%E7%B3%BB%E5%8A%A0%E5%85%A5%E7%AE%A1%E9%81%93%E5%92%8C%E9%98%80.png">
+<meta property="og:image" content="http://example.com/images/Connector%E6%89%A9%E5%B1%95.png">
+<meta property="og:image" content="http://example.com/images/Connector%E6%94%B9%E5%8F%98.png">
+<meta property="og:image" content="http://example.com/images/%E6%B7%BB%E5%8A%A0Executor.png">
+<meta property="og:image" content="http://example.com/images/%E5%AE%8C%E6%95%B4%E6%95%B4%E4%BD%93%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88.png">
+<meta property="og:image" content="http://example.com/images/Tomcat%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B.png">
+<meta property="og:image" content="http://example.com/images/%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B.png">
+<meta property="og:image" content="http://example.com/images/Tomcat%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%85%B3%E7%B3%BB.png">
+<meta property="og:image" content="http://example.com/images/Tomcat%E6%A8%A1%E5%9D%97%E5%88%86%E5%B1%82%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/Server%E6%A1%86%E6%9E%B6%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/web%E5%BA%94%E7%94%A8%E5%8A%A0%E8%BD%BD.png">
+<meta property="og:image" content="http://example.com/images/web%E5%AE%B9%E5%99%A8%E7%B1%BB%E5%85%B3%E7%B3%BB.png">
+<meta property="og:image" content="http://example.com/images/%E8%AF%B7%E6%B1%82%E6%98%A0%E5%B0%84%E7%AE%97%E6%B3%95.png">
+<meta property="og:image" content="http://example.com/images/Mapper%E9%9D%99%E6%80%81%E7%B1%BB%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/images/Mapper%E6%98%A0%E5%B0%84%E7%AE%97%E6%B3%95.png">
+<meta property="og:image" content="http://example.com/images/Catalina%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82.png">
+<meta property="og:image" content="http://example.com/images/Coyote%E5%92%8CCatalina%E8%AF%B7%E6%B1%82%E8%BF%87%E7%A8%8B.png">
+<meta property="og:image" content="http://example.com/images/Coyote%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82.png">
+<meta property="og:image" content="http://example.com/images/Coyote%E6%A0%B8%E5%BF%83%E7%B1%BB%E5%85%B3%E7%B3%BB.png">
+<meta property="og:image" content="http://example.com/images/%E5%B8%A7%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://example.com/images/HTTP%E5%8D%8F%E8%AE%AE%E7%9A%84%E8%BD%AC%E6%8D%A2.png">
+<meta property="og:image" content="http://example.com/images/%E6%B5%81%E7%9A%84%E4%BC%A0%E8%BE%93.png">
+<meta property="article:published_time" content="2020-11-26T00:08:45.000Z">
+<meta property="article:modified_time" content="2021-06-03T02:35:20.762Z">
+<meta property="article:author" content="Doug-Wilson">
+<meta property="article:tag" content="tomcat">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2020/11/26/Tomcat总体架构解析/"/>
+
+
+
+
+
+  <title>Tomcat总体架构解析 | Doug-Wilson's blogs</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+		<a target="_blank" rel="noopener" href="https://your-url" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Doug-Wilson's blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">学无止境，积累技术</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-主页">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            主页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-关于">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-标签">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-目录">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归类">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-时间表">
+          <a href="/schedule/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            时间表
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/26/Tomcat%E6%80%BB%E4%BD%93%E6%9E%B6%E6%9E%84%E8%A7%A3%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Doug-Wilson's blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Tomcat总体架构解析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-11-26T08:08:45+08:00">
+                2020-11-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>之前学习了Tomcat的请求解析流程，也对Tomcat整体有一个大概的了解，但是对于其整体的学习还不够深入，比如启动Tomcat的时候经常会见到 “Catalina” 这个单词，它是什么含义？Tomcat是如何启动的？启动需要哪些内容？等等问题，都想了解，这里记录一下学习过程。</p>
+<span id="more"></span>
+
+<h2 id="总体设计"><a href="#总体设计" class="headerlink" title="总体设计"></a>总体设计</h2><ol>
+<li><p>首先考虑一个最简单的服务器Server。很明显，Server应该具有基本功能：接收客户端的请求数据并进行解析，完成相关业务处理后，将处理结果响应给客户端</p>
+<p><img src="/images/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD.png"></p>
+<p>start()方法启动服务器，打开Socket链接，监听服务器端口，并在接收到请求后进行响应</p>
+<p>stop()方法停止服务器并释放网络资源</p>
+</li>
+<li><p>解耦，将请求监听和请求处理分开。</p>
+<p>为什么这么做？比如我们想适配多种不同的网络协议，服务器在多种不同协议的部署下进行切换时，请求处理都是相同的，只是网络协议部分不同，那么我们应该确保web应用不用做任何变更。所以，我们需要将请求处理和网络协议从概念上分开，也就是请求处理和请求监听进行解耦</p>
+<p><img src="/images/%E8%AF%B7%E6%B1%82%E7%9B%91%E5%90%AC%E5%92%8C%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86%E8%A7%A3%E8%80%A6.png"></p>
+<p><strong>一个Server包含多个Container和多个Connector</strong>。其中Connector负责开启Socket并监听客户端请求，返回响应数据；Container负责具体的请求处理。各自的start()和stop()方法则用于加载和释放自己维护的资源。</p>
+</li>
+<li><p>更灵活的设计，Connector和Container的关系为<strong>多对一</strong>。</p>
+<p>“一个Server包含多个Container和多个Connector”，如何知晓哪个Connector对应哪个Container？设计一个映射表？可行，但是否有更简单的设计？那么需要先了解Connector和Container的具体功能。Connector是用于负责监听，响应。Container则是负责具体的请求处理。那么既然是这样，就可以只设计一个Container，来处理<strong>一个服务Service</strong>的所有请求，这样一来可以省去设计映射表和维护映射表Connector和Container间的映射关系，Connector的请求也只能由Service所属的Container处理，不同服务Service间的Connector和Container相互隔离。</p>
+<p><img src="/images/%E8%AE%BE%E8%AE%A1Service%E5%B1%82.png"></p>
+<p>为了和Tomcat组件的名称一致，用Engine代替Container（这里的Container是一个宽泛的概念，后面还会再提到）。注意，Engine只是一个处理引擎，或者说处理容器，并非指Servlet容器。表示Servlet容器的是Server，Engine只负责请求处理，而不需要考虑请求监听和链接，协议等处理</p>
+<p><img src="/images/Container%E6%8D%A2%E6%88%90Engine.png"></p>
+</li>
+<li><p>部署web应用。</p>
+<p>前面的设计解决了网络协议和容器的解耦。而容器是用来部署和运行web应用的。因此，需要在Engine引擎(容器)中支持管理web应用。当接收到Connector请求时，Engine容器能够从多个web应用中找到一个合适的进行请求处理。考虑到web应用应该是相互间独立的，所以这里应该进一步进行解耦设计</p>
+<p><img src="/images/%E5%AE%B9%E5%99%A8%E9%97%B4%E8%BF%9B%E4%B8%80%E6%AD%A5%E8%A7%A3%E8%80%A6.png"></p>
+</li>
+<li><p>进一步优化。</p>
+<p>设想有一台服务器，承担了多个域名服务。该如何实现？部署多个服务器实例完成相应的域名请求？当然可行。但能不能只运行一个服务器实例，通过灵活部署来解决这个问题？如果这样想，要提供多个域名的服务，那么可以将每个域名视为一个虚拟的主机，每个虚拟的主机下包含多个web应用，虚拟的主机间在服务器实例中相互独立，而这样做并不会影响客户的请求，因为对于客户端来说，只需要能获得正确的响应就行。</p>
+<p><img src="/images/%E8%AE%BE%E7%BD%AE%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA.png"></p>
+</li>
+<li><p>Servlet容器化。对于一个web应用，是由若干个Servlet实例构成的。Tomcat中用Wrapper容器包装每一个Servlet实例，以便于抽象设计和进一步解耦。</p>
+<p><img src="/images/Servlet%E5%AE%B9%E5%99%A8%E5%8C%96.png"></p>
+</li>
+<li><p>定义父类容器组件Container。</p>
+<p>在上述过程中，多次提到容器这个概念。虽然在具体的表示中，容器的含义并不相同，有时候指Engine，有时候是Context。但Container代表了一类组件：处理用户请求并返回响应数据。也就是说，这些具体的容器组件的行为定义和目标是相同的。</p>
+<p><img src="/images/%E5%AE%B9%E5%99%A8Container%E7%BB%84%E4%BB%B6%E7%88%B6%E7%B1%BB.png"></p>
+<p>从Container的两个方法和类关系可知。Container可以添加并维护子容器。因此，Engine、Host、Context、Wrapper均继承自Container。将他们的组合关系改为虚线，以表示它们之间是弱依赖关系，即它们之间的关系是通过Container父子容器的概念体现的。</p>
+<p>此外，Container还有一个重要的功能，就是后台处理。在很多情况下，Container需要执行一些异步处理，并且是定期执行，比如，每隔30秒执行一次。Tomcat对web文件变更的扫描就是通过该机制实现的。</p>
+<p>在后台进行异步处理的方法是backgroundProcess，并且Container的接口的基础抽象类ContainerBase确保在启动组件的同时异步启动后台处理。因此，在绝大多数情况下，各个容器仅需要实现Container的backgroundProcess方法即可，而不必考虑创建异步线程。</p>
+</li>
+<li><p>定义组件生命周期管理接口LifCycle。</p>
+<p>很容易发现，上述组件均存在启动、停止等生命周期方法，拥有生命周期管理的特性。因此，可以基于对生命周期的管理进行一次接口抽象，即LifeCycle接口。该接口定义了生命周期管理的核心方法：</p>
+<ul>
+<li>init() 初始化组件</li>
+<li>start() 启动组件</li>
+<li>stop() 停止组件</li>
+<li>destroy() 销毁组件</li>
+</ul>
+<p><img src="/images/%E5%8A%A0%E5%85%A5LifeCycle.png"></p>
+<p>从图中可知，除了核心方法以外，还有两个方法addLifeCycleListener()和removeLifeCycleListener()。这两个方法支持添加和删除事件监听器（LifeListener）用于监听组件的状态变化。这也说明了LifeCycle接口支持组件状态间的转换。比如我们可以采用一致的机制来初始化、启动、停止以及销毁各个组件。</p>
+<p>Tomcat核心组件的默认实现继承自LifecycleBeanBase抽象类，该类负责组件各个状态的转换和事件处理，通过将组件自身注册为MBean，以便通过Tomcat管理工具进行动态维护。</p>
+<p>下面是组件在生命周期过程中状态的转换：（注意，每个生命周期阶段都会分成三部分，比如：初始化前(新建)、初始化中、初始化后(已初始化)；启动前、启动中、启动后(已启动)；停止前、停止中、停止后(已停止)；销毁前、销毁中、销毁后(已销毁)；auto表示为自动转换过程，不需要调用额外方法）</p>
+<p><img src="/images/%E7%BB%84%E4%BB%B6%E7%9A%84%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2.png"></p>
+</li>
+<li><p>添加Pipeline和Valve。前8个步骤，已经完成了对核心概念的分解，确保了整体架构的可伸缩性和可扩展性。此外，我们需要考虑各个组件的灵活性，使其易于扩展功能。</p>
+<p>在增强组件的灵活性和可扩展性方面，责任链模式是一个好的选择。Tomcat也是采用该模式来实现客户端的请求处理，通过每个Container组件执行责任链的一个环节来完成具体的请求处理。</p>
+<p>Tomcat定义了<strong>Pipeline（管道）、Valve（阀）</strong>两个接口。Pipeline用于构造责任链，Valve代表责任链上的每个处理器。（可以将管道想象成水，阀想象成水龙头）</p>
+<p><img src="/images/%E7%AE%A1%E9%81%93%E5%92%8C%E9%98%80.png"></p>
+<p>Pipeline中维护了一个基础的Valve，它始终位于Pipeline的末端（最后执行），用于封装具体的请求处理和输出响应的过程。而通过addValve()方法，我们可以为Pipeline添加其他的Valve，添加的Valve位于基础Valve之前（基础Valve总是最后一个才执行），并且Pipeline会<strong>按照添加顺序执行</strong>。Pipeline通过获取首个Valve来启动整个责任链的执行。</p>
+<p>上述过程的灵活性体现在，每个层级的容器（Engine、Host、Context、Wrapper）均有对应基础的Valve实现，同时维护了一个Pipeline实例，也就是说，我们可以在任何层级的容器对请求处理进行扩展。</p>
+<p>修改后的设计如下：</p>
+<p><img src="/images/%E5%85%B3%E7%B3%BB%E5%8A%A0%E5%85%A5%E7%AE%A1%E9%81%93%E5%92%8C%E9%98%80.png"></p>
+</li>
+<li><p>修改Connector。Connector至少要完成如下的功能：</p>
+<ul>
+<li>监听服务器端口，读取来自客户端的请求</li>
+<li>将请求数据按照指定协议进行解析</li>
+<li>根据请求地址匹配正确的容器进行处理</li>
+<li>将响应返回客户端</li>
+</ul>
+<p>前面提到过这个问题：Tomcat支持多协议，比如默认支持HTTP和AJP。此外，Tomcat还支持多种I/O方式，如BIO、NIO等。所以Connector部分需要根据协议、I/O进行抽象和建模。在Tomcat中，是这样设计的：</p>
+<p><img src="/images/Connector%E6%89%A9%E5%B1%95.png"></p>
+<p>ProtocolHandler为协议处理器，根据不同的协议和I/O方式，提供不同的实现。比如HttpllNioProtocol表示基于NIO的HTTP协议处理器。</p>
+<p>ProtocolHandler包含一个EndPoint用于启动Socket监听，该接口按照I/O方式进行分类实现，比如Nio2EndPoint表示非阻塞Socket I/O。（Tomcat没有EndPoint接口，仅有AbstractEndPoint抽象类，这里只是为了方便讨论）</p>
+<p>Processor用于按照指定协议读取数据，并将请求交给容器处理，比如HttpllNioProcessor表示在NIO的方式下处理HTTP请求的处理类。</p>
+<p>当Connector启动时，EndPoint会启动线程来监听服务器端口，并在接收到请求后调用Processor进行数据读取。当Processor读取请求后，按照请求中的url映射到具体的容器进行处理，这个过程称为请求映射。</p>
+<p>由于Tomcat组件采用同用的生命周期管理，因此还需要通过管理工具进行状态的变更，因此请求映射除了考虑映射规则的实现以外，还需要考虑容器组件的注册和销毁。</p>
+<p>Tomcat通过Mapper和MapperListener两个类完成上述功能。其中，Mapper用于维护容器映射信息，同时按照映射规则查找容器。MapperListener实现ContainerListener和LifecycleListener（前面提到过，还记得吗，在Lifecycle接口有两个方法用于注册和删除LifecycleListener），用于在容器组件状态发生变更时，注册或者取消对应的容器映射信息。MapperListener也实现了Lifecycle接口，当其启动时，就会自动作为监听器注册到各个容器组件上，同时将已创建的容器注册到Mapper。（Mapper和MapperListener由Service进行维护）</p>
+<p>Tomcat通过适配器模式实现了Connector和Mapper、Container的解耦。通过类的关系，我们能更明白这一点：</p>
+<p><img src="/images/Connector%E6%94%B9%E5%8F%98.png"></p>
+</li>
+<li><p>考虑服务器的并发。</p>
+<p>完成Connector设计之后，需要考虑到服务器的一个非常重要的问题——并发。我们不可能让所有来自客户的请求以串行的方式执行，必须采用多线程并发的方式。并且为了降低线程创建的消耗，也会进一步采用线程池。那么如何设计？</p>
+<p>首先，我们希望线程池作为一个组件，能够方便管理。所以Tomcat的设计者设计了一个Executor接口，该接口继承自Lifecycle，可按照通用的组件进行管理。其次，确定线程池的使用范围。在Tomcat中，Executor由Service进行维护，因此同一个Service中的组件都可以使用线程池。</p>
+<p>添加Executor后的设计：</p>
+<p><img src="/images/%E6%B7%BB%E5%8A%A0Executor.png"></p>
+</li>
+<li><p>最后，配置环境来支持和优化服务器。</p>
+<p>前面的部分已经将Tomcat总体架构中的主要核心组件都介绍了。除了核心部分以外，还需要提供一套配置环境来支持系统的可配置性，以便于通过修改相关配置来优化服务器。比如修改服务器端口、连接超时等待时间等等。因此，Tomcat提供了相关类来完成这些服务：</p>
+<p>Catalina提供一个Shell程序，用于解析server.xml创建各个组件，同时，负责启动、停止应用服务器。</p>
+<p>Digester解析XML文件，包括server.xml以及web.xml等。</p>
+<p>Bootstrap作为应用服务器启动入口，负责创建Catalina实例，根据执行参数调用Catalina相关方法完成服务器的启动、停止。</p>
+<p>考虑一个问题：Tomcat不直接通过Catalina启动服务器，而是通过Bootstrap间接地完成服务器的启动停止。我得到的解释是：这样做的目的是，Bootstrap通过反射调用Catalina，实现了与Tomcat服务器完全松耦合，Bootstrap可以直接依赖JRE运行并为服务器创建 <strong>共享类加载器</strong>，用于构造Catalina实例和整个Tomcat服务器。这样一来，启动入口就和核心环境解耦，不仅简化了启动，而且便于灵活地组织中间件产品的结构，特别是类加载器方案。（我还不是很明白，等之后回来再思考）</p>
+<p>至此，完整的设计方案如下：</p>
+<p><img src="/images/%E5%AE%8C%E6%95%B4%E6%95%B4%E4%BD%93%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88.png"></p>
+</li>
+</ol>
+<p>总结：</p>
+<table>
+<thead>
+<tr>
+<th>组件名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Server</td>
+<td>表示整个Servlet容器，因此Tomcat运行环境中只有唯一一个Server实例</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>Service表示一个或多个Connector的集合，这些Connector共享一个Container来处理器请求。在同一个Tomcat实例内可以包含任意多个Service实例，它们彼此独立</td>
+</tr>
+<tr>
+<td>Connector</td>
+<td>Connector用于监听并转化Socket请求，同时将读取的Socket请求交给Container处理，支持不同协议以及I/O方式</td>
+</tr>
+<tr>
+<td>Container</td>
+<td>Container表示能够执行客户端请求并返回响应的一类对象。在Tomcat中存在不同级别的容器：Engine、Host、Context、Wrapper</td>
+</tr>
+<tr>
+<td>Engine</td>
+<td>Engine表示整个Servlet引擎。在Tomcat中，Engine为最高层级的容器对象，尽管Engine不是直接处理请求的容器，却是获取目标容器的入口</td>
+</tr>
+<tr>
+<td>Host</td>
+<td>Host作为一类容器，表示Servlet引擎中的虚拟主机，与一个服务器的域名有关。客户端可以使用域名连接服务器，但该域名必须要在DNS服务器上注册</td>
+</tr>
+<tr>
+<td>Context</td>
+<td>Context作为一类容器，用于表示ServletContext，在Servlet规范中，一个ServletContext就表示一个独立的web应用</td>
+</tr>
+<tr>
+<td>Wrapper</td>
+<td>Wrapper作为一类容器，用于表示Web应用中定义的Servlet</td>
+</tr>
+<tr>
+<td>Executor</td>
+<td>Executor表示Tomcat组件间可以共享的线程池</td>
+</tr>
+</tbody></table>
+<h2 id="Tomcat启动过程"><a href="#Tomcat启动过程" class="headerlink" title="Tomcat启动过程"></a>Tomcat启动过程</h2><p><img src="/images/Tomcat%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B.png"></p>
+<h2 id="Tomcat请求处理过程"><a href="#Tomcat请求处理过程" class="headerlink" title="Tomcat请求处理过程"></a>Tomcat请求处理过程</h2><p><img src="/images/%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B.png"></p>
+<h2 id="Tomcat类加载器"><a href="#Tomcat类加载器" class="headerlink" title="Tomcat类加载器"></a>Tomcat类加载器</h2><p>服务器通常会自行创建类加载器以实现更灵活的控制，主要体现在以下方面：</p>
+<ol>
+<li>隔离性：web应用类库相互隔离，避免一来库或者应用包相互影响。比如说，我们有两个web应用，一个采用Spring 2.5 ，一个采用 Spring 4.0，而服务器如果只使用一个类加载器，那么web应用将会因为jar包覆盖而导致无法启动成功。</li>
+<li>灵活性：web应用间的类加载器相互独立，所以我们可以只针对一个web应用进行重新部署，则此时该web应用的类加载器将会重新创建，而不会影响其他web应用。如果只采用一个类加载器，显然无法实现，因为只有一个类加载器时，类之间的一来是杂乱无意的，无法完整地移除某个web应用的类。</li>
+<li>性能：由于每个web应用都有一个类加载器，因此web应用在加载类时，不会搜索其他web应用包含的jar包，性能自然高于应用服务器只有一个类加载器的情况。</li>
+</ol>
+<p>Tomcat的类加载方案：</p>
+<p><img src="/images/Tomcat%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%85%B3%E7%B3%BB.png"></p>
+<p>可以看到，除了每个web应用的类加载器外，Tomcat也提供了3个基础的类加载器和web应用类加载器，而且这3个类加载器指向的路径和包列表均可由catalina.properties配置。</p>
+<ol>
+<li>CommonClassLoader：父类加载器为SystemClassLoader，是位于服务器顶层的公用类加载器，其路径为common.loader，默认指向 <code>$CATALINA_HOME/lib</code> 下的包</li>
+<li>CatalinaClassLoader：父类加载器为CommonClassLoader，用于加载Tomcat服务器的类加载器，其路径为server.loader，默认为空。此时Tomcat使用CommonClassLoader类加载器加载服务器</li>
+<li>SharedClassLoader：父类加载器为CommonClassLoader，是所有web应用的父类加载器，其路径为shared.loader，默认为空。此时Tomcat使用CommonClassLoader类加载器作为web应用的父类加载器</li>
+<li>web应用：父类加载器为SharedClassLoader，加载/WEB-INF/classes目录下未压缩的Class和资源文件以及/WEB-INF/lib目录下的jar包。该类加载器只对当前web应用可见，对其他web应用均不可见</li>
+</ol>
+<p>虽然默认情况下，都使用CommonClassLoader作为类加载器，但是可以通过配置创建3个不同的类加载器，完成各自的功能。</p>
+<p>首先是CommonClassLoader。CommonClassLoader类加载器负责加载Tomcat服务器内部和web应用均可见的类，比如Servlet规范相关包和一些通用的工具包。</p>
+<p>其次是CatalinaClassLoader。CatalinaClassLoader类加载器负责加载只有Tomcat服务器内部可见的类，这些类对web应用不可见。</p>
+<p>最后是SharedClassLoader。SharedClassLoader类加载器负责加载web应用共享的类，Tomcat服务器不会依赖这些类。</p>
+<h3 id="web应用类加载器"><a href="#web应用类加载器" class="headerlink" title="web应用类加载器"></a>web应用类加载器</h3><p>Java默认的类加载机制过程如下：</p>
+<ol>
+<li>从缓存中加载</li>
+<li>如果缓存中没有，则从父类加载器加载</li>
+<li>如果父类加载器没有，则从当前类加载器加载</li>
+<li>如果没有相应类加载器加载，则抛出异常</li>
+</ol>
+<p>Tomcat提供的web应用类加载器和上述过程不停。它会首先尝试通过当前类加载器加载，然后才会进行委派。Servlet规范相关的API禁止通过web应用类加载器加载，因此，不要在web应用中包含这些包。</p>
+<p>所以，web应用类加载器加载过程如下：</p>
+<ol>
+<li>从缓存中加载</li>
+<li>如果没有，则从JVM的Bootstrap类加载器加载</li>
+<li>如果没有，则从当前类加载器加载</li>
+<li>如果没有，则从父类加载器加载。由于父类加载器采用默认的委派模式（不启用Java委派模式），所以默认的加载顺序为：SystemClassLoader、CommomClassLoader、SharedClassLoader</li>
+</ol>
+<p>Tomcat提供delegate属性用于控制是否启用Java委派模式，默认为false（不启用），当配置为true时，Tomcat将使用Java默认的委派模式，则会按如下顺序加载：</p>
+<ol>
+<li>从缓存中加载</li>
+<li>如果没有，则从JVM的Bootstrap类加载器加载</li>
+<li>如果没有，则从父类加载器加载。加载顺序为：SystemClassLoader、CommomClassLoader、SharedClassLoader</li>
+<li>如果没有，则从当前类加载器加载</li>
+</ol>
+<h2 id="Catalina"><a href="#Catalina" class="headerlink" title="Catalina"></a>Catalina</h2><p>前面有简单提到过 “Catalina提供一个Shell程序，用于解析server.xml创建各个组件，同时，负责启动、停止应用服务器“。除了启动入口，Shell程序，Catalina还包括了前面提到的所有容器，因此其实质上是一个Servlet容器。</p>
+<p>Tomcat模块分层示意图：</p>
+<p><img src="/images/Tomcat%E6%A8%A1%E5%9D%97%E5%88%86%E5%B1%82%E7%A4%BA%E6%84%8F%E5%9B%BE.png"></p>
+<p>Catalina是Tomcat的核心，其他模块均为Catalina提供支持。Coyote模块提供链接通信，Jasper模块提供JSP引擎，Naming提供JNDI服务，Juli提供日志服务。</p>
+<h3 id="Digester"><a href="#Digester" class="headerlink" title="Digester"></a>Digester</h3><p>(英文含义：消化，吸收，融会贯通，摘要)</p>
+<p>Tomcat在Catalina创建过程中通过Digester结合LifecycleListener做了大量初始化工作。其中，Digester用于将XML转换为Java对象，是对SAX的高层次封装。</p>
+<p>Digester通过读取XML文件，识别出特定XML节点后便会执行特定的动作，或者创建Java对象，或执行对象的某个方法。因此Digester的核心是匹配模式以及处理规则。</p>
+<p>此外，Digester提供一套对象栈机制用于构造Java对象，这是因为XML是分层结构，所以创建的Java对象也应该是分层级的树状结构，而且还要根据XML内容构建Java对象的内部结构并设置相关属性。</p>
+<p>综上，学习Digester要学习其：匹配模式、处理规则、对象栈机制。</p>
+<h4 id="匹配模式"><a href="#匹配模式" class="headerlink" title="匹配模式"></a>匹配模式</h4><p>匹配模式即当读取到某个约定的XML节点是需要进行什么样的操作，这需要通过匹配模式指定约定。</p>
+<p>Digester常用匹配模式</p>
+<table>
+<thead>
+<tr>
+<th>匹配模式</th>
+<th>XML节点</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a</td>
+<td>&lt;a&gt;</td>
+<td>匹配所有名字为 “a” 的根节点</td>
+</tr>
+<tr>
+<td>a/b</td>
+<td>&lt;a&gt;&lt;b&gt;&lt;/b&gt;&lt;\a&gt;</td>
+<td>匹配所有父节点为根节点“a” ，名称为“b”的节点</td>
+</tr>
+</tbody></table>
+<p>还可以进行模糊匹配。比如希望所有的节点都采用同一个处理规则，那么直接指定匹配规则为“*”即可。还可以指定“*/b”来处理所有名称为“b”的节点，而不限制其层次或上级节点名称。</p>
+<h4 id="处理规则"><a href="#处理规则" class="headerlink" title="处理规则"></a>处理规则</h4><p>匹配模式确定何时触发处理操作，而处理规则定义模式匹配时的具体操作。处理规则需要实现接口：</p>
+<p><code>org.apache.commons.digester.Rule</code> 该接口定义模式匹配时触发的事件方法。</p>
+<ul>
+<li>begin() ：当读取到匹配节点的开始部分时调用，并将该节点所有的属性作为参数传入</li>
+<li>body() ：当读取到匹配节点的内容时调用，注意是内容，不是子节点，指的是嵌入内容</li>
+<li>end() ：当读取到匹配节点的结束部分时调用，如果存在子节点，只有当子节点处理完毕后该方法才会被调用</li>
+<li>finish() ：当整个parse()方法完成时调用，用于清除临时数据和缓存数据</li>
+</ul>
+<p>有了这些触发的事件方法，就可以通过Digester类的addRule()方法为某个匹配模式指定一个处理规则，或者根据需要实现自己的规则。Digester提供了默认的处理规则实现类：</p>
+<table>
+<thead>
+<tr>
+<th>规则类</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ObjectCreateRule</td>
+<td>当begin()方法调用时，该规则会将指定的Java类实例化，并将其放入对象栈。当end()方法调用时，该规则创建的对象从栈中取出</td>
+</tr>
+<tr>
+<td>FactoryCreateRule</td>
+<td>用于处理Java类无默认构造方法的情况，规则和ObjectCreateRule类似</td>
+</tr>
+<tr>
+<td>SetPropertiesRule</td>
+<td>当begin()方法调用时，Digester使用标准的Java Bean属性操作方式(setter)将当前XML节点的属性值设置到栈顶部的对象中</td>
+</tr>
+<tr>
+<td>SetPropertyRule</td>
+<td>同上，只不过是设置特定属性的值</td>
+</tr>
+<tr>
+<td>SetNextRule</td>
+<td>当end()方法调用时，Digester会找到位于栈顶部对象之后的对象调用指定的方法，同时将栈顶部对象作为参数传入，用于设置父对象的子对象，以在栈对象间建立父子关系，从而形成对象树</td>
+</tr>
+<tr>
+<td>SetTopRule</td>
+<td>与setNextRule对象对应，只不过是设置当前对象的父对象</td>
+</tr>
+<tr>
+<td>CallMethodRule</td>
+<td>在end()方法调用时执行栈顶部对象的某个方法，参数值由CallParamRule获取</td>
+</tr>
+<tr>
+<td>CallParamRule</td>
+<td>该规则与CallMethodRule配合使用，作为其子节点的处理规则创建方法参数，参数值可以取自某个特殊属性，也可以取自节点的内容</td>
+</tr>
+<tr>
+<td>NodeCreateRule</td>
+<td>用于将XML文档树的一部分转换为DOM节点，并放入栈</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Department</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String code;</span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, String&gt; extension = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="keyword">private</span> List&lt;User&gt; users = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> name; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123; <span class="keyword">this</span>.name = name; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getCode</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> code; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCode</span><span class="params">(String code)</span> </span>&#123; <span class="keyword">this</span>.code = code; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addUser</span><span class="params">(User user)</span> </span>&#123; <span class="keyword">this</span>.users.add(user); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">putExtension</span><span class="params">(String name, String value)</span> </span>&#123; </span><br><span class="line">        <span class="keyword">this</span>.extension.put(name, value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String code;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> name; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123; <span class="keyword">this</span>.name = name; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getCode</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> code; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCode</span><span class="params">(String code)</span> </span>&#123; <span class="keyword">this</span>.code = code; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">department</span> <span class="attr">name</span>=<span class="string">&quot;departmentName001&quot;</span> <span class="attr">code</span>=<span class="string">&quot;departmentCode001&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">user</span> <span class="attr">name</span>=<span class="string">&quot;username001&quot;</span> <span class="attr">code</span>=<span class="string">&quot;usercode001&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">user</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">user</span> <span class="attr">name</span>=<span class="string">&quot;username002&quot;</span> <span class="attr">code</span>=<span class="string">&quot;usercode002&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">user</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">extension</span>&gt;</span></span><br><span class="line">    	<span class="tag">&lt;<span class="name">property-name</span>&gt;</span>director<span class="tag">&lt;/<span class="name">property-name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">property-value</span>&gt;</span>joke<span class="tag">&lt;/<span class="name">property-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">extension</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">department</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>解析代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Digester digester = <span class="keyword">new</span> Digester();</span><br><span class="line">digester.setValidating(<span class="keyword">false</span>);</span><br><span class="line">digester.setRulesValidation(<span class="keyword">true</span>);</span><br><span class="line">digester.addObjectCreate(<span class="string">&quot;department&quot;</span>, Department.class); <span class="comment">//匹配department节点时创建Department对象</span></span><br><span class="line">digester.addSetProperties(<span class="string">&quot;department&quot;</span>); <span class="comment">//匹配department节点时设置对象属性</span></span><br><span class="line">digester.addObjectcreate(<span class="string">&quot;department/user&quot;</span>, User.class);</span><br><span class="line">digester.addSetProperties(<span class="string">&quot;department/user&quot;</span>);</span><br><span class="line">digester.addSetNext(<span class="string">&quot;department/user&quot;</span>, <span class="string">&quot;addUser&quot;</span>);  <span class="comment">//匹配department/user节点时，调用addUser方法</span></span><br><span class="line"><span class="comment">// 匹配department/extension节点时，调用Department对象的putExtension方法</span></span><br><span class="line">digester.addCallMethod(<span class="string">&quot;department/extension&quot;</span>, <span class="string">&quot;putExtension&quot;</span>, <span class="number">2</span>);</span><br><span class="line">digester.addCallParam(<span class="string">&quot;department/extension/property-name&quot;</span>, <span class="number">0</span>);</span><br><span class="line">digester.addCallParam(<span class="string">&quot;department/extension/property-value&quot;</span>, <span class="number">1</span>);</span><br><span class="line"><span class="comment">// 解析XML文件</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    Department department = (Department) digester.parse(<span class="keyword">new</span> File(<span class="string">&quot;test.xml&quot;</span>));</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建Server"><a href="#创建Server" class="headerlink" title="创建Server"></a>创建Server</h3><p>Catalina(Server)结构图</p>
+<p><img src="/images/Server%E6%A1%86%E6%9E%B6%E5%9B%BE.png"></p>
+<h4 id="Server解析"><a href="#Server解析" class="headerlink" title="Server解析"></a>Server解析</h4><p>了解了Digester的使用方式，接下来就通过Tomcat源码来分析 Catalina解析server.xml创建Server的详细过程。</p>
+<p>server.xml（删去注释后的文件）</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Server</span> <span class="attr">port</span>=<span class="string">&quot;8005&quot;</span> <span class="attr">shutdown</span>=<span class="string">&quot;SHUTDOWN&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Listener</span> <span class="attr">className</span>=<span class="string">&quot;org.apache.catalina.startup.VersionLoggerListener&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Listener</span> <span class="attr">className</span>=<span class="string">&quot;org.apache.catalina.core.AprLifecycleListener&quot;</span> <span class="attr">SSLEngine</span>=<span class="string">&quot;on&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Listener</span> <span class="attr">className</span>=<span class="string">&quot;org.apache.catalina.core.JreMemoryLeakPreventionListener&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Listener</span> <span class="attr">className</span>=<span class="string">&quot;org.apache.catalina.mbeans.GlobalResourcesLifecycleListener&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Listener</span> <span class="attr">className</span>=<span class="string">&quot;org.apache.catalina.core.ThreadLocalLeakPreventionListener&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">GlobalNamingResources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Resource</span> <span class="attr">name</span>=<span class="string">&quot;UserDatabase&quot;</span> <span class="attr">auth</span>=<span class="string">&quot;Container&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">type</span>=<span class="string">&quot;org.apache.catalina.UserDatabase&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">description</span>=<span class="string">&quot;User database that can be updated and saved&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">factory</span>=<span class="string">&quot;org.apache.catalina.users.MemoryUserDatabaseFactory&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">pathname</span>=<span class="string">&quot;conf/tomcat-users.xml&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">GlobalNamingResources</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">  <span class="tag">&lt;<span class="name">Service</span> <span class="attr">name</span>=<span class="string">&quot;Catalina&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Connector</span> <span class="attr">port</span>=<span class="string">&quot;8080&quot;</span> <span class="attr">protocol</span>=<span class="string">&quot;HTTP/1.1&quot;</span></span></span><br><span class="line"><span class="tag">               <span class="attr">connectionTimeout</span>=<span class="string">&quot;20000&quot;</span></span></span><br><span class="line"><span class="tag">               <span class="attr">redirectPort</span>=<span class="string">&quot;8443&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Engine</span> <span class="attr">name</span>=<span class="string">&quot;Catalina&quot;</span> <span class="attr">defaultHost</span>=<span class="string">&quot;localhost&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Realm</span> <span class="attr">className</span>=<span class="string">&quot;org.apache.catalina.realm.LockOutRealm&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Realm</span> <span class="attr">className</span>=<span class="string">&quot;org.apache.catalina.realm.UserDatabaseRealm&quot;</span></span></span><br><span class="line"><span class="tag">               <span class="attr">resourceName</span>=<span class="string">&quot;UserDatabase&quot;</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">Realm</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;<span class="name">Host</span> <span class="attr">name</span>=<span class="string">&quot;localhost&quot;</span>  <span class="attr">appBase</span>=<span class="string">&quot;webapps&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">unpackWARs</span>=<span class="string">&quot;true&quot;</span> <span class="attr">autoDeploy</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Valve</span> <span class="attr">className</span>=<span class="string">&quot;org.apache.catalina.valves.AccessLogValve&quot;</span> <span class="attr">directory</span>=<span class="string">&quot;logs&quot;</span></span></span><br><span class="line"><span class="tag">               <span class="attr">prefix</span>=<span class="string">&quot;localhost_access_log&quot;</span> <span class="attr">suffix</span>=<span class="string">&quot;.txt&quot;</span></span></span><br><span class="line"><span class="tag">               <span class="attr">pattern</span>=<span class="string">&quot;%h %l %u %t <span class="symbol">&amp;quot;</span>%r<span class="symbol">&amp;quot;</span> %s %b&quot;</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">Host</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Engine</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">Service</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Server</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>创建Server实例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Catalina.createStartDigester</span></span><br><span class="line">digester.addObjectCreate(<span class="string">&quot;Server&quot;</span>, <span class="string">&quot;org.apache.catalina.core.StandardServer&quot;</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">digester.addSetProperties(<span class="string">&quot;Server&quot;</span>);</span><br><span class="line">digester.addSetNext(<span class="string">&quot;Server&quot;</span>, <span class="string">&quot;setServer&quot;</span>, <span class="string">&quot;org.apache.catalina.Server&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>很明显，上述过程在于解析serve.xml文件，当解析到Server节点时，触发事件方法，创建Server实例，并设置Server的相关属性，最后通过addSetNext触发事件放将Server实例对象通过setServer方法设置到Catalina对象中。</p>
+</li>
+<li><p>为Server添加生命周期监听器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Catalina.createStartDigester</span></span><br><span class="line">digester.addObjectCreate(<span class="string">&quot;Server/Listener&quot;</span>, <span class="keyword">null</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">digester.addSetProperties(<span class="string">&quot;Server/Listener&quot;</span>);</span><br><span class="line">digester.addSetNext(<span class="string">&quot;Server/Listenner&quot;</span>, <span class="string">&quot;addLifecycleListener&quot;</span>, <span class="string">&quot;org.apache.catalina.LifecycleListener&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>通过前面的server.xml文件可以知道，一共为当前的Server实例添加了5个默认的LifecycleListener监听器，如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>类</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AprLifecycleListener</td>
+<td>在Server初始化之前加载APR库，并在Server停止之后销毁</td>
+</tr>
+<tr>
+<td>VersionLoggerListener</td>
+<td>在Server初始化之前打印操作系统、JVM以及服务器的版本信息（你现在知道Tomcat启动，控制台会有那么多的信息是怎么来的了吧，就是这个类打印的）</td>
+</tr>
+<tr>
+<td>JreMemoryLeakPreventionListener</td>
+<td>在Server初始化之前调用，以解决单例对象创建导致的JVM内存泄漏问题以及锁文件问题</td>
+</tr>
+<tr>
+<td>GlobalResourcesLifecycleListener</td>
+<td>在Server启动时，将JNDI资源注册为MBean进行管理</td>
+</tr>
+<tr>
+<td>ThreadLocalLeakPreventionListener</td>
+<td>用于在Context停止时重建Executor池中的线程，避免导致内存泄漏</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>创建全局J2EE命名上下文</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Catalina.createStartDigester</span></span><br><span class="line">digester.addObjectCreate(<span class="string">&quot;Server/GlobalNamingResources&quot;</span>, <span class="string">&quot;org.apache.catalina.deploy.NamingResourceImpl&quot;</span>);  <span class="comment">//查看前面的server.xml，一目了然</span></span><br><span class="line">digester.addSetProperties(<span class="string">&quot;Server/GlobalNamingResources&quot;</span>);</span><br><span class="line">digester.addSetNext(<span class="string">&quot;Server/GlobalNamingResources&quot;</span>, <span class="string">&quot;setGlobalNamingResources&quot;</span>, <span class="string">&quot;org.apache.catalina.deploy.NamingResourcesImpl&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>Catalina根据GlobalNamingResources配置，创建全局的J2EE命名上下文（JNDI），设置属性并将其设置到Server实例中（setGlobalNamingResources）。</p>
+</li>
+<li><p>构造Service实例</p>
+<p>在server.xml中，GlobalNamingResources、Listener、Service三个节点是同级关系，因此，另外两个加载完后，自然要进行Service节点的解析</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Catalina.createStartDigester</span></span><br><span class="line">digester.addObjectCreate(<span class="string">&quot;Server/Service&quot;</span>, <span class="string">&quot;org.apache.catalina.core.StandardService&quot;</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">digester.addSetProperties(<span class="string">&quot;Server/Service&quot;</span>);</span><br><span class="line">digester.addSetNext(<span class="string">&quot;Server/Service&quot;</span>, <span class="string">&quot;addService&quot;</span>, <span class="string">&quot;org.apache.catalina.Service&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这里可以看出，Catalina默认的Service实现为org.apache.catalina.core.StandardService。如果有需要，就可以修改server.xml中的className属性自己的实现类。创建完成后，通过addService()方法添加到Server实例中。</p>
+</li>
+<li><p>为Service添加生命周期监听器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Catalina.createStartDigester</span></span><br><span class="line">digester.addObjectCreate(<span class="string">&quot;Server/Service/Listener&quot;</span>, <span class="keyword">null</span>,  <span class="string">&quot;className&quot;</span>);  </span><br><span class="line">digester.addSetProperties(<span class="string">&quot;Server/Service/Listener&quot;</span>);</span><br><span class="line">digester.addSetNext(<span class="string">&quot;Server/Service/Listener&quot;</span>, <span class="string">&quot;addLifecycleListener&quot;</span>, <span class="string">&quot;org.apache.catalina.LifecycleListener&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>从server.xml可知，默认情况下，Catalina未指定Service监听器。</p>
+</li>
+<li><p>为Service添加Executor</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Catalina.createStartDigester</span></span><br><span class="line">digester.addObjectCreate(<span class="string">&quot;Server/Service/Executor&quot;</span>, <span class="string">&quot;org.apache.catalina.core.StandardThreadExecutor&quot;</span>,  <span class="string">&quot;className&quot;</span>);  </span><br><span class="line">digester.addSetProperties(<span class="string">&quot;Server/Service/Executor&quot;</span>);</span><br><span class="line">digester.addSetNext(<span class="string">&quot;Server/Service/Executor&quot;</span>, <span class="string">&quot;addExecutor&quot;</span>, <span class="string">&quot;org.apache.catalina.Executor&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>从上述代码可知，默认实现为org.apache.catalina.core.StandardThreadExecutor，同样也可以通过className属性指定自己的实现类。而从server.xml文件可知，Catalina默认情况下未配置Executor，即不共享。</p>
+</li>
+<li><p>为Service添加Connector</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Catalina.createStartDigester</span></span><br><span class="line">digester.addRule(<span class="string">&quot;Server/Service/Connector&quot;</span>, <span class="keyword">new</span> ConnectorCreateRule());  </span><br><span class="line">digester.addRule(<span class="string">&quot;Server/Service/Connector&quot;</span>, <span class="keyword">new</span> SetAllPropertiesRule(<span class="keyword">new</span> String[] &#123; <span class="string">&quot;executor&quot;</span>, <span class="string">&quot;sslImplementationName&quot;</span>&#125;));</span><br><span class="line">digester.addSetNext(<span class="string">&quot;Server/Service/Connector&quot;</span>, <span class="string">&quot;addConnector&quot;</span>, <span class="string">&quot;org.apache.catalina.connector.Connector&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p>为Connector添加虚拟主机SSL配置(后面再详细说明意义)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Catalina.createStartDigester</span></span><br><span class="line">digester.addObjectCreate(<span class="string">&quot;Server/Service/Connector/SSLHostConfig&quot;</span>, <span class="string">&quot;org.apache.tomcat.util.net.SSLHostConfig&quot;</span>);  </span><br><span class="line">digester.addSetProperties(<span class="string">&quot;Server/Service/Connector/SSLHostConfig&quot;</span>);</span><br><span class="line">digester.addSetNext(<span class="string">&quot;Server/Service/Connector/SSLHostConfig&quot;</span>, <span class="string">&quot;addSslHostConfig&quot;</span>, <span class="string">&quot;org.apache.tomcat.util.net.SSLHostConfig&quot;</span>);</span><br><span class="line"></span><br><span class="line">digester.addRule(<span class="string">&quot;Server/Service/Connector/SSLHostConfig/Certificate&quot;</span>, <span class="keyword">new</span> Certificate());</span><br><span class="line">digester.addRule(<span class="string">&quot;Server/Service/Connector/SSLHostConfig/Certificate&quot;</span>, <span class="keyword">new</span> SetAllPropertiesRule(<span class="keyword">new</span> String[] &#123; <span class="string">&quot;type&quot;</span>&#125;));</span><br><span class="line">digester.addSetNext(<span class="string">&quot;Server/Service/Connector/SSLHostConfig/Certificate&quot;</span>, <span class="string">&quot;addCertificate&quot;</span>, <span class="string">&quot;org.apache.tomcat.util.net.SSLHostConfigCertificate&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p>为Connector添加生命周期监听器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Catalina.createStartDigester</span></span><br><span class="line">digester.addObjectCreate(<span class="string">&quot;Server/Service/Connector/Listener&quot;</span>, <span class="keyword">null</span>,  <span class="string">&quot;className&quot;</span>);  </span><br><span class="line">digester.addSetProperties(<span class="string">&quot;Server/Service/Connector/Listener&quot;</span>);</span><br><span class="line">digester.addSetNext(<span class="string">&quot;Server/Service/Connector/Listener&quot;</span>, <span class="string">&quot;addLifecycleListener&quot;</span>, <span class="string">&quot;org.apache.catalina.LifecycleListener&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>由server.xml可知，默认情况下，Catalina未指定Connector监听器</p>
+</li>
+<li><p>为Connector添加升级协议</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Catalina.createStartDigester</span></span><br><span class="line">digester.addObjectCreate(<span class="string">&quot;Server/Service/Connector/UpgradeProtocol&quot;</span>, <span class="keyword">null</span>,  <span class="string">&quot;className&quot;</span>);  </span><br><span class="line">digester.addSetProperties(<span class="string">&quot;Server/Service/Connector/UpgradeProtocol&quot;</span>);</span><br><span class="line">digester.addSetNext(<span class="string">&quot;Server/Service/Connector/UpgradeProtocol&quot;</span>, <span class="string">&quot;addUpgradeProtocol&quot;</span>, <span class="string">&quot;org.apache.coyote.UpgradeProtocol&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>用于支持HTTP/2，后面再了解</p>
+</li>
+<li><p>添加子元素解析规则</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Catalina.createStartDigester</span></span><br><span class="line">digester.addResultSet(<span class="keyword">new</span> NamingRuleSet(<span class="string">&quot;Server/GlobalNamingResources/&quot;</span>));</span><br><span class="line">digester.addResultSet(<span class="keyword">new</span> EngineRuleSet(<span class="string">&quot;Server/Service/&quot;</span>));</span><br><span class="line">digester.addResultSet(<span class="keyword">new</span> HostRuleSet(<span class="string">&quot;Server/Service/Engine/&quot;</span>));</span><br><span class="line">digester.addResultSet(<span class="keyword">new</span> ContextRuleSet(<span class="string">&quot;Server/Service/Engine/Host/&quot;</span>));</span><br><span class="line">addClusterRuleSet(digest, <span class="string">&quot;Server/Service/Engine/Host/Cluster/&quot;</span>);</span><br><span class="line">digester.addResultSet(<span class="keyword">new</span> NamingRuleSet(<span class="string">&quot;Server/Service/Engine/Host/Context/&quot;</span>));</span><br><span class="line">digester.addRule(<span class="string">&quot;Server/Service/Engine&quot;</span>, <span class="keyword">new</span> SetParentClassLoaderRule(parentClassLoader));</span><br><span class="line">addClusterRuleSet(digest, <span class="string">&quot;Server/Service/Engine/Cluster/&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>此部分指定了Servlet容器相关的各级嵌套子节点的解析规则，明确每类嵌套子节点的解析封装为一个RuleSet，包括GlobalNamingResources、Engine、Host、Context、Cluster的解析。</p>
+</li>
+</ol>
+<h4 id="Engine解析"><a href="#Engine解析" class="headerlink" title="Engine解析"></a>Engine解析</h4><p>EngineRuleSet类</p>
+<ol>
+<li><p>创建Engine实例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// EngineRuleSet.addRuleInstances</span></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Engine&quot;</span>, <span class="string">&quot;org.apache.catalina.core.StandardEngine&quot;</span>, className);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Engine&quot;</span>);</span><br><span class="line">digester.addRule(prefix + <span class="string">&quot;Engine&quot;</span>, <span class="keyword">new</span> LifecycleListenerRule(<span class="string">&quot;org.apache.catalina.startup.EngineConfig&quot;</span>, <span class="string">&quot;engineConfigClass&quot;</span>));  <span class="comment">// 添加默认生命周期监听器 EngineConfig</span></span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Engine&quot;</span>, <span class="string">&quot;setContainer&quot;</span>, <span class="string">&quot;org.apache.catalina.Engine&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>Engine的默认实现为 <code>org.apache.catalina.core.StandardEngine</code> 并通过setContainer()方法添加到Service实例。同时，还未Engine添加了一个生命周期监听器EngineConfig。EngineConfig是默认添加的，并非由server.xml配置实现，功能是用于打印Engine启动和停止日志。</p>
+</li>
+<li><p>为Engine添加集群配置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// EngineRuleSet.addRuleInstances</span></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Engine/Cluster&quot;</span>, <span class="keyword">null</span>, className);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Engine/Cluster&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Engine/Cluster&quot;</span>, <span class="string">&quot;setCluster&quot;</span>, <span class="string">&quot;org.apache.catalina.Cluster&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>具体集群实现类由className属性指定</p>
+</li>
+<li><p>为Engine添加生命周期监听器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// EngineRuleSet.addRuleInstances</span></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Engine/Listener&quot;</span>, <span class="keyword">null</span>, className);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Engine/Listener&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Engine/Listener&quot;</span>, <span class="string">&quot;addLifecycleListener&quot;</span>, <span class="string">&quot;org.apache.catalina.LifecycleListener&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>该部分由server.xml配置，默认情况下，Catalina未指定Engine监听器</p>
+</li>
+<li><p>为Engine添加安全配置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// EngineRuleSet.addRuleInstances</span></span><br><span class="line">digester.addRuleSet(<span class="keyword">new</span> RealmRuleSet(prefix + <span class="string">&quot;Engine/&quot;</span>));</span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Engine/Valve&quot;</span>, <span class="keyword">null</span>, className);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Engine/Valve&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Engine/Valve&quot;</span>, <span class="string">&quot;addValve&quot;</span>, <span class="string">&quot;org.apache.catalina.Valve&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>添加安全配置RealmRuleSet以及拦截器Valve，具体拦截器类由className属性指定</p>
+</li>
+</ol>
+<h4 id="Host解析"><a href="#Host解析" class="headerlink" title="Host解析"></a>Host解析</h4><p>HostRuleSet类</p>
+<ol>
+<li><p>创建Host实例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// HostRuleSet.addRuleInstances</span></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Host&quot;</span>, <span class="string">&quot;org.apache.catalina.core.StandardHost&quot;</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Host&quot;</span>);</span><br><span class="line">digester.addRule(prefix + <span class="string">&quot;Host&quot;</span>, <span class="keyword">new</span> CopyParentClassLoaderRule());</span><br><span class="line">digester.addRule(prefix + <span class="string">&quot;Host&quot;</span>, <span class="keyword">new</span> LifecycleListenerRule(<span class="string">&quot;org.apache.catalina.startup.HostConfig&quot;</span>, <span class="string">&quot;hostConfigClass&quot;</span>));</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Host&quot;</span>, <span class="string">&quot;addChild&quot;</span>, <span class="string">&quot;org.apache.catalina.Container&quot;</span>);</span><br><span class="line">digester.addCallMethod(prefix + <span class="string">&quot;Host/Alias&quot;</span>, <span class="string">&quot;addAlias&quot;</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>Host默认实现为 <code>org.apache.catalina.core.Standard.Host</code> 并通过addChild()方法添加到Engine上。同时，Host还添加了一个生命周期监听器HostConfig，同样，该监听器由Catalina默认添加，而不是由server.xml配置。此外，通过Alias，Host还支持配置别名。</p>
+</li>
+<li><p>为Host添加集群</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// HostRuleSet.addRuleInstances</span></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Host/Cluster&quot;</span>, <span class="keyword">null</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Host/Cluster&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Host/Cluster&quot;</span>, <span class="string">&quot;setCluster&quot;</span>, <span class="string">&quot;org.apache.catalina.Cluster&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>从这里可以知道，集群配置可以为Engine级别，也可以为Host级别</p>
+</li>
+<li><p>为Host添加生命周期管理</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// HostRuleSet.addRuleInstances</span></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Host/Listener&quot;</span>, <span class="keyword">null</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Host/Listener&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Host/Listener&quot;</span>, <span class="string">&quot;addLifecycleListener&quot;</span>, <span class="string">&quot;org.apache.catalina.LifecycleListener&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>此部分由server.xml配置，默认情况下，Catalina未指定Host监听器</p>
+</li>
+<li><p>为Host添加安全配置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// HostRuleSet.addRuleInstances</span></span><br><span class="line">digester.addRuleSet(<span class="keyword">new</span> RealmRuleSet(prefix + <span class="string">&quot;Host/&quot;</span>));</span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Host/Valve&quot;</span>, <span class="keyword">null</span>, className);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Host/Valve&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Host/Valve&quot;</span>, <span class="string">&quot;addValve&quot;</span>, <span class="string">&quot;org.apache.catalina.Valve&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="Context解析"><a href="#Context解析" class="headerlink" title="Context解析"></a>Context解析</h4><p>ContextRuleSet</p>
+<ol>
+<li><p>Context实例化</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ContextRuleSet.addRuleInstances</span></span><br><span class="line"><span class="keyword">if</span> (create) &#123;</span><br><span class="line">    digester.addObjectCreate(prefix + <span class="string">&quot;Context&quot;</span>, <span class="string">&quot;org.apache.catalina.core.StandardContext&quot;</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">    digester.addSetProperties(prefix + <span class="string">&quot;Context&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    digester.addRule(prefix + <span class="string">&quot;Context&quot;</span>, <span class="keyword">new</span> SetContextPropertiesRule());</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (create) &#123;</span><br><span class="line">    digester.addRule(prefix + <span class="string">&quot;Context&quot;</span>, <span class="keyword">new</span> LifecycleListenerRule(<span class="string">&quot;org.apache.catalina.startup.ContextConfig&quot;</span>, <span class="string">&quot;configClass&quot;</span>));</span><br><span class="line">    digester.addSetNext(prefix + <span class="string">&quot;Context&quot;</span>, <span class="string">&quot;addChild&quot;</span>, <span class="string">&quot;org.apache.catalina.Container&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Context的解析会根据create属性的不同而有所区别，这主要是由于Context来源于多出。通过server.xml配置Context时，create为true，因此需要创建Context实例；而通过HostConfig自动创建Context时，create为false，此时仅需要解析子节点即可。</p>
+<p>此外，除了创建Context实例，还添加了一个生命周期监听器ContextConfig，用于详细配置Context，如解析web.xml等。</p>
+</li>
+<li><p>为Context添加生命周期监听器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ContextRuleSet.addRuleInstances</span></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Context/Listener&quot;</span>, <span class="keyword">null</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Context/Listener&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Context/Listener&quot;</span>, <span class="string">&quot;addLifecycleListener&quot;</span>, <span class="string">&quot;org.apache.catalina.LifecycleListener&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p>为Context指定类加载器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ContextRuleSet.addRuleInstances</span></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Context/Loader&quot;</span>, <span class="string">&quot;org.apache.catalina.loader.WebappLoader&quot;</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Context/Loader&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Context/Loader&quot;</span>, <span class="string">&quot;setLoader&quot;</span>, <span class="string">&quot;org.apache.catalina.Loader&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>默认实现类为 <code>org.apache.catalina.loader.WebappLoader</code> </p>
+</li>
+<li><p>为Context添加会话管理器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ContextRuleSet.addRuleInstances</span></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Context/Manager&quot;</span>, <span class="string">&quot;org.apache.catalina.session.StandardManager&quot;</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Context/Manager&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Context/Manager&quot;</span>, <span class="string">&quot;setManager&quot;</span>, <span class="string">&quot;org.apache.catalina.Manager&quot;</span>);</span><br><span class="line"></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Context/Manager/Store&quot;</span>, <span class="keyword">null</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Context/Manager/Store&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Context/Manager/Store&quot;</span>, <span class="string">&quot;setStore&quot;</span>, <span class="string">&quot;org.apache.catalina.Store&quot;</span>);</span><br><span class="line"></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Context/Manager/SessionIdGenerator&quot;</span>, <span class="string">&quot;org.apache.catalina.util.StandardSessionIdGenerator&quot;</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Context/Manager/SessionIdGenerator&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Context/Manager/SessionIdGenerator&quot;</span>, <span class="string">&quot;setSessionIdGenerator&quot;</span>, <span class="string">&quot;org.apache.catalina.SessionIdGenerator&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>默认实现为 <code>org.apache.catalina.ssession.StandardManager</code> ，同时为管理器指定会话存储方式和会话标识生成器。</p>
+</li>
+<li><p>为Context添加初始化参数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ContextRuleSet.addRuleInstances</span></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Context/Parameter&quot;</span>, <span class="string">&quot;org.apache.catalina.deploy.ApplicationParameter&quot;</span>);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Context/Parameter&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Context/Parameter&quot;</span>, <span class="string">&quot;addApplicationParameter&quot;</span>, <span class="string">&quot;org.apache.catalina.deploy.ApplicationParameter&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>通过该配置，为Context添加初始化参数。初始化参数可以再context.xml中添加，以实现在所有web应用中的复用，而不必每个web应用重复配置。这种配置方式也有缺点，就是和Tomcat紧耦合，所以，尽量不采用通过context.xml配置的方式。</p>
+</li>
+<li><p>为Context添加安全配置以及Web资源配置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ContextRuleSet.addRuleInstances</span></span><br><span class="line">digester.addRuleSet(<span class="keyword">new</span> RealmRuleSet(prefix + <span class="string">&quot;Context/&quot;</span>));</span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Context/Resources&quot;</span>, <span class="string">&quot;org.apache.catalina.webresources.StandardRoot&quot;</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Context/Resources&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Context/Resources&quot;</span>, <span class="string">&quot;setResources&quot;</span>, <span class="string">&quot;org.apache.catalina.WebResourceRoot&quot;</span>);</span><br><span class="line"></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Context/Resources/PreResources&quot;</span>, <span class="keyword">null</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Context/Resources/PreResources&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Context/Resources/PreResources&quot;</span>, <span class="string">&quot;addPreResources&quot;</span>, <span class="string">&quot;org.apache.catalina.WebResourceSet&quot;</span>);</span><br><span class="line"></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Context/Resources/JarResources&quot;</span>, <span class="keyword">null</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Context/Resources/JarResources&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Context/Resources/JarResources&quot;</span>, <span class="string">&quot;addJarResources&quot;</span>, <span class="string">&quot;org.apache.catalina.WebResourceSet&quot;</span>);</span><br><span class="line"></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Context/Resources/PostResources&quot;</span>, <span class="keyword">null</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Context/Resources/PostResources&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Context/Resources/PostResources&quot;</span>, <span class="string">&quot;addPostResources&quot;</span>, <span class="string">&quot;org.apache.catalina.WebResourceSet&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p>为Context添加资源链接</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ContextRuleSet.addRuleInstances</span></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Context/ResourceLink&quot;</span>, <span class="string">&quot;org.apache.catalina.deploy.ContextResourceLink&quot;</span>);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Context/ResourceLink&quot;</span>);</span><br><span class="line">digester.addRule(prefix + <span class="string">&quot;Context/ResourceLink&quot;</span>, <span class="keyword">new</span> SetNextNamingRule(<span class="string">&quot;addResourceLink&quot;</span>, <span class="string">&quot;org.apache.catalina.deploy.ContextResourceLink&quot;</span>));</span><br></pre></td></tr></table></figure></li>
+<li><p>为Context添加Valve</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ContextRuleSet.addRuleInstances</span></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Context/Valve&quot;</span>, <span class="keyword">null</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Context/Valve&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Context/Valve&quot;</span>, <span class="string">&quot;addValve&quot;</span>, <span class="string">&quot;org.apache.catalina.Valve&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p>为Context添加守护资源配置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ContextRuleSet.addRuleInstances</span></span><br><span class="line">digester.addCallMethod(prefix + <span class="string">&quot;Context/WatchedResource&quot;</span>, <span class="string">&quot;addWatchedResource&quot;</span>, <span class="number">0</span>);</span><br><span class="line">digester.addCallMethod(prefix + <span class="string">&quot;Context/WrapperLifecycle&quot;</span>, <span class="string">&quot;addWrapperLifecycle&quot;</span>, <span class="number">0</span>);</span><br><span class="line">digester.addCallMethod(prefix + <span class="string">&quot;Context/wrapperListener&quot;</span>, <span class="string">&quot;addWrapperListener&quot;</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Context/JarScanner&quot;</span>, <span class="string">&quot;org.apache.tomcat.util.scan.StandardJarScanner&quot;</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Context/JarScanner&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Context/JarScanner&quot;</span>, <span class="string">&quot;setJarScanner&quot;</span>, <span class="string">&quot;org.apache.tomcat.JarScanner&quot;</span>);</span><br><span class="line"></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Context/JarScanner/JarScanFilter&quot;</span>, <span class="string">&quot;org.apache.tomcat.util.scan.StandardJarScanFilter&quot;</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Context/JarScanner/JarScanFilter&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Context/JarScanner/JarScanFilter&quot;</span>, <span class="string">&quot;setJarScanFilter&quot;</span>, <span class="string">&quot;org.apache.tomcat.JarScanFilter&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>WatchedResource标签用于为Context添加监视资源，当资源发生变更时，web应用将会被重新加载，默认为 <code>WEB-INF/web.xml</code></p>
+<p>WrapperLifecycle标签用于为Context添加一个生命周期监听器类，此类的实例不是添加到Context上，而是添加到Context包含的Wrapper上</p>
+<p>WrapperListener标签用于为Context添加一个容器监听器类（ContainerListener），此类的实例同样添加到Wrapper上</p>
+<p>JarScanner标签则用于为Context添加一个Jar扫描器，默认实现为 <code>org.apache.tomcat.util.scan.StandardJarScanner</code>。JarScanner扫描web应用和类加载器层级的jar包，主要用于TLD扫描和web-fragment.xml</p>
+<p>JarScanFilter标签可以为JarScanner指定一个过滤器，只有符合条件的jar包才会被除了，默认实现为 <code>org.apache.tomcat.util.scan.StandardJarScanFilter</code></p>
+</li>
+<li><p>为Context添加Cookie处理器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ContextRuleSet.addRuleInstances</span></span><br><span class="line">digester.addObjectCreate(prefix + <span class="string">&quot;Context/CookieProcessor&quot;</span>, <span class="string">&quot;org.apache.tomcat.util.http.Rfc6265CookiedProcessor&quot;</span>, <span class="string">&quot;className&quot;</span>);</span><br><span class="line">digester.addSetProperties(prefix + <span class="string">&quot;Context/CookieProcessor&quot;</span>);</span><br><span class="line">digester.addSetNext(prefix + <span class="string">&quot;Context/CookieProcessor&quot;</span>, <span class="string">&quot;setCookieProcessor&quot;</span>, <span class="string">&quot;org.apache.tomcat.util.http.CookieProcessor&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="web应用加载"><a href="#web应用加载" class="headerlink" title="web应用加载"></a>web应用加载</h3><p>web应用加载属于Server启动的核心处理过程，主要由 <code>StandardHost、HostConfig、StandardContext、ContextConfig、StandardWrapper</code> 5个类完成</p>
+<p>web应用加载过程：</p>
+<p><img src="/images/web%E5%BA%94%E7%94%A8%E5%8A%A0%E8%BD%BD.png"></p>
+<h4 id="StandardHost"><a href="#StandardHost" class="headerlink" title="StandardHost"></a>StandardHost</h4><p>从时序图可以看出，StandardHost加载web应用（StandardContext）的入口（children.start以及child.start）有两个。其中一个入口是在Catalina构造Server实例时，如果过Host存在Context（server.xml中），那么Context将会作为Host容器的子容器添加到Host实例中，并在Host启动时，由生命周期管理接口的start()方法启动。另一个入口是由HostConfig自动扫描部署目录，创建Context实例并启动，这时大多数web应用的加载方式。</p>
+<p>StandardHost的启动加载过程如下：</p>
+<ol>
+<li><p>为Host添加一个Valve实现ErrorReportValve（也可以通过修改Host的errorReportValveClass属性指定自己的错误处理Valv，该类主要用于在服务器处理异常时输出错误页面。如果我们没有在web.xml中添加错误处理页面，Tomcat返回的异常栈页面便是由ErrorReportValve生成的</p>
+</li>
+<li><p>调用StandardHost父类ContainerBase的startInternal()方法启动虚拟主机，其处理主要分为如下几步：</p>
+<ol>
+<li>如果配置了集群组件Cluster，则启动</li>
+</ol>
+</li>
+<li><p>如果配置了安全组件Realm，则启动</p>
+<ol start="3">
+<li>启动子节点(通过server.xml中的&lt;Context&gt;创建的StandardContext实例)</li>
+</ol>
+</li>
+<li><p>启动Host持有的Pipeline组件</p>
+<ol start="5">
+<li>设置Host状态为STARTING，此时会触发 <code>START_EVENT</code> 生命周期事件。HostConfig监听该事件，扫描web部署目录，对于部署描述文件、WAR包、目录会自动创建StandardContext实例，添加到Host并启动</li>
+</ol>
+</li>
+<li><p>启动Host层级的后台任务处理：Cluster后台任务处理、Realm后台任务处理、Pipeline中Valve的后台任务处理</p>
+</li>
+</ol>
+<h4 id="HostConfig"><a href="#HostConfig" class="headerlink" title="HostConfig"></a>HostConfig</h4><p> HostConfig是一个LifecycleListener实现，并由Catalina默认添加到Host实例上。HostConfig处理的生命周期事件包括：START_EVENT、PERIODIC_EVENT、STOP_EVENT。其中，前两者和web应用部署密切相关，后者用于在Host停止时，注销其对应的MBean。</p>
+<p><strong>START_EVENT</strong></p>
+<p>该事件在Host启动时触发，完成服务器启动过程中的web应用部署，主要包括三个部分：Context描述文件部署、Web目录部署、WAR部署</p>
+<ul>
+<li><p>Context描述文件部署</p>
+<p>Tomcat支持通过一个独立的Context描述文件来配置并启动Web应用，配置方式同server.xml中的&lt;Context&gt;元素。该配置文件的存储路径由Host的xmlBase属性指定。如果未指定，则默认值为 <code>$CATALINA_BASE/conf/&lt;Engine名称&gt;/&lt;Host名称&gt;</code>，因此，对于Tomcat默认的Host，Context描述文件的路径为 <code>$CATALINA_BASE/conf/Catalina/localhost</code> </p>
+<p>Context描述文件的部署过程如下：</p>
+<ol>
+<li>扫描Host配置文件基础目录，即 <code>$CATALINA_BASE/conf/&lt;Engine名称&gt;/&lt;Host名称&gt;</code> ，对于该目录下的每个配置文件，由线程池完成解析部署</li>
+<li>对每个文件部署线程，进行如下操作<ul>
+<li>使用Digester解析配置文件，创建Context实例</li>
+<li>更新Context实例的名称、路径，因此&lt;Context&gt;元素中配置的path属性无效</li>
+<li>为Context添加ContextConfig生命周期监听器</li>
+<li>通过Host的addChild()方法将Context实例添加到Host，该方法会判断Host是否已经启动，如果是，则直接启动Context</li>
+<li>将Context描述文件、Web应用目录以及web.xml等添加到守护资源，当文件发生变更时，重新负数或者加载Web应用</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>Web目录部署</p>
+<p>以目录的形式发布并部署Web应用是Tomcat中最常见的部署方式。只需要将所有的资源文件、jar包、描述文件（WEB-INF/web.xml）的目录复制到Host指定的appBase目录下即可完成部署。该方式部署过程如下：</p>
+<ol>
+<li><p>对于Host的appBase目录下所有符合条件的目录，由线程池完成部署</p>
+</li>
+<li><p>对于每个目录进行如下操作</p>
+<ul>
+<li><p>如果Host的deployXML属性值为true（通过Context描述文件部署），并且存在META-INF/context.xml文件，则使用Digester解析context.xml文件创建Context对象。如果Context的copyXML属性为true，则将描述文件复制到  <code>$CATALINA_BASE/conf/&lt;Engine名称&gt;/&lt;Host名称&gt;</code> 目录下，文件名和web应用目录名相同。</p>
+<p>如果deployXML属性值为false，但是存在META-INF/context.xml文件，则构造FailedContext实例。</p>
+<p>其他情况，根据Host的 <code>contextClass</code> 属性指定的类型创建Context对象。如果不指定，则为 <code>org.apache.catalina.core.StandardContext</code> 。此时，所有的Context属性均采用默认配置，除了 name/path/webappVersion/docBase会根据web应用目录的路径和名称进行设置外</p>
+</li>
+<li><p>为Context实例添加ContextConfig生命周期监听器</p>
+</li>
+<li><p>通过Host的addChild()方法将Context实例添加到Host，该方法会判断Host是否以及启动，如果是，则直接启动Context</p>
+</li>
+<li><p>Context描述文件、web应用目录以及web.xml等添加到守护资源，以便文件发送变更时重新部署或者加载web应用。</p>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>WAR包部署</p>
+<p>WAR包部署和web目录部署基本类似，只是由于WAR包作为一个压缩文件，增加了部分对压缩文件的处理</p>
+</li>
+</ul>
+<p><strong>PERIODIC_EVENT事件</strong></p>
+<p>Catalina的容器支持定期执行自身以及其子容器的后台处理过程，具体处理过程在容器的backgroundProcess()方法中定义。该机制经常用于定时扫描Web应用的变更，并进行重新加载。后台任务处理完成后，就会触发 PERIODIC_EVENT 事件。</p>
+<p>在HostConfig中通过DeployedApplication维护了两个守护资源列表：redeployResources和reloadResources，前者用于守护导致应用重新部署的资源，后者守护导致应用重新加载的资源。两个列表分别维护资源及其最后的修改时间。</p>
+<p>当HostConfig接收到 PERIODIC_EVENT事件后，会检测守护资源的变更情况。如果发生变更，将重新加载或者部署应用以及更新资源的最后修改时间。（重新加载是指同一个Context对象的重启，而重新部署则是重新创建了一个新的Context对象。如果是Context描述文件变更，则需要重新部署应用；如果是web.xml文件更新，则只需要重新加载）</p>
+<p>具体部署过程如下（当Host的 autoDeploy 属性为true时处理）：</p>
+<ol>
+<li>对于每一个已部署的Web应用，检查用于重新部署的守护资源。对于每个守护的资源文件或目录，如果发生变更，则会有以下几种情况：<ul>
+<li>如果资源为目录，则更新守护资源列表中的上次修改时间</li>
+<li>如果Web应用存在Context描述文件并且当前变更的是WAR包文件，则得到原Context的docBase。如果docBase不以 “.war” 结尾，则删除解压目录并重新加载，否则直接重新加载，更新守护资源</li>
+<li>其他情况，直接俄卸载应用，并按后续步骤重新部署</li>
+</ul>
+</li>
+<li>对于每个已经部署的Web应用，检测用于重新加载的守护资源，如果资源发生变更，则重新加载Context对象</li>
+<li>如果Host配置为卸载旧版本应用，则检查并卸载</li>
+<li>部署Web应用</li>
+</ol>
+<h4 id="StandardContext"><a href="#StandardContext" class="headerlink" title="StandardContext"></a>StandardContext</h4><p>StandardHost和HostConfig只是根据不同的情况创建并启动Context对象，并不包含具体的Web应用初始化以及启动工作，这部分工作由组件Context完成。</p>
+<p><img src="/images/web%E5%AE%B9%E5%99%A8%E7%B1%BB%E5%85%B3%E7%B3%BB.png"></p>
+<p>从上图可知：</p>
+<ul>
+<li><p>Tomcat提供的ServletContext实现类为ApplicationContext。但是，该类仅提供Tomcat服务器使用，web应用使用的是其门面类ApplicationContextFacade。</p>
+</li>
+<li><p>FilterConfig实现类为ApplicationFilterConfig，同时该类也负责Filter的实例化。</p>
+</li>
+<li><p>FilterMap用于存储filter-mapping配置。</p>
+</li>
+<li><p>NamingResources用于存储web应用声明的命名服务（JNDI）</p>
+</li>
+<li><p>StandardContext通过servletMapping属性存储servlet-mapping配置</p>
+</li>
+</ul>
+<p>StandardContext的启动过程（StandardContext.startInternal）</p>
+<ol>
+<li>发布正在启动的JMX通知，这样可以通过添加NotificationListener来监听web应用的启动</li>
+<li>启动当前Context维护的JNDI资源</li>
+<li>初始化当前Context使用的WebResourceRoot并启动。(WebResourceRoot维护了web应用所有的资源集合——class文件、jar包以及其他资源文件。主要用于类加载和按照路径查找资源文件)</li>
+<li>创建web应用类加载器（WebappLoader）。WebappLoader继承自LifecycleMBeanBase，在其启动时创建Web应用类加载器（WebappClassLoader）。此外，该类还提供了background-Process，用于Context后台处理。当检测到Web应用的类文件、jar包发生变更时，重新加载Context</li>
+<li>如果没有设置Cookie处理器，则创建默认的Rfc6265CookieProcessor</li>
+<li>设置字符集映射（CharsetMapper），该映射主要用于根据Locale获取字符集编码</li>
+<li>初始化临时目录，默认为 <code>$CATALINA_BASE/conf/&lt;Engine名称&gt;/&lt;Host名称&gt;</code> </li>
+<li>web应用的依赖检测，主要检测依赖扩展点的完整性</li>
+<li>如果当前Context使用JNDI，则为其添加NamingContextListener</li>
+<li>启动Web应用类加载器（WebappLoader.start），此时才真正创建WebappClassLoader实例</li>
+<li>启动安全组件（Realm）</li>
+<li>发布CONFIGURE_START_EVENT事件，ContextConfig监听该事件以完成Servlet的创建</li>
+<li>启动Context子节点（Wrapper）</li>
+<li>启动Context维护的Pipeline</li>
+<li>创建会话管理器。在集群环境下，需要将会话管理器注册到集群组件</li>
+<li>将Context的web资源集合（WebResourceRoot）添加到ServletContext属性，属性名为：<code>org.apache.catalina.resources</code></li>
+<li>创建实例管理器（InstanceManager），用于创建对象实例，如Servlet、Filter等</li>
+<li>将Jar包扫描器（JarScanner）添加到ServletContext属性，属性名为 <code>org.apache.tomcat.JarScanner</code></li>
+<li>合并ServletContext初始化参数和Context组件中的ApplicationParameter。合并原则：如果配置为可以覆盖，那么只有当ServletContext没有相关参数或者相关参数为空时添加；如果配置为不可覆盖，则强制添加</li>
+<li>启动添加到当前Context的ServletContainerInitializer。该类的实例具体由ContextConfig查找并添加，主要以可编程的方式添加web应用的配置，如 Servlet、Filter等</li>
+<li>实例化应用监听器（ApplicationListener），分为事件监听器（ServletContextAttributeListener、ServletRequestAttributeListener、ServletRequestListener、HttpSessionIdListener、HttpSessionAttributeListener）、生命周期监听器（HttpSessionListener、ServletContextListener）。这些监听器可以通过Context部署描述文件、可编程的方式或者web.xml添加，并且触发ServletContextListener.contextInitialized</li>
+<li>检测未覆盖的HTTP方法的安全约束</li>
+<li>启动会话管理器</li>
+<li>实例化FilterConfig、Filter，并调用Filter.init初始化</li>
+<li>对于loadOnStartup&gt;=0的Wrapper，调用wrapper.load()，该方法负责实例化Servlet，并调用Servlet.init进行初始化</li>
+<li>启动后台定时处理线程。只有当backgroundProcessorDelay&gt;0时启动，用于监控守护文件的变更等。当backgroundProcessorDelay&lt;=0时，表示Context的后台任务由上级容器（Host）调度</li>
+<li>发布正在运行的JMX通知</li>
+<li>调用WebResourceRoot.gc()释放资源</li>
+<li>设置Context状态，如果启动成功，设置为STARTING，否则设置为FAILED</li>
+</ol>
+<h4 id="ContextConfig"><a href="#ContextConfig" class="headerlink" title="ContextConfig"></a>ContextConfig</h4><p>StandardContext的启动过程并不包括如何解析web.xml中的Servlet、请求映射、Filter等相关配置。这部分工作由ContextConfig完成。</p>
+<p>ContextConfig一共处理6类事件，这里主要了解三类：<code>AFTER_INIT_EVENT/BEFORE_START_EVENT/CONFIGURE_START_EVENT</code></p>
+<ol>
+<li><p><strong>AFTER_INIT_EVENT</strong></p>
+<p>该事件属于Context初始化阶段，主要用于Context属性配置工作。具体过程如下</p>
+<ul>
+<li>如果Context的override属性为false（采用默认配置）：<ul>
+<li>如果存在conf/context.xml文件，那么解析该文件，更新当前Context实例属性</li>
+<li>如果存在conf/&lt;Engine名称&gt;/&lt;Host名称&gt;/context.xml.default文件，那么解析该文件，更新当前Context实例属性</li>
+</ul>
+</li>
+<li>如果Context的configFile属性不为空，那么解析该文件，更新当前Context实例的属性</li>
+</ul>
+</li>
+<li><p><strong>BEFORE_START_EVENT</strong></p>
+<p>该事件在Context启动前触发，用于更新Context的docBase属性和解决Web目录锁的问题。更新Context的docBase属性主要是为了满足WAR部署的情况。当web应用为一个WAR压缩包且需要解压部署时，docBase属性指向的是解压后的文件夹目录，而非WAR包的路径。具体过程如下（ContextConfig.fixDocBase）：</p>
+<ul>
+<li>根据Host的appBase以及Context的docBase计算docBase的绝对路径</li>
+<li>如果docBase为WAR文件，且需要进行解压部署：解压WAR文件、将Context的docBase更新为解压后的路径；如果不需要解压部署，则只检测WAR包，不更新docBase</li>
+<li>如果docBase为一个有效目录，且存在与该目录同名的WAR包，同时需要解压部署，则重新解压WAR包</li>
+<li>如果docBase为一个不存在的目录，但是存在与该目录同名的WAR包，同时需要解压部署，则：解压WAR文件、将Context的docBase更新为解压后的路径</li>
+</ul>
+<p>当Context的antiResourceLocking属性为true时，Tomcat会将当前的web应用目录复制到临时文件夹下，以避免对原目录的资源加锁。具体过程如下（ContextConfig.antiLocking）：</p>
+<ul>
+<li>根据Host的appBase以及Context的docBase计算docBase的绝对路径</li>
+<li>计算临时文件夹中的web应用根目录或WAR包名</li>
+<li>复制web目录或者WAR包到临时目录</li>
+<li>将Context的docBase更新为临时目录下的web应用目录或者WAR包路径</li>
+</ul>
+</li>
+<li><p>CONFIGURE_START_EVENT事件</p>
+<p>该事件主要工作内容如下：</p>
+<ul>
+<li>根据配置创建Wrapper（Servlet）、Filter、ServletContextListener等，完成Web容器的初始化。主要是解析web应用目录下的web.xml</li>
+<li>如果StandardContext的ignoreAnnotations为false，则解析应用程序注解配置，添加相关的JNDI资源引用</li>
+<li>基于解析完的web容器，检测web用于部署描述中使用的安全角色名称，当发现使用了未定义的角色时，提示警告同时将未定义的角色添加到Context安全角色列表中</li>
+<li>当Context需要进行安全认证，但是没有指定具体的Authenticator时，根据服务器配置自动创建默认实例</li>
+</ul>
+<p>对着上面这些内容再分别细化讨论：</p>
+<ol>
+<li><p><strong>web容器初始化</strong></p>
+<p>根据Servlet规范，web应用部署描述可来源于：WEB-INF/web.xml、web应用JAR包中的META-INF/web-fragment.xml 以及 META-INF/services/javax.servlet.ServletContainerInitializer</p>
+<p>其中META-INF/services/javax.servlet.ServletContainerInitializer文件中配置了所属jar中该接口的实现了，用于动态注册Servlet，这是Servlet规范基于SPI机制的可编程实现。</p>
+<p>除了Servlet规范中提到的部署描述方式，Tomcat还支持默认配置，以简化web应用的配置工作。这些默认配置包括容器级别（conf/web.xml）和Host级别（conf/&lt;Engine名称&gt;/&lt;Host名称&gt;/web.xml.default）。Tomcat解析时确保web应用中的配置优先级最高，其次为Host级，最后为容器级别。</p>
+<p>Tomcat初始化web容器的过程如下（ContextConfig.webConfig）</p>
+<ul>
+<li>解析默认配置，生成WebXml对象（Tomcat使用该对象表示web.xml的解析结果）。先解析容器级别配置，然后再解析Host级别配置。这样对于同名配置，Host将覆盖容器级。为了提升性能，ContextConfig对默认WebXml进行缓存，以避免重复解析。（默认WebXml）</li>
+<li>解析web应用的web.xml文件。如果StandardContext的altDDName不为空，则将该属性指向的文件作为web.xml，否则使用默认路径，即WEB-INF/web.xml。解析结构同样为WebXml对象。(主WebXml)</li>
+<li>扫描web应用所有jar包，如果包含META-INF/web-fragment.xml，则解析文件并创建WebXml对象。（片段WebXml）</li>
+<li>将web-fragment.xml创建的WebXml对象按照Servlet规范进行排序，同时将排序结构对应的JAR文件名列表设置到ServletContext属性中，属性名为javax.servlet.context.orderedLibs。该排序决定了Filter等的执行顺序</li>
+<li>查找ServletContainerInitializer实现，并创建实例。查找部分分为两部分：web应用下的包以及容器包（搜索所有包）</li>
+<li>根据ServletContainerInitializer查询结构以及javax.servlet.annotation.HandlesTypes注解配置，初始化typeInitializerMap和initializerClassMap两个映射，前者表示类对应的ServletContainerInitializer集合，后者表示每个ServletContainerInitializer对应的类的集合，具体类由javax.servlet.annotation.HandlesTypes注解指定</li>
+<li>当 “主WebXml” 的 metadataComplete为false或者typeInitializerMap不为空时：1. 处理WEB-INF/classes下的注解   2. 处理JAR包内的注解</li>
+<li>如果 “主WebXml”的 metadataComplete为false，将所有的“片段WebXml”按顺序合并到“主WebXml”</li>
+<li>将“默认WebXml”合并到“主WebXml”</li>
+<li>配置JspServlet。对于当前web应用中JspFile属性不为空的Servlet，将其servletClass设置为org.apache.jasper.servlet.JspServlet，将JspFile设置为Servlet的初始化参数，同时将名称为“jsp”的Servlet的初始化参数也复制到该Servlet中</li>
+<li>使用“主WebXml”配置当前StandardContext，包括Servlet、Filter、Listener等Servlet规范中支持的组件。对于ServletContext层级的对象，直接由StandardContext维护，对于Servlet，则创建StandardWrapper子对象，并添加到StandardContext实例</li>
+<li>将合并后的WebXml保存到ServletContext属性中，便于后续处理复用</li>
+<li>查找JAR包“META-INF/resources/”下的静态资源，并添加到StandardContext</li>
+<li>将ServletContainerInitializer扫描结构添加到StandardContext，以便StandardContext启动时使用</li>
+</ul>
+</li>
+<li><p><strong>应用程序注解配置</strong></p>
+<p>当StandardContext的ignoreAnnotations为false时，Tomcat支持读取如下接口的Java命名服务注解配置：</p>
+<ul>
+<li>javax.servlet.ServletContextAttributeListener</li>
+<li>javax.servlet.ServletRequestListener</li>
+<li>javax.servlet.ServletRequestAttributeListener</li>
+<li>javax.servlet.http.HttpSessionAttributeListener</li>
+<li>javax.servlet.http.HttpSessionListener</li>
+<li>javax.servlet.ServletContextListener</li>
+<li>javax.servlet.Filter</li>
+<li>javax.servlet.Servlet</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<h4 id="StandardWrapper"><a href="#StandardWrapper" class="headerlink" title="StandardWrapper"></a>StandardWrapper</h4><p>StandardWrapper具体维护了Servlet实例。其加载过程具体如下：</p>
+<ol>
+<li>创建Servlet实例，如果添加了JNDI资源注解，将进行依赖注入</li>
+<li>读取javax.servlet.annotation.MultipartConfig注解配置，以用于multipart/form-data请求处理，包括临时文件存储路径、上传文件最大字节数、请求最大字节数、文件大小阈值</li>
+<li>读取javax.servlet.annotation.ServletSecurity()注解配置，添加Servlet安全</li>
+<li>调用javax.servlet.Servlet.init()方法进行Servlet初始化</li>
+</ol>
+<h3 id="Web请求处理"><a href="#Web请求处理" class="headerlink" title="Web请求处理"></a>Web请求处理</h3><h4 id="总体过程"><a href="#总体过程" class="headerlink" title="总体过程"></a>总体过程</h4><p>前面提到，Tomcat通过 <code>org.apache.tomcat.util.http.mapper.Mapper</code> 维护请求链接于Host、Context、Wrapper等Container的映射。同时，通过 <code>org.apache.catalina.connector.MapperListener</code> 监听器监听所有的组件，并在组件启动、停止时注册或者移除相关映射。</p>
+<p>此外，通过 <code>org.apache.catalina.connector.CoyoteAdapter</code> 将Connector与Mapper、Container联系起来。当 Connector 接收到请求后，首先读取请求数据，然后调用 CoyoteAdapter.service()方法完成请求处理。</p>
+<p>CoyoteAdapter.service()方法具体处理过程如下（细节省略）：</p>
+<ol>
+<li>根据 Connector的请求和响应（org.apache.coyote.Request和org.apache.coyote.Response）对象创建Servlet请求（org.apache.catalina.connector.Request 和 org.apache.catalina.connector.Response）</li>
+<li>转换请求参数并完成请求映射<ul>
+<li>请求URI界面，初始化请求的路径参数</li>
+<li>检测URI是否合法，如果非法，则返回响应码400</li>
+<li>请求映射，映射结果保存到 org.apache.catalina.connector.Request.mappingData ，类型为org.apache.tomcat.util.http.mapper.MappingData，请求映射处理最终会根据URI定位到一个有效的Wrapper</li>
+<li>如果当前Connector不允许追踪，且当前请求的Method为TRACE，则返回响应码405</li>
+<li>执行连接器的认证和授权</li>
+</ul>
+</li>
+<li>得到当前Enginde的第一个Valve并执行，已完成客户端请求处理</li>
+<li>如果为异步请求：<ul>
+<li>获取请求读取事件监听器（ReadListener）</li>
+<li>如果请求读取已经结束，触发ReadListener.onAllDataRead</li>
+</ul>
+</li>
+<li>如果为同步请求：<ul>
+<li>Flush并关闭请求输入流</li>
+<li>Flush并关闭响应输出流</li>
+</ul>
+</li>
+</ol>
+<h4 id="请求映射"><a href="#请求映射" class="headerlink" title="请求映射"></a>请求映射</h4><p>请求映射过程具体分为两部分：一部分位于CoyoteAdapter.postParseRequest，负责根据请求路径匹配的结果，按照会话等信息获取最终的映射结果。第二部分位于Mapper.map，负责完成具体的请求路径的匹配</p>
+<h5 id="CoyoteAdapter-postParseRequest"><a href="#CoyoteAdapter-postParseRequest" class="headerlink" title="CoyoteAdapter.postParseRequest()"></a>CoyoteAdapter.postParseRequest()</h5><p>请求映射算法流程：</p>
+<p><img src="/images/%E8%AF%B7%E6%B1%82%E6%98%A0%E5%B0%84%E7%AE%97%E6%B3%95.png"></p>
+<p>算法步骤：</p>
+<ol>
+<li>定义3个局部变量<ul>
+<li>version：需要匹配的版本号，初始化为空，表示匹配所有版本</li>
+<li>versionContext：用于暂存按照会话ID匹配的Context，初始化为空</li>
+<li>mapRequired：是否需要映射，用于控制映射匹配循环，初始化为true</li>
+</ul>
+</li>
+<li>通过一个循环来处理映射匹配</li>
+<li>在循环中，调用Mapper.map()方法按照请求路径进行匹配，参数为serverName、url、version。因为version初始化为空，所以第一次执行时，所有匹配该请求路径的Context均会返回，此时MappingData.contexts中存放了所有结果，而MappingData.context中存放了最新版本。</li>
+<li>如果没有任何匹配结果，那么返回404响应码，匹配结束</li>
+<li>尝试从请求的URL、Cookie、SSL会话获取请求会话ID，并将mapRequired设置为false</li>
+<li>如果version不为空，且MappingData.context与versionContext相等，表明当前匹配结果是会话查询的结果，此时不再执行第7步。（当前步骤用于重复匹配，第一次执行时，version和versionContext均为空，所以需要执行第7步，而重复执行时，已经指定了版本，可以得到唯一匹配结果）</li>
+<li>如果不存在会话ID，那么第3步的匹配结果即为最终结果。否则，从MappingData.contexts中查找包含请求会话ID的最新版本，查询结果分如下情况：<ul>
+<li>没有查询结果（表明会话ID过去）或者查询结果与第3步的匹配结果想的，这时用的是第3步的匹配结果</li>
+<li>有查询结果但与第3步的匹配结果不相等。将version设置为查询结果的版本，versionContext设置为查询将结果，将mapRequired设置为true，重置MappingData。</li>
+</ul>
+</li>
+<li>如果mapRequired为false（即已经找到唯一的匹配结果），但匹配的Context状态为暂停，此时等待一秒钟，并将mapRequired设置为true，重置MappingData。此种情况下需要重新匹配，知道匹配到一个有效的Context或者无任何匹配结果为止</li>
+</ol>
+<h5 id="Mapper-map"><a href="#Mapper-map" class="headerlink" title="Mapper.map"></a>Mapper.map</h5><p>请求路径的具体匹配算法：即 “调用Mapper.map(serverName, url, version) ，将匹配的Context、Wrapper设置到请求中” </p>
+<p>先了解Mapper的静态结构：</p>
+<p><img src="/images/Mapper%E9%9D%99%E6%80%81%E7%B1%BB%E5%9B%BE.png"></p>
+<p>从Mapper的静态类图可见，Mapper对于Host、Context、Wrapper均提供了对应的封装类：MappedHost、MappedContext、MappedWrapper</p>
+<p>该算法的请求映射结果为 <code>org.apache.tomcat.util.http.mapper.MappingData</code> 对象，保存在请求的mappingData属性中。MappingData的结构如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MappingData</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> Object host = <span class="keyword">null</span>;			<span class="comment">// 匹配的Host</span></span><br><span class="line">    <span class="keyword">public</span> Object context = <span class="keyword">null</span>;		<span class="comment">// 匹配的Context</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> contextSlashCount = <span class="number">0</span>;	<span class="comment">// Context路径中的&quot;/&quot;数量</span></span><br><span class="line">    <span class="keyword">public</span> Object wrapper = <span class="keyword">null</span>;		<span class="comment">// 匹配的wrapper</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">boolean</span> jspWildCard = <span class="keyword">false</span>;	<span class="comment">// 对于JspServlet，其对应的匹配pattern是否包含通配符</span></span><br><span class="line">    <span class="keyword">public</span> MessageBytes ContextPath = MessageBytes.newInstance();	<span class="comment">// Context路径</span></span><br><span class="line">    <span class="keyword">public</span> MessageBytes requestPath = MessageBytes.newInstance(); <span class="comment">// 相对于Context的请求路径</span></span><br><span class="line">    <span class="keyword">public</span> MessageBytes wrapperPath = MessageBytes.newInstance();	<span class="comment">// Servlet路径</span></span><br><span class="line">    <span class="keyword">public</span> MessageBytes pathInfo = MessageBytes.newInstance(); <span class="comment">// 相对于Servlet的请求路径</span></span><br><span class="line">    <span class="keyword">public</span> MessageBytes redirectPath = MessageBytes.newInstance(); <span class="comment">// 重定向路径</span></span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Mapper.map具体算法过程：</p>
+<p><img src="/images/Mapper%E6%98%A0%E5%B0%84%E7%AE%97%E6%B3%95.png"></p>
+<h5 id="MapperWrapper映射"><a href="#MapperWrapper映射" class="headerlink" title="MapperWrapper映射"></a>MapperWrapper映射</h5><p>ContextVersion将MappedWrapper分为：默认Wrapper（defaultWrapper）、精确Wrapper（exactWrappers）、前缀加通配符匹配Wrapper（wildcardWrappers）和扩展名匹配Wrapper（extensionWrappers）。之所以分类，是因为它们之间存在匹配优先级。</p>
+<p>此外，在ContextVersion中，并非每一个Wrapper对应一个MappedWrapper对象，而是每个url-pattern对应一个。比如在 web.xml中的servlet-mapping配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>example<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>*.do<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>*.action<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>那么，在ContextVersion中将存在两个MappedWrapper封装对象，分别指向同一个Wrapper实例。</p>
+<p>Mapper按照如下规则将Wrapper添加到ContextVersion对应的MappedWrapper分类中去：</p>
+<ul>
+<li>如果url-pattern以“/*”结尾，则为wildcardWrappers。此时，MappedWrapper的名称为url-pattern去除结尾的“/*”</li>
+<li>如果url-pattern以“*.”结尾，则为extensionWrappers。此时，MappedWrapper的名称为url-pattern去除开头的的“*.”</li>
+<li>如果url-pattern等于“/”，则为defaultWrapper。此时，MappedWrapper的名称为空字符串</li>
+<li>其他情况均为 exactWrappers</li>
+</ul>
+<p>MappedWrapper详细匹配过程：</p>
+<ol>
+<li>依据url和Context路径计算MappedWrapper匹配路径。例如，如果Context路径为“/myapp”，url为”/myapp/appl/index.jsp”，那么MappedWrapper的匹配路径为 “/appl/index.jsp”；如果url为“/myapp”，那么MappedWrapper的匹配路径为“/”</li>
+<li>先精确查找exactWrappers</li>
+<li>如果未找到，然后再按照前缀查找wildcardWrappers，逐步降低精度</li>
+<li>如果未找到，然后按照扩展名查找extensionWrappers</li>
+<li>如果未找到，则尝试匹配欢迎文件列表（web.xml中的welcom-file-list配置）。主要用于输入的请求路径是一个目录而非文件的情况</li>
+<li>如果未找到，则使用默认MappedWrapper。因此，无论请求链接是什么，只要匹配到合适的Context，那么就肯定回存在一个匹配的Wrapper</li>
+</ol>
+<h4 id="Catalina请求处理"><a href="#Catalina请求处理" class="headerlink" title="Catalina请求处理"></a>Catalina请求处理</h4><p>Tomcat采用责任链模式来处理客户端请求，以提高Servlet容器的灵活性和可扩展性。Tomcat定义了Pipeline（管道）和 Valve（阀）两个接口。Pipeline用于构造责任链，Valve代表责任链上的每个处理器。由于Tomcat每一层Container均维护了一个Pipeline实例，因此，我们可以在任何层级添加Valve配置，以拦截客户端请求进行定尺处理（比如打印日志）。</p>
+<p>与Filter相比，Valve更靠近Servlet容器，而非web应用，因此可以获得更多的信息。而且Valve可以添加到任意一级的Container，便于针对服务器进行统一的处理。而Filter仅限于单独的web应用。</p>
+<p>Tomcat的每一级容器均提供了基础的Valve实现以完成当前容器的请求处理过程，而基础Valve始终位于责任链的末尾，以确保执行。因此，我们只要得到Pipeline中的第一个Valve即可启动整个责任链的执行。</p>
+<p>在完成请求映射之后，Tomcat请求处理过程：</p>
+<p><img src="/images/Catalina%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82.png"></p>
+<h2 id="Coyote"><a href="#Coyote" class="headerlink" title="Coyote"></a>Coyote</h2><p>Coyote是Tomcat链接器框架的名称，是Tomcat服务器提供的供客户端访问的外部接口。客户端通过Coyote和服务器建立链接、发送请求并接收响应。</p>
+<p>Coyote封装了底层的网络通信（Socket请求及响应处理），为Catalina容器提供了统一的接口，使Catalina容器与具体的请求协议及I/O方式解耦。Coyote将Socket输入转换为Request对象，交由Catalina容器进行处理，处理请求完成以后，Catalina通过Coyote提供的Response对象将结果写入输出流。</p>
+<p>Coyote作为独立的模块，只负责具体协议和I/O的处理，和Servlet规范的实现没有直接关系。因此，Request和Response对象也没有实现Servlte规范对应的接口，而是在Catalina容器中将他们进一步封装为ServletRequest和ServletResponse。</p>
+<p>Coyote和Catalina交互过程：</p>
+<p><img src="/images/Coyote%E5%92%8CCatalina%E8%AF%B7%E6%B1%82%E8%BF%87%E7%A8%8B.png"></p>
+<p>Tomcat支持的协议及I/O方式：</p>
+<p><img src="/images/Coyote%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82.png"></p>
+<h3 id="Web请求处理-1"><a href="#Web请求处理-1" class="headerlink" title="Web请求处理"></a>Web请求处理</h3><h4 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h4><ul>
+<li>Endpoint：Coyote通信端点，即通信监听的接口，是具体的Socket接收处理类，对传输层的抽象。Tomcat并没有Endpoint接口，只是提供了一个抽象类 AbstractEndpoint 。根据I/O方式的不同，提供了 NioEndpoint(NIO)、AprEndpoint(APR)一级Nio2Endpoint(NIO2) 3个实现。</li>
+<li>Processor：Coyote协议处理接口，负责构造Request和Response对象，并通过Adapter将其提交到Catalina容器进行处理，是对应用层的抽象。Processor是单线程的，Tomcat在同一次链接中复用Processor。Tomcat按照协议的不同提供了3个实现类：Http11Processor（Http/1.1）、AjpProcessor（AJP）、StreamProcessor（HTTP/2.0）。除此之外，还提供了两个用于升级协议处理的实现：UpgradeProcessorInternal和UpgradeProcessorExternal，前者用于处理内部支持的升级协议，后者用于外部扩展的升级协议支持</li>
+<li>ProtocolHandler：Coyote协议接口，通过封装Endpoint和Processor，实现针对具体协议的处理功能。Tomcat按照协议和I/O提供了6个实现类：Http11NioProtocol、Http11AprProtocol、Http11Nio2Protocol、AjpNioProtocol、AjpAprProtocol、AjpNio2Protocol</li>
+<li>UpgradeProtocol：Tomcat采用UpgradeProtocol接口表示HTTP升级协议，当前只提供了一个实现Http2Protocol用于处理HTTP/2.0 。它根据请求创建一个用于升级处理的令牌UpgradeToken，该令牌中包含了具体的HTTP升级处理器HttpUpgradeHandler，HTTP/2.0的处理器实现为Http2UpgradeHandler。</li>
+</ul>
+<p><img src="/images/Coyote%E6%A0%B8%E5%BF%83%E7%B1%BB%E5%85%B3%E7%B3%BB.png"></p>
+<h4 id="请求处理过程"><a href="#请求处理过程" class="headerlink" title="请求处理过程"></a>请求处理过程</h4><ol>
+<li><p>当Connector启动时，会同时启动持有的Endpoint实例。Endpoint并行运行多个线程，每个线程运行一个AbstractEndpoint.Acceptor实例。在AbstractEndpoint.Accptor实例中监听端口通信，而且只要Endpoint处于运行状态，始终循环监听。</p>
+</li>
+<li><p>当监听到请求时，Acceptor将Socket封装为SocketWrapper实例，并交由一个SocketProcessor对象处理。此部分根据I/O方式的不同处理会有所不同，比如NIO采用轮询的方式检测SelectionKey是否就绪。如果就绪，则获取一个有效的SocketProcessor对象并提交线程池处理</p>
+</li>
+<li><p>SocketProcessor是一个线程池Worker实例，每一个I/O方式均有自己的实现。首先判断Socket的状态，然后提交到ConnectionHandler处理</p>
+</li>
+<li><p>ConnectionHandler为链接选择一个合适的Processor实现进行请求处理。</p>
+<p>为了提升性能，对每个有效的链接都会缓存其Processor对象。不仅如此，当前链接关闭时，其Processor对象还会被释放到一个回收队列，这样后续链接可以重置并重复利用，以减少对象构造。因此，在处理请求时，会首先从缓存中获取当前链接的Processor对象。如果不存在，则尝试根据协商协议构造Processor（HTTP/2.0请求）。如果不存在协商协议（HTTP/1.1请求），则从回收队列中获取一个已释放的Processor对象使用。如果回收队列中没有可用的对象，那么由具体的协议创建一个Processor使用。</p>
+<p>然后，ConnectionHandler调用Processor.process()方法进行请求处理。如果不是协议协商的请求（非HTTP/2.0），那么Processor则会直接调用CoyoteAdapter.service()方法将其提交到Catalina容器进行处理。如果是协议协商请求，Processor会返回SocketState.UPGRADING，由ConnectionHandler进行协议升级。</p>
+</li>
+<li><p>协议升级时，ConnectionHandler会从当前Processor得到一个UpgradeToken对象，并构造一个升级Processor实例替换当前的Processor，并将当前的Processor释放回收。替换后，该链接的后续处理将由升级Processor完成。</p>
+</li>
+<li><p>通过UpgradeToken中的HttpUpgradeHandler对象的init()方法进行初始化，以便准备开始启用新协议。</p>
+</li>
+</ol>
+<h3 id="HTTP-2-0"><a href="#HTTP-2-0" class="headerlink" title="HTTP/2.0"></a>HTTP/2.0</h3><p>SPDY协议是Google开发的用于传输web内容的开放网络协议，是HTTP/2.0的母体。SPDY通过巧妙地控制HTTP通信，以达到降低web页面加载延迟和提高web安全的目标。SPDY通过压缩、多路复用、优先级来实现降低延迟，但是这依赖于网络和web应用部署条件的组合。</p>
+<p>SPDY的设计目标是降低web页面加载事件。通过优先级和多路复用，SPDY使得只需要建立一个TCP链接即可传送网页内容及图片等资源。SPDY中广泛应用了TLS加密，传输内容也均以GZIP或DEFALATE格式压缩。另外，除了像HTTP网页服务器被动等待浏览器发起请求以外，SPDY网页服务器还可以主动向浏览器推送内容。。</p>
+<p>SPDY并不是用于取代HTTP协议，它修改了HTTP请求和响应子啊网络上传输方式。这意味着只需要增加一个SPDY传输层，现有的所有服务端应用均不需要做任何的修改。SPDY是HTTP和HTTPS协议的有效隧道。当通过SPDY发送时，HTTP请求会被处理、标记简化和压缩。比如，每个SPDY断点会持续跟踪在之前请求中已经发送的HTTP报文头部，从而避免重复发送还未改变的头部，未发送的报文数据部分将在压缩后发送。</p>
+<p>考虑到SPDY获得了如Mozilla、Nginx的支持，以及相比HTTP/1.1性能的提升，HTTP的工作小组绝定采用SPDY/2作为HTTP/2的基础，发展HTTP/2.0。</p>
+<p>HTTP/2.0虽然依托于SPDY/2，但是仍有不同之处，在于以下两点：</p>
+<ol>
+<li>HTTP/2.0支持明文传输，而SPDY强制使用HTTPS</li>
+<li>HTTP/2.0消息头的压缩算法采用HPACK，而SPDY采用DELEFT</li>
+</ol>
+<p>相比HTTP/1.1，HTTP/2.0在传输方面做了如下改进：</p>
+<ol>
+<li>采用二进制格式传输数据而非HTTP/1.1的文本格式</li>
+<li>HTTP/2.0对消息头采用HPACK压缩，提升了传输效率</li>
+<li>基于帧和流的多路复用，真正实现了基于一个链接的多情情并发处理</li>
+<li>支持服务器推送</li>
+</ol>
+<p>在HTTP/2.0中，一个基本的协议单元是 <strong>帧（Frame）</strong>。按照不同的用途，可用分为不同类型的帧，比如HEADERS和DATA帧用于HTTP请求和响应，而 SETTINGS、WINDOW_UPDATE、PUSH_PROMISE等则用于支持HTTP/2.0的特性。</p>
+<p>一个帧由9字节的定长头和变长的Playload组成，具体格式为：</p>
+<p><img src="/images/%E5%B8%A7%E7%BB%93%E6%9E%84.png"></p>
+<ul>
+<li>Length：24位，表示Playload部分的长度</li>
+<li>Type：8位，表示帧的类型</li>
+<li>Flags：8位，每一位是一个布尔标记，用于特定的帧类型。对于每个类型的帧，这些标记都被赋予了特殊的语义。比如发送最后一个DATA类型的Frame时，就会将Flags最后一位设置为1，表示END_STREAM，说明当前帧是流的最后一个数据包</li>
+<li>R：预留的1位，无明确语义</li>
+<li>Stream Identifier：帧所属流的标识。标识0除外，只是作为预留值用于链接初始化，而不是哪个帧</li>
+<li>Playload：帧的有效荷载，每种类型的帧的Playload格式和语义均不相同。</li>
+</ul>
+<h4 id="HTTP-1-1到HTTP-2-0的转换"><a href="#HTTP-1-1到HTTP-2-0的转换" class="headerlink" title="HTTP/1.1到HTTP/2.0的转换"></a>HTTP/1.1到HTTP/2.0的转换</h4><p><img src="/images/HTTP%E5%8D%8F%E8%AE%AE%E7%9A%84%E8%BD%AC%E6%8D%A2.png"></p>
+<h4 id="流-Stream"><a href="#流-Stream" class="headerlink" title="流 Stream"></a>流 Stream</h4><p>Stream是客户端与服务器间通过HTTP/2.0链接交换的 独立的、双向的帧序列，可以将流视为一个完整的请求响应过程。流的概念的提出是为了实现HTTP请求的多路复用，具有以下特征：</p>
+<ol>
+<li>一个HTTP/2.0链接可以并发地打开多个流，并可以从多个流的任意端点交换帧</li>
+<li>流可以创建并被客户端/服务器单边或共享地使用</li>
+<li>流可以被任意端点关闭</li>
+<li>同一个流中的帧按顺序发送，接收者按照接收顺序进行处理</li>
+<li>流通过一个整数标识，由初始化流的端点分配</li>
+<li>流是相互独立的，因此一个流的阻塞或停止的请求/响应不会影响到其他流的处理</li>
+</ol>
+<p><img src="/images/%E6%B5%81%E7%9A%84%E4%BC%A0%E8%BE%93.png"></p>
+<h3 id="I-O"><a href="#I-O" class="headerlink" title="I/O"></a>I/O</h3><h4 id="BIO"><a href="#BIO" class="headerlink" title="BIO"></a>BIO</h4><p>从8.5版本开始，Tomcat移除了对BIO的支持。这里只是为了提及一下BIO的通信方式：</p>
+<p>BIO即阻塞式I/O，是Java提供的最基本的I/O方式。在网络通信中，需要通过Socket在客户端与服务端建立双向链接以实现通信，主要步骤如下：</p>
+<ol>
+<li>服务端监听某个端口释放有链接请求</li>
+<li>客户端向服务端发出链接请求</li>
+<li>服务端向客户端返回Accept消息，此时链接成功</li>
+<li>客户端和服务器端通过Send()、Write()等方法与对方通信</li>
+<li>关闭链接</li>
+</ol>
+<h4 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h4><p>传统的BIO方式是基于流进行读写的，而且是阻塞的，整体性能比较差。为了提高I/O性能，引入NIO，弥补BIO方式的不足，在标准Java代码中提供了高速、面向块的I/O。通过定义包含数据的类以及块的形式处理数据，NIO可以在不编写本地代码的情况下利用底层优化，这是BIO无法做到的。</p>
+<p>与BIO相比，NIO的几个新的概念：</p>
+<ol>
+<li>通道（Channel）是对BIO中流的模拟，到任何目的地的所有数据都必须通过一个通道对象。通道和流的不同之处在于通道是双向的。流只是在一个方向上移动，而通道可以用于读、可以用于写、或者读写同时进行。因为通道是双向的，所以它可以比流更好地反映底层操作系统的真实情况。</li>
+<li>缓冲区（Buffer）。尽管通道用于读写数据，但是并不直接通过通道进行读写。而是通过缓冲区完成。缓冲区实质上是一个容器对象。发送给通道的所有数据都必须先放到缓冲区。缓冲区体通常是一个字节数组。</li>
+<li>选择器（Selector）。选择器用于同时检测多个通道的事件以实现异步I/O。通过将事件注册到Selector上，当事件发生时，可以通过选择器获取事件发生的通道，并进行相关的操作。异步I/O的优势在于，允许同时根据大量的输入、输出执行I/O操作。而同步I/O则要借助轮询，或者创建许多线程处理大量的链接。使用异步I/O，可以监听任意数量的通道事件，不必轮询，也不必启动额外的线程。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/tomcat/" rel="tag"># tomcat</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/11/15/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" rel="next" title="文件系统">
+                <i class="fa fa-chevron-left"></i> 文件系统
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/12/05/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99%E4%B8%8E%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="prev" title="设计原则与设计模式">
+                设计原则与设计模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E4%BD%93%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text">总体设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tomcat%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">Tomcat启动过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tomcat%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">Tomcat请求处理过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tomcat%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="nav-number">4.</span> <span class="nav-text">Tomcat类加载器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#web%E5%BA%94%E7%94%A8%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="nav-number">4.1.</span> <span class="nav-text">web应用类加载器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Catalina"><span class="nav-number">5.</span> <span class="nav-text">Catalina</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Digester"><span class="nav-number">5.1.</span> <span class="nav-text">Digester</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8C%B9%E9%85%8D%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.1.1.</span> <span class="nav-text">匹配模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E8%A7%84%E5%88%99"><span class="nav-number">5.1.2.</span> <span class="nav-text">处理规则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAServer"><span class="nav-number">5.2.</span> <span class="nav-text">创建Server</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Server%E8%A7%A3%E6%9E%90"><span class="nav-number">5.2.1.</span> <span class="nav-text">Server解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Engine%E8%A7%A3%E6%9E%90"><span class="nav-number">5.2.2.</span> <span class="nav-text">Engine解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Host%E8%A7%A3%E6%9E%90"><span class="nav-number">5.2.3.</span> <span class="nav-text">Host解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Context%E8%A7%A3%E6%9E%90"><span class="nav-number">5.2.4.</span> <span class="nav-text">Context解析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#web%E5%BA%94%E7%94%A8%E5%8A%A0%E8%BD%BD"><span class="nav-number">5.3.</span> <span class="nav-text">web应用加载</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#StandardHost"><span class="nav-number">5.3.1.</span> <span class="nav-text">StandardHost</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HostConfig"><span class="nav-number">5.3.2.</span> <span class="nav-text">HostConfig</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#StandardContext"><span class="nav-number">5.3.3.</span> <span class="nav-text">StandardContext</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ContextConfig"><span class="nav-number">5.3.4.</span> <span class="nav-text">ContextConfig</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#StandardWrapper"><span class="nav-number">5.3.5.</span> <span class="nav-text">StandardWrapper</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86"><span class="nav-number">5.4.</span> <span class="nav-text">Web请求处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E4%BD%93%E8%BF%87%E7%A8%8B"><span class="nav-number">5.4.1.</span> <span class="nav-text">总体过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E6%98%A0%E5%B0%84"><span class="nav-number">5.4.2.</span> <span class="nav-text">请求映射</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#CoyoteAdapter-postParseRequest"><span class="nav-number">5.4.2.1.</span> <span class="nav-text">CoyoteAdapter.postParseRequest()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Mapper-map"><span class="nav-number">5.4.2.2.</span> <span class="nav-text">Mapper.map</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#MapperWrapper%E6%98%A0%E5%B0%84"><span class="nav-number">5.4.2.3.</span> <span class="nav-text">MapperWrapper映射</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Catalina%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86"><span class="nav-number">5.4.3.</span> <span class="nav-text">Catalina请求处理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Coyote"><span class="nav-number">6.</span> <span class="nav-text">Coyote</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Web%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86-1"><span class="nav-number">6.1.</span> <span class="nav-text">Web请求处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="nav-number">6.1.1.</span> <span class="nav-text">核心概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B"><span class="nav-number">6.1.2.</span> <span class="nav-text">请求处理过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-2-0"><span class="nav-number">6.2.</span> <span class="nav-text">HTTP&#x2F;2.0</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-1-1%E5%88%B0HTTP-2-0%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="nav-number">6.2.1.</span> <span class="nav-text">HTTP&#x2F;1.1到HTTP&#x2F;2.0的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%81-Stream"><span class="nav-number">6.2.2.</span> <span class="nav-text">流 Stream</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I-O"><span class="nav-number">6.3.</span> <span class="nav-text">I&#x2F;O</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BIO"><span class="nav-number">6.3.1.</span> <span class="nav-text">BIO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NIO"><span class="nav-number">6.3.2.</span> <span class="nav-text">NIO</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Doug-Wilson</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/Gantzert_Felixander.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

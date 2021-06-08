@@ -137,7 +137,7 @@
 <meta property="og:description" content="JSP页面本质上为一个Servlet程序，当我们第一次访问JSP页面时，服务器会将JSP页面翻译成一个Servlet类。比如，一个JSP文件为 user.jsp  那么就会被翻译成 public final class user_jsp extends HttpJspBase implements… 而HttpJspBase extends HttpServlet implements HttpJ">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-01-16T05:17:02.000Z">
-<meta property="article:modified_time" content="2021-05-27T01:47:08.074Z">
+<meta property="article:modified_time" content="2021-05-28T00:09:07.534Z">
 <meta property="article:author" content="Doug-Wilson">
 <meta property="article:tag" content="JSP">
 <meta name="twitter:card" content="summary">
@@ -395,12 +395,12 @@
         <p>JSP页面本质上为一个Servlet程序，当我们第一次访问JSP页面时，服务器会将JSP页面翻译成一个Servlet类。比如，一个JSP文件为 user.jsp  那么就会被翻译成 public final class user_jsp extends HttpJspBase implements…</p>
 <p>而HttpJspBase extends HttpServlet implements HttpJspPage</p>
 <p>具体做的事情给个简单例子：</p>
+<span id="more"></span>
+
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page contentType=<span class="string">&quot;text/html;charset=utf-8&quot;</span> language=<span class="string">&quot;java&quot;</span>%&gt;</span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></span></span><br><span class="line"><span class="xml">    	......</span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span></span><br><span class="line"><span class="xml">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="xml">    	......</span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 
 <p>编译后，会将该jsp文件内容转化成servlet文件，内容大体如下</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public <span class="keyword">void</span> <span class="function"><span class="title">_jspService</span>(<span class="params">HttpServletRequest request, HttpServletResponse response</span>)</span> &#123;</span><br><span class="line">    <span class="comment">//省略其它内容</span></span><br><span class="line">    out = pageContext.getOut();</span><br><span class="line">    _jspx_out = out;</span><br><span class="line">    out.write(<span class="string">&quot;rn&quot;</span>);</span><br><span class="line">    out.write(<span class="string">&quot;&lt;!DOCTYPE HTML PUBLIC &#x27;-//W3C//DTD HTML 4.0 Transitional//EN&#x27;&gt;rn&quot;</span>);</span><br><span class="line">    out.write(<span class="string">&quot;&lt;html&gt;rn&quot;</span>);</span><br><span class="line">    out.write(<span class="string">&quot;&lt;head&gt;rn&quot;</span>);</span><br><span class="line">    out.write(<span class="string">&quot;...rn&quot;</span>);</span><br><span class="line">    out.write(<span class="string">&quot;&lt;/head&gt;rn&quot;</span>)</span><br><span class="line">    out.write(<span class="string">&quot;&lt;body&gt;rn&quot;</span>);</span><br><span class="line">    out.write(<span class="string">&quot;...rn&quot;</span>);</span><br><span class="line">    out.write(<span class="string">&quot;&lt;/body&gt;rn&quot;</span>);</span><br><span class="line">    out.write(<span class="string">&quot;&lt;/html&gt;rn&quot;</span>);</span><br><span class="line">    <span class="comment">//省略其它内容</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<span id="more"></span>
 
 <h2 id="基本指令"><a href="#基本指令" class="headerlink" title="基本指令"></a>基本指令</h2><blockquote>
 <p><strong>头部page指令：设置页面的一些参数</strong></p>
@@ -681,7 +681,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-count">80</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -694,7 +694,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-count">73</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>

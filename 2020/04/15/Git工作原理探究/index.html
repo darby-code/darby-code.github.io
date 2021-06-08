@@ -129,12 +129,12 @@
 
 
 
-<meta name="description" content="Git存储文件过程及分支工作原理在Git中提交时，会保存一个提交对象，它包含一个指向暂存内容快照的指针，作者和相关附属信息，以及一定数量（也可能没有）指向该提交对象直接祖先的指针。 当执行 git add暂存操作时。暂存操作会对每一个文件计算校验和（SHA-1哈希字符串），然后将当前版本的文件快照保存到Git仓库中（Git使用blob类型对象存储这些快照），并将校验和加入暂存区域。 当执行 g">
+<meta name="description" content="Git存储文件过程及分支工作原理在Git中提交时，会保存一个提交对象，它包含一个指向暂存内容快照的指针，作者和相关附属信息，以及一定数量（也可能没有）指向该提交对象直接祖先的指针。 当执行 git add暂存操作时。暂存操作会对每一个文件计算校验和（SHA-1哈希字符串），然后将当前版本的文件快照保存到Git仓库中（Git使用blob类型对象存储这些快照），并将校验和加入暂存区域。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Git工作原理探究">
 <meta property="og:url" content="http://example.com/2020/04/15/Git%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E6%8E%A2%E7%A9%B6/index.html">
 <meta property="og:site_name" content="Doug-Wilson&#39;s blogs">
-<meta property="og:description" content="Git存储文件过程及分支工作原理在Git中提交时，会保存一个提交对象，它包含一个指向暂存内容快照的指针，作者和相关附属信息，以及一定数量（也可能没有）指向该提交对象直接祖先的指针。 当执行 git add暂存操作时。暂存操作会对每一个文件计算校验和（SHA-1哈希字符串），然后将当前版本的文件快照保存到Git仓库中（Git使用blob类型对象存储这些快照），并将校验和加入暂存区域。 当执行 g">
+<meta property="og:description" content="Git存储文件过程及分支工作原理在Git中提交时，会保存一个提交对象，它包含一个指向暂存内容快照的指针，作者和相关附属信息，以及一定数量（也可能没有）指向该提交对象直接祖先的指针。 当执行 git add暂存操作时。暂存操作会对每一个文件计算校验和（SHA-1哈希字符串），然后将当前版本的文件快照保存到Git仓库中（Git使用blob类型对象存储这些快照），并将校验和加入暂存区域。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/Git%E4%BB%93%E5%BA%93blob%E5%AF%B9%E8%B1%A1.png">
 <meta property="og:image" content="http://example.com/images/Git%E4%BF%AE%E6%94%B9%E6%8F%90%E4%BA%A4%E5%90%8E%E6%8C%87%E9%92%88%E7%9A%84%E5%8F%98%E5%8A%A8.png">
@@ -146,7 +146,7 @@
 <meta property="og:image" content="http://example.com/images/%E4%BB%8Edev1%E5%88%86%E6%94%AF%E5%88%87%E6%8D%A2%E5%9B%9Emaster%E5%88%86%E6%94%AF.png">
 <meta property="og:image" content="http://example.com/images/%E5%9C%A8master%E5%88%86%E6%94%AF%E4%B8%8A%E6%8F%90%E4%BA%A4%E6%9B%B4%E6%96%B0.png">
 <meta property="article:published_time" content="2020-04-15T06:26:43.000Z">
-<meta property="article:modified_time" content="2021-05-27T01:46:03.667Z">
+<meta property="article:modified_time" content="2021-05-28T00:08:33.440Z">
 <meta property="article:author" content="Doug-Wilson">
 <meta property="article:tag" content="git">
 <meta name="twitter:card" content="summary">
@@ -402,10 +402,10 @@
       
 
       
-        <span id="more"></span>
-
-<h2 id="Git存储文件过程及分支工作原理"><a href="#Git存储文件过程及分支工作原理" class="headerlink" title="Git存储文件过程及分支工作原理"></a>Git存储文件过程及分支工作原理</h2><p>在Git中提交时，会保存一个提交对象，它包含一个指向暂存内容快照的指针，作者和相关附属信息，以及一定数量（也可能没有）指向该提交对象直接祖先的指针。</p>
+        <h2 id="Git存储文件过程及分支工作原理"><a href="#Git存储文件过程及分支工作原理" class="headerlink" title="Git存储文件过程及分支工作原理"></a>Git存储文件过程及分支工作原理</h2><p>在Git中提交时，会保存一个提交对象，它包含一个指向暂存内容快照的指针，作者和相关附属信息，以及一定数量（也可能没有）指向该提交对象直接祖先的指针。</p>
 <p>当执行 <code>git add</code>暂存操作时。暂存操作会对每一个文件计算校验和（SHA-1哈希字符串），然后将当前版本的文件快照保存到Git仓库中（Git使用blob类型对象存储这些快照），并将校验和加入暂存区域。</p>
+<span id="more"></span>
+
 <p>当执行 <code>git commit</code>提交操作时，Git会先计算每一个子目录的校验和，然后在Git仓库中将这些目录保存为树对象，之后Git创建的提交对象，除了包含相关提交信息以外，还包含着指向这个树对象（项目根目录）的指针，如此就可以在将来需要的时候，重现此快照的内容。</p>
 <p>因此，在Git仓库中，除了文件快照内容的blob对象，还会有2个对象：一个记录目录树内容及其各个文件对应blob对象索引的tree对象。以及一个包含指向tree对象（根目录）的索引和其他提交信息元数据的commit对象。如下图所示：</p>
 <p><img src="/images/Git%E4%BB%93%E5%BA%93blob%E5%AF%B9%E8%B1%A1.png"></p>
@@ -545,7 +545,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-count">80</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -558,7 +558,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-count">73</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
