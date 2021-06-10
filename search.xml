@@ -2618,7 +2618,7 @@
       </tags>
   </entry>
   <entry>
-    <title>MyBatis架构及映射原理</title>
+    <title>MyBatis基本使用及映射原理</title>
     <url>/2020/12/13/MyBatis%E6%9E%B6%E6%9E%84%E5%8F%8A%E6%98%A0%E5%B0%84%E5%8E%9F%E7%90%86/</url>
     <content><![CDATA[<p>MyBtis通过SQL Map将Java对象映射成SQL语句，将结果集转换成Java对象。与其他的ORM框架相比，解决了Java对象与查询结果集的映射，又能方便地编写SQL语句。</p>
 <span id="more"></span>
@@ -3093,6 +3093,9 @@
 </ul>
 </li>
 </ul>
+<h2 id="映射器"><a href="#映射器" class="headerlink" title="映射器"></a>映射器</h2><p>映射器是MyBatis中最复杂和最重要的组件，由一个接口加上XML文件组曾。在映射器中可以配置参数、各类的SQL语句、存储过程、缓存、级联等复杂内容，并且通过简易的映射规则映射到指定的POJO或者其他对象上，有效消除JDBC底层的代码。</p>
+<p>映射器也能通过注解完成，但是很少使用。因此，下面讨论的都是基于XML的实现方式。</p>
+<p>映射器的配置元素：</p>
 ]]></content>
       <tags>
         <tag>mybatis</tag>
@@ -3613,9 +3616,9 @@
   <entry>
     <title>Spring声明式事务原理</title>
     <url>/2020/06/03/Spring%E5%A3%B0%E6%98%8E%E5%BC%8F%E4%BA%8B%E5%8A%A1%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<span id="more"></span>
+    <content><![CDATA[<h2 id="事务回顾"><a href="#事务回顾" class="headerlink" title="事务回顾"></a>事务回顾</h2><p>通过一个实例回顾事务的使用：</p>
+<span id="more"></span>
 
-<h2 id="事务回顾"><a href="#事务回顾" class="headerlink" title="事务回顾"></a>事务回顾</h2><p>通过一个实例回顾事务的使用：</p>
 <p>创建实体类实体类User：</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String userId;</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="keyword">private</span> String age;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 省略构造器和getter，setter方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -9626,6 +9629,8 @@ $$
     <title>设计原则与设计模式</title>
     <url>/2020/12/05/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99%E4%B8%8E%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<h2 id="软件架构设计原则"><a href="#软件架构设计原则" class="headerlink" title="软件架构设计原则"></a>软件架构设计原则</h2><h4 id="开闭原则"><a href="#开闭原则" class="headerlink" title="开闭原则"></a>开闭原则</h4><p>软件实体（类、模块、函数）对扩展开放，对修改关闭。该设计原则强调用抽象构建框架，用实现扩展细节，提高软件系统的可复用性和可维护性。</p>
+<span id="more"></span>
+
 <h4 id="依赖倒置原则"><a href="#依赖倒置原则" class="headerlink" title="依赖倒置原则"></a>依赖倒置原则</h4><p>设计代码结构时，抽象不应该依赖于细节，细节则应该依赖于抽象，也就是说要针对接口编程，而不是针对实现编程。通过依赖倒置，可以减少类间的耦合性，提高系统的稳定性、代码的可读性和可维护性。</p>
 <p>依赖导致原则要求在程序代码中传递参数或者在关联关系中，尽量引用层次高的抽象类，就是要使用接口和抽象类进行变量类型声明、参数类型声明、方法返回类型声明、数据类型的转换，而不要使用具体类来做这些工作。也因此，为了该原则的使用，一个具体类应该只实现接口或抽象类中声明过的方法，尽量不要自己声明多余的方法，否则将无法调用到在子类中新增加的方法。</p>
 <p>在实现依赖倒置原则时，需要针对抽象层进行编程，而将具体的实现类通过依赖注入的方式注入到对象中。依赖注入是指当一个对象与其他对象发生依赖关系时，通过抽象来注入所需要依赖的对象。常用的注入方式有3种：构造器注入、setter注入、接口注入。构造器注入是指通过构造函数来传入具体类的对象；而setter注入则是通过setter方法传入具体类的对象；接口注入则是在接口中声明的业务方法来传入具体类的对象。这些方法在定义的时候使用的是抽象类型，在运行的时候在传入具体类型的对象，由子类对象来覆盖父类对象。</p>
